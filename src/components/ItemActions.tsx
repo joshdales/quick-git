@@ -15,6 +15,11 @@ export function ItemActions({
 	repo,
 	checkStatus,
 }: Props) {
+	const { revalidate: stageAllFiles } = useExec("git", ["add", "."], {
+		cwd: repo,
+		execute: false,
+		onData: checkStatus,
+	})
 	const { revalidate: stageItem } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
@@ -41,6 +46,7 @@ export function ItemActions({
 	return (
 		<ActionPanel>
 			<Action title={isNotStaged ? "Stage" : "Unstage"} onAction={mainAction} />
+			<Action title="Stage All Files" onAction={stageAllFiles} />
 		</ActionPanel>
 	)
 }
