@@ -7,7 +7,7 @@ function parseGitStatus(dataRow: string): StatusItem {
 	const gitX = dataRow.charAt(0) as GitStatus
 	const gitY = dataRow.charAt(1) as GitStatus
 
-	const fileName = dataRow.slice(2)
+	const fileName = dataRow.slice(3)
 	return { fileName, gitX, gitY }
 }
 
@@ -22,6 +22,8 @@ export function GitStatusList({ statusData, isLoading }: Props) {
 		() => statusData?.split("\n").map<StatusItem>(parseGitStatus) ?? [],
 		[statusData],
 	)
+
+	console.log(statusData)
 
 	return (
 		<List isLoading={isLoading}>
