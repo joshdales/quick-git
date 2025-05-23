@@ -1,6 +1,7 @@
 import { Action, ActionPanel, Keyboard } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
+import { GitCommit } from "./GitCommit.js"
 
 interface Props {
 	isNotStaged: boolean
@@ -57,7 +58,7 @@ export function ItemActions({
 	return (
 		<ActionPanel>
 			<Action title={isNotStaged ? "Stage" : "Unstage"} onAction={mainAction} />
-			<Action title="Commit" />
+			<Action.Push title="Commit" target={<GitCommit repo={repo} />} />
 			<Action
 				title="Stage All Files"
 				onAction={stageAllFiles}
