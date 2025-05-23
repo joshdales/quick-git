@@ -17,7 +17,7 @@ interface Props {
 	isLoading: boolean
 }
 
-export function GitStatusList({ statusData, isLoading }: Props) {
+export function GitStatusList({ statusData, isLoading, repo }: Props) {
 	const statusItems = useMemo(() => {
 		if (!statusData) {
 			return []
@@ -32,6 +32,7 @@ export function GitStatusList({ statusData, isLoading }: Props) {
 				statusItems.map((item) => {
 					return (
 						<GitStatusItem
+							repo={repo}
 							key={item.fileName}
 							fileName={item.fileName}
 							gitX={item.gitX}

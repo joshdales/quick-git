@@ -1,5 +1,6 @@
 import { Icon, List } from "@raycast/api"
 import { useMemo } from "react"
+import { ItemActions } from "./ItemActions.js"
 
 export type GitStatus =
 	| /** unmodified */
@@ -32,18 +33,26 @@ export interface StatusItem {
 	gitY: GitStatus
 }
 
-export function GitStatusItem({ fileName, gitX }: StatusItem) {
-	const icon = useMemo(() => {
-		if (gitX === " ") {
-			return Icon.Circle
-		}
+interface Props extends StatusItem {
+	repo: string
+}
 
-		if (gitX === "?") {
-			return Icon.Circle
-		}
-
-		return Icon.Checkmark
+export function GitStatusItem({ fileName, gitX, repo }: Props) {
+	const isNotStaged = useMemo(() => {
+		return gitX === " " || gitX === "?"
 	}, [gitX])
 
-	return <List.Item icon={icon} title={fileName} />
+	return (
+		<List.Item
+			icon={isNotStaged ? Icon.Circle : Icon.CheckCircle}
+			title={fileName}
+			actions={
+				<ItemActions
+					isNotStaged={isNotStaged}
+					repo={repo}
+					fileName={fileName}
+				/>
+			}
+		/>
+	)
 }
