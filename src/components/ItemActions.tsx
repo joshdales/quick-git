@@ -25,6 +25,15 @@ export function ItemActions({
 		execute: false,
 		onData: checkStatus,
 	})
+	const { revalidate: unstageAllFiles } = useExec(
+		"git",
+		["restore", "--staged", "."],
+		{
+			cwd: repo,
+			execute: false,
+			onData: checkStatus,
+		},
+	)
 	const { revalidate: unstageItem } = useExec(
 		"git",
 		["restore", "--staged", fileName],
@@ -47,6 +56,7 @@ export function ItemActions({
 		<ActionPanel>
 			<Action title={isNotStaged ? "Stage" : "Unstage"} onAction={mainAction} />
 			<Action title="Stage All Files" onAction={stageAllFiles} />
+			<Action title="Unstage All Files" onAction={unstageAllFiles} />
 		</ActionPanel>
 	)
 }
