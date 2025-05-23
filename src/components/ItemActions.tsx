@@ -15,7 +15,7 @@ export function ItemActions({ isNotStaged, fileName, repo }: Props) {
 	})
 	const { revalidate: unstageItem } = useExec(
 		"git",
-		["restore", "staged", fileName],
+		["restore", "--staged", fileName],
 		{
 			cwd: repo,
 			execute: false,
