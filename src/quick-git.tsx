@@ -13,10 +13,6 @@ export default function Command() {
 		},
 	)
 
-	if (!repo || !data) {
-		return
-	}
-
 	return (
 		<GitStatusList
 			repo={repo}
