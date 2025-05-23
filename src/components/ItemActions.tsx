@@ -9,20 +9,24 @@ interface Props {
 }
 
 export function ItemActions({ isNotStaged, fileName, repo }: Props) {
-	const stageItem = useExec("git", ["add", fileName], {
+	const { revalidate: stageItem } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
 	})
-	const unstageItem = useExec("git", ["restore", "staged", fileName], {
-		cwd: repo,
-		execute: false,
-	})
+	const { revalidate: unstageItem } = useExec(
+		"git",
+		["restore", "staged", fileName],
+		{
+			cwd: repo,
+			execute: false,
+		},
+	)
 
 	const mainAction = useCallback(() => {
 		if (isNotStaged) {
-			stageItem.revalidate()
+			stageItem()
 		} else {
-			unstageItem.revalidate()
+			unstageItem()
 		}
 	}, [isNotStaged, stageItem, unstageItem])
 
