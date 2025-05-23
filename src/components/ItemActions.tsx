@@ -58,7 +58,10 @@ export function ItemActions({
 	return (
 		<ActionPanel>
 			<Action title={isNotStaged ? "Stage" : "Unstage"} onAction={mainAction} />
-			<Action.Push title="Commit" target={<GitCommit repo={repo} />} />
+			<Action.Push
+				title="Commit"
+				target={<GitCommit repo={repo} checkStatus={checkStatus} />}
+			/>
 			<Action
 				title="Stage All Files"
 				onAction={stageAllFiles}

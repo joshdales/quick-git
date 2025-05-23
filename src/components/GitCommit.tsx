@@ -4,15 +4,19 @@ import { FormValidation, useExec, useForm } from "@raycast/utils"
 
 interface Props {
 	repo: string
+	checkStatus: () => void
 }
 
-export const GitCommit = ({ repo }: Props) => {
+export const GitCommit = ({ repo, checkStatus }: Props) => {
 	const { pop } = useNavigation()
 	const [commitMsg, setCommitMsg] = useState("")
 	const { revalidate: commit } = useExec("git", ["commit", "-m", commitMsg], {
 		cwd: repo,
 		execute: false,
-		onData: pop,
+		onData: () => {
+			checkStatus()
+			pop()
+		},
 	})
 	const { handleSubmit } = useForm({
 		onSubmit() {
