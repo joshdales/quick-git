@@ -18,12 +18,7 @@ interface Props {
 	checkStatus: () => void
 }
 
-export function GitStatusList({
-	statusData,
-	isLoading,
-	repo,
-	checkStatus,
-}: Props) {
+export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
 	const statusItems = useMemo(() => {
 		if (!statusData) {
 			return []

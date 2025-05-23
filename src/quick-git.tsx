@@ -1,5 +1,5 @@
 import { useExec, useLocalStorage } from "@raycast/utils"
-import { GitStatusList } from "./components/GitStatusList.js"
+import { GitStatus } from "./components/GitStatus.js"
 import { useEffect } from "react"
 
 export default function Command() {
@@ -22,7 +22,7 @@ export default function Command() {
 	}, [repo, revalidate])
 
 	return (
-		<GitStatusList
+		<GitStatus
 			repo={repo}
 			isLoading={data === undefined || isLoadingRepo || isLoadingStatus}
 			statusData={data}
