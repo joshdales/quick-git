@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api"
 import { FormValidation, useForm, useLocalStorage } from "@raycast/utils"
 
-export default function Command() {
+export default function SelectRepo() {
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
 	>("repo")
