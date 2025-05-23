@@ -35,9 +35,10 @@ export interface StatusItem {
 
 interface Props extends StatusItem {
 	repo: string
+	checkStatus: () => void
 }
 
-export function GitStatusItem({ fileName, gitX, repo }: Props) {
+export function GitStatusItem({ fileName, gitX, repo, checkStatus }: Props) {
 	const isNotStaged = useMemo(() => {
 		return gitX === " " || gitX === "?"
 	}, [gitX])
@@ -51,6 +52,7 @@ export function GitStatusItem({ fileName, gitX, repo }: Props) {
 					isNotStaged={isNotStaged}
 					repo={repo}
 					fileName={fileName}
+					checkStatus={checkStatus}
 				/>
 			}
 		/>

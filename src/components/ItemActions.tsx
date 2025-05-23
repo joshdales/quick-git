@@ -6,12 +6,19 @@ interface Props {
 	isNotStaged: boolean
 	fileName: string
 	repo: string
+	checkStatus: () => void
 }
 
-export function ItemActions({ isNotStaged, fileName, repo }: Props) {
+export function ItemActions({
+	isNotStaged,
+	fileName,
+	repo,
+	checkStatus,
+}: Props) {
 	const { revalidate: stageItem } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
+		onData: checkStatus,
 	})
 	const { revalidate: unstageItem } = useExec(
 		"git",
@@ -19,6 +26,7 @@ export function ItemActions({ isNotStaged, fileName, repo }: Props) {
 		{
 			cwd: repo,
 			execute: false,
+			onData: checkStatus,
 		},
 	)
 

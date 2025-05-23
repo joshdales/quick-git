@@ -26,6 +26,7 @@ export default function Command() {
 			repo={repo}
 			isLoading={data === undefined || isLoadingRepo || isLoadingStatus}
 			statusData={data}
+			checkStatus={revalidate}
 		/>
 	)
 }

@@ -15,9 +15,15 @@ interface Props {
 	repo?: string
 	statusData?: string
 	isLoading: boolean
+	checkStatus: () => void
 }
 
-export function GitStatusList({ statusData, isLoading, repo }: Props) {
+export function GitStatusList({
+	statusData,
+	isLoading,
+	repo,
+	checkStatus,
+}: Props) {
 	const statusItems = useMemo(() => {
 		if (!statusData) {
 			return []
@@ -37,6 +43,7 @@ export function GitStatusList({ statusData, isLoading, repo }: Props) {
 							fileName={item.fileName}
 							gitX={item.gitX}
 							gitY={item.gitY}
+							checkStatus={checkStatus}
 						/>
 					)
 				})
