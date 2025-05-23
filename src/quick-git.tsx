@@ -20,7 +20,7 @@ export default function Command() {
 			revalidate()
 		}
 	}, [repo, revalidate])
-
+	console.log("hello there!")
 	return (
 		<GitStatus
 			repo={repo}
