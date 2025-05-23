@@ -10,6 +10,7 @@ export default function Command() {
 		["status", "--porcelain"],
 		{
 			cwd: repo,
+			stripFinalNewline: true,
 		},
 	)
 
