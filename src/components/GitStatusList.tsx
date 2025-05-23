@@ -25,16 +25,20 @@ export function GitStatusList({ statusData, isLoading }: Props) {
 
 	return (
 		<List isLoading={isLoading}>
-			{statusItems.map((item) => {
-				return (
-					<GitStatusItem
-						key={item.fileName}
-						fileName={item.fileName}
-						gitX={item.gitX}
-						gitY={item.gitY}
-					/>
-				)
-			})}
+			{statusItems.length ? (
+				statusItems.map((item) => {
+					return (
+						<GitStatusItem
+							key={item.fileName}
+							fileName={item.fileName}
+							gitX={item.gitX}
+							gitY={item.gitY}
+						/>
+					)
+				})
+			) : (
+				<List.EmptyView title="Nothing to commit, working tree clean" />
+			)}
 		</List>
 	)
 }
