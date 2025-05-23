@@ -9,10 +9,10 @@
 	"type": "module",
 	"commands": [
 		{
-			"name": "quick-git-status",
-			"title": "Git Status",
-			"description": "Check status of the selected repo",
-			"mode": "no-view"
+			"name": "quick-git",
+			"title": "Quick Git",
+			"description": "Check and commit quickly",
+			"mode": "view"
 		}
 	],
 	"dependencies": {

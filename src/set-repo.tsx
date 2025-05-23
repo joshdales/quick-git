@@ -1,0 +1,40 @@
+import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api"
+import { FormValidation, useForm, useLocalStorage } from "@raycast/utils"
+
+export default function Command() {
+	const { value, setValue, removeValue, isLoading } = useLocalStorage<
+		string | undefined
+	>("repo")
+	const { handleSubmit } = useForm({
+		onSubmit({ newRepo }: { newRepo: string }) {
+			setValue(newRepo)
+			showToast({
+				style: Toast.Style.Success,
+				title: "Repo set!",
+				message: `${newRepo}`,
+			})
+		},
+		validation: {
+			newRepo: FormValidation.Required,
+		},
+	})
+
+	return (
+		<Form
+			isLoading={isLoading}
+			actions={
+				<ActionPanel>
+					<Action.SubmitForm title="Set Repo" onSubmit={handleSubmit} />
+					<Action.SubmitForm title="Unset Repo" onSubmit={removeValue} />
+				</ActionPanel>
+			}
+		>
+			<Form.TextField
+				id="newRepo"
+				title="Repo Directory"
+				defaultValue={value}
+				autoFocus
+			/>
+		</Form>
+	)
+}
