@@ -18,12 +18,13 @@ interface Props {
 }
 
 export function GitStatusList({ statusData, isLoading }: Props) {
-	const statusItems = useMemo(
-		() => statusData?.split("\n").map<StatusItem>(parseGitStatus) ?? [],
-		[statusData],
-	)
+	const statusItems = useMemo(() => {
+		if (!statusData) {
+			return []
+		}
 
-	console.log(statusData)
+		return statusData.split("\n").map<StatusItem>(parseGitStatus)
+	}, [statusData])
 
 	return (
 		<List isLoading={isLoading}>
