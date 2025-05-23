@@ -1,7 +1,8 @@
-import { List } from "@raycast/api"
+import { Action, ActionPanel, List } from "@raycast/api"
 import { useMemo } from "react"
 import type { StatusItem, GitStatus } from "./GitStatusItem.js"
 import { GitStatusItem } from "./GitStatusItem.js"
+import SelectRepo from "./SelectRepo.js"
 
 function parseGitStatus(dataRow: string): StatusItem {
 	const gitX = dataRow.charAt(0) as GitStatus
@@ -28,7 +29,14 @@ export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
 	}, [statusData])
 
 	return (
-		<List isLoading={isLoading}>
+		<List
+			isLoading={isLoading}
+			actions={
+				<ActionPanel>
+					<Action.Push title="Set Repo" target={<SelectRepo />} />
+				</ActionPanel>
+			}
+		>
 			{repo && statusItems.length ? (
 				statusItems.map((item) => {
 					return (
