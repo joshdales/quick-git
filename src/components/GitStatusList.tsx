@@ -28,7 +28,7 @@ export function GitStatusList({ statusData, isLoading, repo }: Props) {
 
 	return (
 		<List isLoading={isLoading}>
-			{statusItems.length ? (
+			{repo && statusItems.length ? (
 				statusItems.map((item) => {
 					return (
 						<GitStatusItem
