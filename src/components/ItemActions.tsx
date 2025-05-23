@@ -1,6 +1,6 @@
-import { Action, ActionPanel } from "@raycast/api"
+import { Action, ActionPanel, Keyboard } from "@raycast/api"
 import { useExec } from "@raycast/utils"
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 
 interface Props {
 	isNotStaged: boolean
@@ -52,11 +52,32 @@ export function ItemActions({
 		}
 	}, [isNotStaged, stageItem, unstageItem])
 
+	const filePath = useMemo(() => repo + "/" + fileName, [fileName, repo])
+
 	return (
 		<ActionPanel>
 			<Action title={isNotStaged ? "Stage" : "Unstage"} onAction={mainAction} />
-			<Action title="Stage All Files" onAction={stageAllFiles} />
-			<Action title="Unstage All Files" onAction={unstageAllFiles} />
+			<Action title="Commit" />
+			<Action
+				title="Stage All Files"
+				onAction={stageAllFiles}
+				shortcut={{ key: "a", modifiers: ["cmd", "shift"] }}
+			/>
+			<Action
+				title="Unstage All Files"
+				onAction={unstageAllFiles}
+				shortcut={Keyboard.Shortcut.Common.RemoveAll}
+			/>
+			<Action.CopyToClipboard
+				title="Copy Filename"
+				content={fileName}
+				shortcut={Keyboard.Shortcut.Common.Copy}
+			/>
+			<Action.Open
+				title="Open This File"
+				target={filePath}
+				shortcut={Keyboard.Shortcut.Common.Open}
+			/>
 		</ActionPanel>
 	)
 }
