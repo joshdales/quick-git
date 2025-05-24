@@ -8,11 +8,7 @@ import {
 } from "@raycast/api"
 import { FormValidation, useForm, useLocalStorage } from "@raycast/utils"
 
-interface Props {
-	checkStatus: () => void
-}
-
-export default function SelectRepo({ checkStatus }: Props) {
+export default function SelectRepo() {
 	const { pop } = useNavigation()
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
@@ -25,7 +21,6 @@ export default function SelectRepo({ checkStatus }: Props) {
 					title: "Repo set!",
 					message: `${newRepo}`,
 				})
-				checkStatus()
 				pop()
 			})
 		},

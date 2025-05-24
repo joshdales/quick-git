@@ -3,7 +3,7 @@ import type { GitStatus } from "../utils/status.js"
 import { parseGitStatus } from "../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "./SelectRepo.js"
-import { useExec } from "@raycast/utils"
+import { showFailureToast, useExec } from "@raycast/utils"
 
 interface Props {
 	repo?: string
@@ -18,7 +18,12 @@ export function GitStatus({ repo }: Props) {
 			cwd: repo,
 			execute: !!repo,
 			keepPreviousData: false,
-			parseOutput: ({ stdout }) => {
+			parseOutput: ({ stdout, error }) => {
+				if (error) {
+					showFailureToast(error, { title: "Could not fetch status" })
+					return
+				}
+
 				if (!stdout) {
 					return
 				}
@@ -33,10 +38,7 @@ export function GitStatus({ repo }: Props) {
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
-					<Action.Push
-						title="Set Repo"
-						target={<SelectRepo checkStatus={revalidate} />}
-					/>
+					<Action.Push title="Set Repo" target={<SelectRepo />} />
 				</ActionPanel>
 			}
 		>
