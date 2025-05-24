@@ -1,16 +1,9 @@
 import { Action, ActionPanel, List } from "@raycast/api"
 import { useMemo } from "react"
-import type { StatusItem, GitStatus } from "./GitStatusItem.js"
+import type { StatusItem, GitStatus } from "../utils/status.js"
+import { parseGitStatus } from "../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "./SelectRepo.js"
-
-function parseGitStatus(dataRow: string): StatusItem {
-	const gitX = dataRow.charAt(0) as GitStatus
-	const gitY = dataRow.charAt(1) as GitStatus
-
-	const fileName = dataRow.slice(3)
-	return { fileName, gitX, gitY }
-}
 
 interface Props {
 	repo?: string
