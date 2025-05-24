@@ -4,9 +4,15 @@ import { useState } from "react"
 
 interface Props {
 	repo: string
+	checkBranches: () => void
+	checkStatus: () => void
 }
 
-export default function CreateBranch({ repo }: Props) {
+export default function CreateBranch({
+	repo,
+	checkBranches,
+	checkStatus,
+}: Props) {
 	const [branchName, setBranchName] = useState("")
 	const { revalidate, isLoading } = useExec(
 		"git",
@@ -20,6 +26,8 @@ export default function CreateBranch({ repo }: Props) {
 	const { handleSubmit } = useForm({
 		onSubmit() {
 			revalidate()
+			checkBranches()
+			checkStatus()
 			pop()
 		},
 		validation: {

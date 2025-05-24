@@ -5,10 +5,11 @@ import { GitBranchActions } from "./GitBranchActions.js"
 
 interface Props {
 	repo: string
+	checkStatus: () => void
 }
 
-export function GitBranch({ repo }: Props) {
-	const { data, isLoading } = useExec(
+export function GitBranch({ repo, checkStatus }: Props) {
+	const { data, isLoading, revalidate } = useExec(
 		"git",
 		["branch", "--sort=-committerdate"],
 		{
@@ -29,12 +30,22 @@ export function GitBranch({ repo }: Props) {
 			navigationTitle="Switch Branch"
 			actions={
 				<ActionPanel>
-					<GitBranchActions repo={repo} />
+					<GitBranchActions
+						repo={repo}
+						checkBranches={revalidate}
+						checkStatus={checkStatus}
+					/>
 				</ActionPanel>
 			}
 		>
 			{data?.map((branch) => (
-				<GitBranchItem key={branch} branch={branch.trim()} repo={repo} />
+				<GitBranchItem
+					key={branch}
+					branch={branch.trim()}
+					repo={repo}
+					checkBranches={revalidate}
+					checkStatus={checkStatus}
+				/>
 			)) ?? <List.EmptyView title="There are no branches" />}
 		</List>
 	)

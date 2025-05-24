@@ -73,7 +73,7 @@ export function GitStatusItemActions({
 			<Action.Push
 				icon={Icon.Tree}
 				title="Switch Branch"
-				target={<GitBranch repo={repo} />}
+				target={<GitBranch repo={repo} checkStatus={checkStatus} />}
 			/>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
 			<RemoteGitActions repo={repo} checkStatus={checkStatus} />

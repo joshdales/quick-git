@@ -46,7 +46,7 @@ export function GitStatus({ repo }: Props) {
 							<Action.Push
 								icon={Icon.Tree}
 								title="Switch Branch"
-								target={<GitBranch repo={repo} />}
+								target={<GitBranch repo={repo} checkStatus={revalidate} />}
 							/>
 							<RemoteGitActions repo={repo} checkStatus={revalidate} />
 							<Action.Push
