@@ -19,9 +19,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 		},
 	})
 	const { handleSubmit } = useForm({
-		onSubmit() {
-			commit()
-		},
+		onSubmit: commit,
 		validation: {
 			commitMsg: FormValidation.Required,
 		},
