@@ -17,6 +17,11 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 		execute: false,
 		onData: checkStatus,
 	})
+	const { revalidate: fetch } = useExec("git", ["fetch"], {
+		cwd: repo,
+		execute: false,
+		onData: checkStatus,
+	})
 
 	return (
 		<ActionPanel.Section title="Remote">
@@ -32,6 +37,7 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 				icon={Icon.Download}
 				shortcut={Keyboard.Shortcut.Common.MoveDown}
 			/>
+			<Action title="Fetch" onAction={fetch} />
 		</ActionPanel.Section>
 	)
 }
