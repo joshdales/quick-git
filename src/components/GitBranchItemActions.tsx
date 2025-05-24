@@ -20,6 +20,10 @@ export function GitBranchItemActions({
 	const { revalidate: switchBranch } = useExec("git", ["switch", branch], {
 		cwd: repo,
 		execute: false,
+		onData: () => {
+			checkBranches()
+			checkStatus()
+		},
 	})
 	const { revalidate: deleteBranch } = useExec(
 		"git",
@@ -27,6 +31,10 @@ export function GitBranchItemActions({
 		{
 			cwd: repo,
 			execute: false,
+			onData: () => {
+				checkBranches()
+				checkStatus()
+			},
 		},
 	)
 
