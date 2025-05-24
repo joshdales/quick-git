@@ -36,7 +36,7 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
 					checkStatus={checkStatus}
 				/>
 			}
-			detail={<List.Item.Detail />}
+			detail={<GitStatusItemDetail branch={branch} status={status} />}
 		/>
 	)
 }
