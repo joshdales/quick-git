@@ -40,7 +40,7 @@ export function GitStatus({ repo }: Props) {
 			actions={
 				<ActionPanel>
 					<Action.Push title="Set Repo" target={<SelectRepo />} />
-					{repo && <GitPush repo={repo} />}
+					{repo && <GitPush repo={repo} checkStatus={revalidate} />}
 				</ActionPanel>
 			}
 		>
