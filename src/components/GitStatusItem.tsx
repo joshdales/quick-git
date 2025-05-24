@@ -1,6 +1,6 @@
 import { Icon, List } from "@raycast/api"
 import { useMemo } from "react"
-import { GitStatusItemActions } from "./ItemActions.js"
+import { GitStatusItemActions } from "./GitStatusItemActions.js"
 import type { StatusItem } from "../utils/status.js"
 
 interface Props extends Omit<StatusItem, "format"> {
