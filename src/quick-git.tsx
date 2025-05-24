@@ -13,6 +13,7 @@ export default function Command() {
 	} = useExec("git", ["status", "--porcelain=2"], {
 		cwd: repo,
 		execute: false,
+		keepPreviousData: false,
 	})
 
 	useEffect(() => {
