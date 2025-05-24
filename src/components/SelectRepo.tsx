@@ -13,7 +13,7 @@ export default function SelectRepo() {
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
 	>("repo")
-	const { handleSubmit } = useForm({
+	const { handleSubmit, itemProps } = useForm({
 		onSubmit({ newRepo }: { newRepo: string[] }) {
 			setValue(newRepo[0]).then(() => {
 				showToast({
@@ -48,6 +48,7 @@ export default function SelectRepo() {
 				canChooseFiles={false}
 				defaultValue={value ? [value] : undefined}
 				autoFocus
+				error={itemProps.newRepo.error}
 			/>
 		</Form>
 	)

@@ -20,16 +20,16 @@ export default function CreateBranch({
 		{
 			cwd: repo,
 			execute: false,
+			onData: () => {
+				checkBranches()
+				checkStatus()
+				pop()
+			},
 		},
 	)
 	const { pop } = useNavigation()
-	const { handleSubmit } = useForm({
-		onSubmit() {
-			revalidate()
-			checkBranches()
-			checkStatus()
-			pop()
-		},
+	const { handleSubmit, itemProps } = useForm({
+		onSubmit: revalidate,
 		validation: {
 			newBranch: FormValidation.Required,
 		},
@@ -50,6 +50,7 @@ export default function CreateBranch({
 				value={branchName}
 				onChange={setBranchName}
 				autoFocus
+				error={itemProps.newBranch.error}
 			/>
 		</Form>
 	)

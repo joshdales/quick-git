@@ -18,7 +18,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 			pop()
 		},
 	})
-	const { handleSubmit } = useForm({
+	const { handleSubmit, itemProps } = useForm({
 		onSubmit: commit,
 		validation: {
 			commitMsg: FormValidation.Required,
@@ -38,6 +38,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 				title="Commit message"
 				value={commitMsg}
 				onChange={setCommitMsg}
+				error={itemProps.commitMsg.error}
 			/>
 		</Form>
 	)
