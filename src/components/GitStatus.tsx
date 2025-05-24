@@ -33,7 +33,10 @@ export function GitStatus({ repo }: Props) {
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
-					<Action.Push title="Set Repo" target={<SelectRepo />} />
+					<Action.Push
+						title="Set Repo"
+						target={<SelectRepo checkStatus={revalidate} />}
+					/>
 				</ActionPanel>
 			}
 		>
@@ -51,7 +54,13 @@ export function GitStatus({ repo }: Props) {
 					)
 				})
 			) : (
-				<List.EmptyView title="Nothing to commit, working tree clean" />
+				<List.EmptyView
+					title={
+						!repo
+							? "Please select a repo"
+							: "Nothing to commit, working tree clean"
+					}
+				/>
 			)}
 		</List>
 	)

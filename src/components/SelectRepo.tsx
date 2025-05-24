@@ -1,17 +1,32 @@
-import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api"
+import {
+	Action,
+	ActionPanel,
+	Form,
+	showToast,
+	Toast,
+	useNavigation,
+} from "@raycast/api"
 import { FormValidation, useForm, useLocalStorage } from "@raycast/utils"
 
-export default function SelectRepo() {
+interface Props {
+	checkStatus: () => void
+}
+
+export default function SelectRepo({ checkStatus }: Props) {
+	const { pop } = useNavigation()
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
 	>("repo")
 	const { handleSubmit } = useForm({
 		onSubmit({ newRepo }: { newRepo: string }) {
-			setValue(newRepo)
-			showToast({
-				style: Toast.Style.Success,
-				title: "Repo set!",
-				message: `${newRepo}`,
+			setValue(newRepo).then(() => {
+				showToast({
+					style: Toast.Style.Success,
+					title: "Repo set!",
+					message: `${newRepo}`,
+				})
+				checkStatus()
+				pop()
 			})
 		},
 		validation: {
