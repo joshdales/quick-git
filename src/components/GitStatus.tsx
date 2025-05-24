@@ -34,7 +34,7 @@ export function GitStatus({ repo }: Props) {
 
 	return (
 		<List
-			isShowingDetail
+			isShowingDetail={!!repo && !!data?.files.length}
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
