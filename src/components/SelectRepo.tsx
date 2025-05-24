@@ -14,8 +14,8 @@ export default function SelectRepo() {
 		string | undefined
 	>("repo")
 	const { handleSubmit } = useForm({
-		onSubmit({ newRepo }: { newRepo: string }) {
-			setValue(newRepo).then(() => {
+		onSubmit({ newRepo }: { newRepo: string[] }) {
+			setValue(newRepo[0]).then(() => {
 				showToast({
 					style: Toast.Style.Success,
 					title: "Repo set!",
