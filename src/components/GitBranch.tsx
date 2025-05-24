@@ -33,13 +33,9 @@ export function GitBranch({ repo }: Props) {
 				</ActionPanel>
 			}
 		>
-			{data ? (
-				data.map((branch) => (
-					<GitBranchItem key={branch} branch={branch.trim()} repo={repo} />
-				))
-			) : (
-				<List.EmptyView title="No branches" />
-			)}
+			{data?.map((branch) => (
+				<GitBranchItem key={branch} branch={branch.trim()} repo={repo} />
+			)) ?? <List.EmptyView title="There are no branches" />}
 		</List>
 	)
 }
