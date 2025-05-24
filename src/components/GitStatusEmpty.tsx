@@ -12,21 +12,20 @@ export function GitStatusEmpty({ branch, repo }: Props) {
 		if (repo && branch) {
 			const title = `On branch ${branch?.name}`
 			if (branch.ahead && branch.behind) {
-				const ahead = +branch.ahead.replace("+", "")
-				const behind = +branch.behind.replace("-", "")
+				const { ahead, behind, upstream } = branch
 				if (ahead && behind) {
 					return (
 						title +
-						`. Ahead of '${branch.upstream}' by ${ahead}, and behind by ${behind} commits`
+						`. Ahead of '${upstream}' by ${ahead}, and behind by ${behind} commits`
 					)
 				}
 
 				if (ahead && !behind) {
-					return title + `, ahead of '${branch.upstream}' by ${ahead} commits.`
+					return title + `, ahead of '${upstream}' by ${ahead} commits.`
 				}
 
 				if (!ahead && behind) {
-					return title + `, behind '${branch.upstream}' by ${behind} commits.`
+					return title + `, behind '${upstream}' by ${behind} commits.`
 				}
 			}
 

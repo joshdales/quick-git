@@ -2,8 +2,8 @@ export interface BranchInfo {
 	commit: string
 	name: string
 	upstream?: string
-	ahead?: string
-	behind?: string
+	ahead?: number
+	behind?: number
 }
 
 export function parseBranchHeaders(gitStatus: string, branchInfo: BranchInfo) {
@@ -23,10 +23,12 @@ export function parseBranchHeaders(gitStatus: string, branchInfo: BranchInfo) {
 			branchInfo.upstream = fields[2]
 			break
 		case "branch.ab": {
-			const ahead = fields.find((field) => field.startsWith("+"))
-			const behind = fields.find((field) => field.startsWith("-"))
-			branchInfo.ahead = ahead
-			branchInfo.behind = behind
+			const ahead =
+				fields.find((field) => field.startsWith("+"))?.replace("+", "") ?? "0"
+			const behind =
+				fields.find((field) => field.startsWith("-"))?.replace("-", "") ?? "0"
+			branchInfo.ahead = +ahead
+			branchInfo.behind = +behind
 			break
 		}
 		default:
