@@ -19,6 +19,9 @@ export function GitStatus({ repo }: Props) {
 			execute: !!repo,
 			keepPreviousData: false,
 			parseOutput: ({ stdout }) => {
+				if (!stdout) {
+					return
+				}
 				const statusRows = stdout.split("\n")
 				return statusRows.map(parseGitStatus)
 			},
