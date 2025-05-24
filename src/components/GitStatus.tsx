@@ -5,6 +5,7 @@ import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "./SelectRepo.js"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { RemoteGitActions } from "./RemoteGitActions.js"
+import { GitStatusEmpty } from "./GitStatusEmpty.js"
 
 interface Props {
 	repo?: string
@@ -57,14 +58,7 @@ export function GitStatus({ repo }: Props) {
 					)
 				})
 			) : (
-				<List.EmptyView
-					title={
-						!repo ? "Please select a repo" : `On branch ${data?.branch.name}`
-					}
-					description={
-						repo ? "Nothing to commit, working tree clean" : undefined
-					}
-				/>
+				<GitStatusEmpty repo={repo} branch={data?.branch} />
 			)}
 		</List>
 	)
