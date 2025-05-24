@@ -46,11 +46,9 @@ export function GitStatus({ repo }: Props) {
 				data.files.map((item) => {
 					return (
 						<GitStatusItem
-							repo={repo}
 							key={item.fileName}
-							fileName={item.fileName}
-							staged={item.staged}
-							unstaged={item.unstaged}
+							repo={repo}
+							status={item}
 							branch={data.branch}
 							checkStatus={revalidate}
 						/>

@@ -30,7 +30,7 @@ type GitStatusFormat =
 	| "untracked"
 	| "ignored"
 
-export interface StatusItem {
+export interface StatusInfo {
 	format: GitStatusFormat
 	/** Path of the file */
 	fileName: string
@@ -73,7 +73,7 @@ function parseChanges(xy: string): [GitStatus, GitStatus] {
 	return [xy.charAt(0) as GitStatus, xy.charAt(1) as GitStatus]
 }
 
-function parseUntracked(fields: string[]): StatusItem {
+function parseUntracked(fields: string[]): StatusInfo {
 	const fileName = fields.at(-1) ?? ""
 	return {
 		format: "untracked",
@@ -83,7 +83,7 @@ function parseUntracked(fields: string[]): StatusItem {
 	}
 }
 
-function parseRenamed(fields: string[]): StatusItem {
+function parseRenamed(fields: string[]): StatusInfo {
 	const path = fields.at(-1) ?? ""
 	const [fileName, origPath] = path.split(/\s/)
 	const [staged, unstaged] = parseChanges(fields[1])
@@ -111,7 +111,7 @@ function isSubmodule(field: string) {
  * @param dataRow
  * @returns
  */
-export function parseGitFileStatus(dataRow: string): StatusItem {
+export function parseGitFileStatus(dataRow: string): StatusInfo {
 	const fields = dataRow.split(" ")
 	const format = lineFormat(fields[0])
 	if (format === "untracked") {
@@ -133,11 +133,11 @@ export function parseGitFileStatus(dataRow: string): StatusItem {
 
 export function parseGitStatus(porcelainStatus: string): {
 	branch: BranchInfo
-	files: StatusItem[]
+	files: StatusInfo[]
 } {
 	const status = porcelainStatus.split("\n")
 	const branch = {} as BranchInfo
-	const files: StatusItem[] = []
+	const files: StatusInfo[] = []
 	status.forEach((statusRow) => {
 		if (statusRow.startsWith("#")) {
 			parseBranchHeaders(statusRow, branch)
