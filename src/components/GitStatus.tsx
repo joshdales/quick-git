@@ -1,25 +1,29 @@
 import { Action, ActionPanel, List } from "@raycast/api"
-import { useMemo } from "react"
-import type { StatusItem, GitStatus } from "../utils/status.js"
+import type { GitStatus } from "../utils/status.js"
 import { parseGitStatus } from "../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "./SelectRepo.js"
+import { useExec } from "@raycast/utils"
 
 interface Props {
 	repo?: string
-	statusData?: string
 	isLoading: boolean
-	checkStatus: () => void
 }
 
-export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
-	const statusItems = useMemo(() => {
-		if (!statusData) {
-			return []
-		}
-
-		return statusData.split("\n").map<StatusItem>(parseGitStatus)
-	}, [statusData])
+export function GitStatus({ repo }: Props) {
+	const { data, isLoading, revalidate } = useExec(
+		"git",
+		["status", "--porcelain=2"],
+		{
+			cwd: repo,
+			execute: !!repo,
+			keepPreviousData: false,
+			parseOutput: ({ stdout }) => {
+				const statusRows = stdout.split("\n")
+				return statusRows.map(parseGitStatus)
+			},
+		},
+	)
 
 	return (
 		<List
@@ -30,8 +34,8 @@ export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
 				</ActionPanel>
 			}
 		>
-			{repo && statusItems.length ? (
-				statusItems.map((item) => {
+			{repo && data?.length ? (
+				data.map((item) => {
 					return (
 						<GitStatusItem
 							repo={repo}
@@ -39,7 +43,7 @@ export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
 							fileName={item.fileName}
 							staged={item.staged}
 							unstaged={item.unstaged}
-							checkStatus={checkStatus}
+							checkStatus={revalidate}
 						/>
 					)
 				})
