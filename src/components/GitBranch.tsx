@@ -1,5 +1,6 @@
 import { List } from "@raycast/api"
 import { useExec } from "@raycast/utils"
+import { GitBranchItem } from "./GitBranchItem.js"
 
 interface Props {
 	repo: string
@@ -24,7 +25,7 @@ export function GitBranch({ repo }: Props) {
 	return (
 		<List isLoading={isLoading}>
 			{data ? (
-				data.map((branch) => <List.Item key={branch} title={branch} />)
+				data.map((branch) => <GitBranchItem key={branch} branch={branch} />)
 			) : (
 				<List.EmptyView title="No branches" />
 			)}
