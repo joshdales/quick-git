@@ -45,6 +45,11 @@ export function GitStatusItemActions({
 			onData: checkStatus,
 		},
 	)
+	const { revalidate: restoreItem } = useExec("git", ["restore", fileName], {
+		cwd: repo,
+		execute: false,
+		onData: checkStatus,
+	})
 
 	const mainAction = useCallback(() => {
 		if (isNotStaged) {
@@ -69,6 +74,13 @@ export function GitStatusItemActions({
 					title="Commit"
 					target={<GitCommit repo={repo} checkStatus={checkStatus} />}
 				/>
+				{isNotStaged && (
+					<Action
+						icon={Icon.Undo}
+						title="Restore File"
+						onAction={restoreItem}
+					/>
+				)}
 			</ActionPanel.Section>
 			<ActionPanel.Section title="Bulk Actions">
 				<Action
