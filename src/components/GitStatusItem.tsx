@@ -12,16 +12,24 @@ export function GitStatusItem({
 	fileName,
 	staged: gitX,
 	repo,
+	origPath,
 	checkStatus,
 }: Props) {
 	const isNotStaged = useMemo(() => {
 		return gitX === "." || gitX === "?"
 	}, [gitX])
 
+	const title = useMemo(() => {
+		if (origPath) {
+			return `${origPath} -> ${fileName}`
+		}
+		return fileName
+	}, [fileName, origPath])
+
 	return (
 		<List.Item
 			icon={isNotStaged ? Icon.Circle : Icon.CheckCircle}
-			title={fileName}
+			title={title}
 			actions={
 				<GitStatusItemActions
 					isNotStaged={isNotStaged}
