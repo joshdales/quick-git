@@ -1,11 +1,13 @@
-import { Icon, List } from "@raycast/api"
+import { ActionPanel, Icon, List } from "@raycast/api"
 import { useMemo } from "react"
+import { GitBranchItemActions } from "./GitBranchItemActions.js"
 
 interface Props {
 	branch: string
+	repo: string
 }
 
-export function GitBranchItem({ branch }: Props) {
+export function GitBranchItem({ branch, repo }: Props) {
 	const currentBranch = useMemo(() => branch.startsWith("*"), [branch])
 	const title = useMemo(() => {
 		if (currentBranch) {
@@ -21,5 +23,15 @@ export function GitBranchItem({ branch }: Props) {
 		}
 	}, [currentBranch])
 
-	return <List.Item title={title} icon={icon} />
+	return (
+		<List.Item
+			title={title}
+			icon={icon}
+			actions={
+				<ActionPanel>
+					<GitBranchItemActions repo={repo} branch={title} />
+				</ActionPanel>
+			}
+		/>
+	)
 }
