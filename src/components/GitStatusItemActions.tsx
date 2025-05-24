@@ -3,6 +3,7 @@ import { useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
 import { GitCommit } from "./GitCommit.js"
 import { GitPush } from "./GitPush.js"
+import { BulkGitActions } from "./BulkGitActions.js"
 
 interface Props {
 	isNotStaged: boolean
@@ -17,25 +18,11 @@ export function GitStatusItemActions({
 	repo,
 	checkStatus,
 }: Props) {
-	const { revalidate: stageAllFiles } = useExec("git", ["add", "."], {
-		cwd: repo,
-		execute: false,
-		onData: checkStatus,
-	})
 	const { revalidate: stageItem } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
 		onData: checkStatus,
 	})
-	const { revalidate: unstageAllFiles } = useExec(
-		"git",
-		["restore", "--staged", "."],
-		{
-			cwd: repo,
-			execute: false,
-			onData: checkStatus,
-		},
-	)
 	const { revalidate: unstageItem } = useExec(
 		"git",
 		["restore", "--staged", fileName],
@@ -82,18 +69,7 @@ export function GitStatusItemActions({
 					/>
 				)}
 			</ActionPanel.Section>
-			<ActionPanel.Section title="Bulk Actions">
-				<Action
-					title="Stage All Files"
-					onAction={stageAllFiles}
-					shortcut={{ key: "a", modifiers: ["cmd", "shift"] }}
-				/>
-				<Action
-					title="Unstage All Files"
-					onAction={unstageAllFiles}
-					shortcut={Keyboard.Shortcut.Common.RemoveAll}
-				/>
-			</ActionPanel.Section>
+			<BulkGitActions repo={repo} checkStatus={checkStatus} />
 			<GitPush repo={repo} checkStatus={checkStatus} />
 			<ActionPanel.Section title="File Utilities">
 				<Action.CopyToClipboard
