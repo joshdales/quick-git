@@ -34,6 +34,7 @@ export function GitStatus({ repo }: Props) {
 
 	return (
 		<List
+			isShowingDetail
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
@@ -50,6 +51,7 @@ export function GitStatus({ repo }: Props) {
 							fileName={item.fileName}
 							staged={item.staged}
 							unstaged={item.unstaged}
+							branch={data.branch}
 							checkStatus={revalidate}
 						/>
 					)
