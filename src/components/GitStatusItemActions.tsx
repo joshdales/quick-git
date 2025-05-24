@@ -73,6 +73,7 @@ export function GitStatusItemActions({
 			<Action.Push
 				icon={Icon.Tree}
 				title="Switch Branch"
+				shortcut={{ key: "b", modifiers: ["cmd"] }}
 				target={<GitBranch repo={repo} checkStatus={checkStatus} />}
 			/>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
