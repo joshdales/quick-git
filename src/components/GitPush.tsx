@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Icon } from "@raycast/api"
+import { Action, ActionPanel, Icon, Keyboard } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 
 interface Props {
@@ -20,8 +20,18 @@ export function GitPush({ repo, checkStatus }: Props) {
 
 	return (
 		<ActionPanel.Section title="Remote">
-			<Action title="Push" onAction={push} icon={Icon.AirplaneTakeoff} />
-			<Action title="Pull" onAction={pull} icon={Icon.AirplaneLanding} />
+			<Action
+				title="Push"
+				onAction={push}
+				icon={Icon.AirplaneTakeoff}
+				shortcut={Keyboard.Shortcut.Common.MoveUp}
+			/>
+			<Action
+				title="Pull"
+				onAction={pull}
+				icon={Icon.AirplaneLanding}
+				shortcut={Keyboard.Shortcut.Common.MoveDown}
+			/>
 		</ActionPanel.Section>
 	)
 }
