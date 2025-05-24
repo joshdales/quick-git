@@ -1,4 +1,4 @@
-import { Action, ActionPanel } from "@raycast/api"
+import { Action, ActionPanel, Icon } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 
 interface Props {
@@ -7,14 +7,21 @@ interface Props {
 }
 
 export function GitPush({ repo, checkStatus }: Props) {
-	const { revalidate } = useExec("git", ["push"], {
+	const { revalidate: push } = useExec("git", ["push"], {
 		cwd: repo,
 		execute: false,
 		onData: checkStatus,
 	})
+	const { revalidate: pull } = useExec("git", ["pull"], {
+		cwd: repo,
+		execute: false,
+		onData: checkStatus,
+	})
+
 	return (
-		<ActionPanel.Section>
-			<Action title="Push" onAction={revalidate} />
+		<ActionPanel.Section title="Remote">
+			<Action title="Push" onAction={push} icon={Icon.AirplaneTakeoff} />
+			<Action title="Pull" onAction={pull} icon={Icon.AirplaneLanding} />
 		</ActionPanel.Section>
 	)
 }
