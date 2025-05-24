@@ -2,6 +2,7 @@ import { Action, ActionPanel, Icon, Keyboard } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
 import { GitCommit } from "./GitCommit.js"
+import { GitPush } from "./GitPush.js"
 
 interface Props {
 	isNotStaged: boolean
@@ -81,6 +82,7 @@ export function GitStatusItemActions({
 					shortcut={Keyboard.Shortcut.Common.RemoveAll}
 				/>
 			</ActionPanel.Section>
+			<GitPush repo={repo} checkStatus={checkStatus} />
 			<ActionPanel.Section title="File Utilities">
 				<Action.CopyToClipboard
 					title="Copy Filename"
