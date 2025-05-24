@@ -61,13 +61,13 @@ export function GitStatusItemActions({
 					title="Commit"
 					target={<GitCommit repo={repo} checkStatus={checkStatus} />}
 				/>
-				{isNotStaged && (
+				{isNotStaged ? (
 					<Action
 						icon={Icon.Undo}
 						title="Restore File"
 						onAction={restoreItem}
 					/>
-				)}
+				) : null}
 			</ActionPanel.Section>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
 			<RemoteGitActions repo={repo} checkStatus={checkStatus} />

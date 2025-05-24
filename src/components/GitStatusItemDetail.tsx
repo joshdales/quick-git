@@ -40,20 +40,24 @@ function tagForStatus(stagedStatus: GitStatus) {
 export function GitStatusItemDetail({ branch, status }: Props) {
 	const stagedTag = useMemo(() => {
 		const tag = tagForStatus(status.staged)
-		if (tag) {
-			return (
-				<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
-			)
+		if (!tag) {
+			return null
 		}
+
+		return (
+			<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+		)
 	}, [status.staged])
 
 	const unStagedTag = useMemo(() => {
 		const tag = tagForStatus(status.unstaged)
-		if (tag) {
-			return (
-				<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
-			)
+		if (!tag) {
+			return null
 		}
+
+		return (
+			<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+		)
 	}, [status.unstaged])
 
 	return (
@@ -64,36 +68,36 @@ export function GitStatusItemDetail({ branch, status }: Props) {
 						title="File path"
 						text={status.fileName}
 					/>
-					{status.origPath && (
+					{status.origPath ? (
 						<List.Item.Detail.Metadata.Label
 							title="Original path"
 							text={status.origPath}
 						/>
-					)}
+					) : null}
 					<List.Item.Detail.Metadata.TagList title="Status">
 						{unStagedTag}
 						{stagedTag}
 					</List.Item.Detail.Metadata.TagList>
 					<List.Item.Detail.Metadata.Separator />
 					<List.Item.Detail.Metadata.Label title="Branch" text={branch.name} />
-					{branch.upstream && (
+					{branch.upstream ? (
 						<List.Item.Detail.Metadata.Label
 							title="Upstream"
 							text={branch.upstream}
 						/>
-					)}
-					{branch.ahead && (
+					) : null}
+					{branch.ahead ? (
 						<List.Item.Detail.Metadata.Label
 							title="Ahead"
 							text={`${branch.ahead} commits`}
 						/>
-					)}
-					{branch.behind && (
+					) : null}
+					{branch.behind ? (
 						<List.Item.Detail.Metadata.Label
 							title="Upstream"
 							text={`${branch.behind} commits`}
 						/>
-					)}
+					) : null}
 				</List.Item.Detail.Metadata>
 			}
 		/>
