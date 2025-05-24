@@ -37,6 +37,7 @@ export function GitStatus({ repo }: Props) {
 
 	return (
 		<List
+			navigationTitle="Git Status"
 			isShowingDetail={!!repo && !!data?.files.length}
 			isLoading={isLoading}
 			actions={

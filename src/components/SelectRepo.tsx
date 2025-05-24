@@ -31,6 +31,7 @@ export default function SelectRepo() {
 
 	return (
 		<Form
+			navigationTitle="Select Git Repo"
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>

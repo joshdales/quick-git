@@ -37,6 +37,7 @@ export default function CreateBranch({
 
 	return (
 		<Form
+			navigationTitle="Create New Branch"
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>

@@ -27,6 +27,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 
 	return (
 		<Form
+			navigationTitle="Commit Changes"
 			actions={
 				<ActionPanel>
 					<Action.SubmitForm title="Commit" onSubmit={handleSubmit} />

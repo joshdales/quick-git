@@ -26,8 +26,8 @@ export function GitBranch({ repo, checkStatus }: Props) {
 
 	return (
 		<List
+			navigationTitle="Change Branches"
 			isLoading={isLoading}
-			navigationTitle="Switch Branch"
 			actions={
 				<ActionPanel>
 					<GitBranchActions
