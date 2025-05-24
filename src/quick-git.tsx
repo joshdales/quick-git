@@ -10,7 +10,7 @@ export default function Command() {
 		data,
 		isLoading: isLoadingStatus,
 		revalidate,
-	} = useExec("git", ["status", "--porcelain"], {
+	} = useExec("git", ["status", "--porcelain=2"], {
 		cwd: repo,
 		execute: false,
 	})

@@ -3,14 +3,19 @@ import { useMemo } from "react"
 import { ItemActions } from "./ItemActions.js"
 import type { StatusItem } from "../utils/status.js"
 
-interface Props extends StatusItem {
+interface Props extends Omit<StatusItem, "format"> {
 	repo: string
 	checkStatus: () => void
 }
 
-export function GitStatusItem({ fileName, gitX, repo, checkStatus }: Props) {
+export function GitStatusItem({
+	fileName,
+	staged: gitX,
+	repo,
+	checkStatus,
+}: Props) {
 	const isNotStaged = useMemo(() => {
-		return gitX === " " || gitX === "?"
+		return gitX === "." || gitX === "?"
 	}, [gitX])
 
 	return (

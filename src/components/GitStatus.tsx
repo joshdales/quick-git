@@ -37,8 +37,8 @@ export function GitStatus({ statusData, isLoading, repo, checkStatus }: Props) {
 							repo={repo}
 							key={item.fileName}
 							fileName={item.fileName}
-							gitX={item.gitX}
-							gitY={item.gitY}
+							staged={item.staged}
+							unstaged={item.unstaged}
 							checkStatus={checkStatus}
 						/>
 					)
