@@ -69,7 +69,7 @@ export function ItemActions({
 					target={<GitCommit repo={repo} checkStatus={checkStatus} />}
 				/>
 			</ActionPanel.Section>
-			<ActionPanel.Submenu title="Bulk Actions">
+			<ActionPanel.Section title="Bulk Actions">
 				<Action
 					title="Stage All Files"
 					onAction={stageAllFiles}
@@ -80,8 +80,8 @@ export function ItemActions({
 					onAction={unstageAllFiles}
 					shortcut={Keyboard.Shortcut.Common.RemoveAll}
 				/>
-			</ActionPanel.Submenu>
-			<ActionPanel.Section>
+			</ActionPanel.Section>
+			<ActionPanel.Section title="File Utilities">
 				<Action.CopyToClipboard
 					title="Copy Filename"
 					content={fileName}
