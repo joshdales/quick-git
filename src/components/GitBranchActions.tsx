@@ -25,8 +25,8 @@ export function GitBranchActions({ repo, checkBranches, checkStatus }: Props) {
 		<>
 			<Action.Push
 				icon={Icon.Plus}
-				shortcut={Keyboard.Shortcut.Common.New}
 				title="Create a New Branch"
+				shortcut={Keyboard.Shortcut.Common.New}
 				target={
 					<CreateBranch
 						repo={repo}
