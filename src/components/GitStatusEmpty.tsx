@@ -22,7 +22,7 @@ export function GitStatusEmpty({ branch, repo }: Props) {
 		}
 
 		const { ahead, behind, upstream } = branch
-		if (upstream && (ahead || behind)) {
+		if (upstream) {
 			if (ahead && behind) {
 				return `Ahead of '${upstream}' by ${ahead}, and behind by ${behind} commits`
 			}
@@ -34,6 +34,8 @@ export function GitStatusEmpty({ branch, repo }: Props) {
 			if (!ahead && behind) {
 				return `Behind '${upstream}' by ${behind} commits.`
 			}
+
+			return `Up to date with ${upstream}`
 		}
 	}, [branch, repo])
 
