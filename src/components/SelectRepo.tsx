@@ -43,6 +43,8 @@ export default function SelectRepo() {
 				id="newRepo"
 				title="Repo Directory"
 				canChooseDirectories
+				storeValue
+				allowMultipleSelection={false}
 				canChooseFiles={false}
 				defaultValue={value ? [value] : undefined}
 				autoFocus
