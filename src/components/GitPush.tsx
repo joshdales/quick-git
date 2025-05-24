@@ -23,13 +23,13 @@ export function GitPush({ repo, checkStatus }: Props) {
 			<Action
 				title="Push"
 				onAction={push}
-				icon={Icon.AirplaneTakeoff}
+				icon={Icon.Upload}
 				shortcut={Keyboard.Shortcut.Common.MoveUp}
 			/>
 			<Action
 				title="Pull"
 				onAction={pull}
-				icon={Icon.AirplaneLanding}
+				icon={Icon.Download}
 				shortcut={Keyboard.Shortcut.Common.MoveDown}
 			/>
 		</ActionPanel.Section>
