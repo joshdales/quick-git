@@ -1,12 +1,16 @@
-import { List } from "@raycast/api"
+import { ActionPanel, List } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 import { GitBranchItem } from "./GitBranchItem.js"
+import { GitSwitchActions } from "./GitSwitchAction.js"
+import { useState } from "react"
 
 interface Props {
 	repo: string
 }
 
 export function GitBranch({ repo }: Props) {
+	const [searchQuery, setSearchQuery] = useState<string>("")
+	const [selectedBranch, setSelectedBranch] = useState<string | null>(null)
 	const { data, isLoading } = useExec(
 		"git",
 		["branch", "--sort=-committerdate"],
@@ -23,7 +27,21 @@ export function GitBranch({ repo }: Props) {
 	)
 
 	return (
-		<List isLoading={isLoading}>
+		<List
+			isLoading={isLoading}
+			navigationTitle="Switch Branch"
+			onSearchTextChange={setSearchQuery}
+			onSelectionChange={setSelectedBranch}
+			actions={
+				<ActionPanel>
+					<GitSwitchActions
+						repo={repo}
+						matchingBranch={!!selectedBranch}
+						branch={selectedBranch ?? searchQuery}
+					/>
+				</ActionPanel>
+			}
+		>
 			{data ? (
 				data.map((branch) => <GitBranchItem key={branch} branch={branch} />)
 			) : (
