@@ -82,6 +82,18 @@ export function GitStatusItemDetail({ branch, status }: Props) {
 							text={branch.upstream}
 						/>
 					)}
+					{branch.ahead && (
+						<List.Item.Detail.Metadata.Label
+							title="Ahead"
+							text={`${branch.ahead} commits`}
+						/>
+					)}
+					{branch.behind && (
+						<List.Item.Detail.Metadata.Label
+							title="Upstream"
+							text={`${branch.behind} commits`}
+						/>
+					)}
 				</List.Item.Detail.Metadata>
 			}
 		/>
