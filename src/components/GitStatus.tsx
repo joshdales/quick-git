@@ -6,6 +6,7 @@ import SelectRepo from "./SelectRepo.js"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { GitStatusEmpty } from "./GitStatusEmpty.js"
+import { GitBranch } from "./GitBranch.js"
 
 interface Props {
 	repo?: string
@@ -40,14 +41,27 @@ export function GitStatus({ repo }: Props) {
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
-					<Action.Push
-						icon={Icon.Folder}
-						title="Set Repo"
-						target={<SelectRepo />}
-					/>
 					{repo ? (
-						<RemoteGitActions repo={repo} checkStatus={revalidate} />
-					) : null}
+						<>
+							<Action.Push
+								icon={Icon.Tree}
+								title="Switch Branch"
+								target={<GitBranch repo={repo} />}
+							/>
+							<RemoteGitActions repo={repo} checkStatus={revalidate} />
+							<Action.Push
+								icon={Icon.Folder}
+								title="Set Repo"
+								target={<SelectRepo />}
+							/>
+						</>
+					) : (
+						<Action.Push
+							icon={Icon.Folder}
+							title="Set Repo"
+							target={<SelectRepo />}
+						/>
+					)}
 				</ActionPanel>
 			}
 		>

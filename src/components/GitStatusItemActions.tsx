@@ -4,6 +4,7 @@ import { useCallback, useMemo } from "react"
 import { GitCommit } from "./GitCommit.js"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
+import { GitBranch } from "./GitBranch.js"
 
 interface Props {
 	isNotStaged: boolean
@@ -69,6 +70,11 @@ export function GitStatusItemActions({
 					/>
 				) : null}
 			</ActionPanel.Section>
+			<Action.Push
+				icon={Icon.Tree}
+				title="Switch Branch"
+				target={<GitBranch repo={repo} />}
+			/>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
 			<RemoteGitActions repo={repo} checkStatus={checkStatus} />
 			<ActionPanel.Section title="File Utilities">
