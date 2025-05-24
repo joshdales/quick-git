@@ -1,6 +1,6 @@
 import { Icon, List } from "@raycast/api"
 import { useMemo } from "react"
-import { ItemActions } from "./ItemActions.js"
+import { GitStatusItemActions } from "./ItemActions.js"
 import type { StatusItem } from "../utils/status.js"
 
 interface Props extends Omit<StatusItem, "format"> {
@@ -23,7 +23,7 @@ export function GitStatusItem({
 			icon={isNotStaged ? Icon.Circle : Icon.CheckCircle}
 			title={fileName}
 			actions={
-				<ItemActions
+				<GitStatusItemActions
 					isNotStaged={isNotStaged}
 					repo={repo}
 					fileName={fileName}

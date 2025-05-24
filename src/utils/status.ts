@@ -82,7 +82,8 @@ function parseUntracked(fields: string[]): StatusItem {
 
 function parseRenamed(fields: string[]): StatusItem {
 	const path = fields.at(-1) ?? ""
-	const [fileName, origPath] = path.split(/\w/)
+	const [fileName, origPath] = path.split(/\s/)
+	console.log(fileName, origPath)
 	const [staged, unstaged] = parseChanges(fields[1])
 
 	return {

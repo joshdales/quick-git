@@ -10,7 +10,7 @@ interface Props {
 	checkStatus: () => void
 }
 
-export function ItemActions({
+export function GitStatusItemActions({
 	isNotStaged,
 	fileName,
 	repo,
