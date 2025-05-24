@@ -45,7 +45,7 @@ export interface StatusItem {
  * Git Status Porcelain Format Version 2 have 3 lines indicated by the first character:
  * - `1`: A changed file
  * - `2`: A renamed file
- * - `3`: An unmerged file
+ * - `u`: An unmerged file
  *
  * There are also two other options:
  * - `?` An untracked file
