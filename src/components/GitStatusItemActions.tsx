@@ -2,7 +2,7 @@ import { Action, ActionPanel, Icon, Keyboard } from "@raycast/api"
 import { useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
 import { GitCommit } from "./GitCommit.js"
-import { GitPush } from "./GitPush.js"
+import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
 
 interface Props {
@@ -70,7 +70,7 @@ export function GitStatusItemActions({
 				)}
 			</ActionPanel.Section>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
-			<GitPush repo={repo} checkStatus={checkStatus} />
+			<RemoteGitActions repo={repo} checkStatus={checkStatus} />
 			<ActionPanel.Section title="File Utilities">
 				<Action.CopyToClipboard
 					title="Copy Filename"

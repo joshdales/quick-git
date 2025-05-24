@@ -6,7 +6,7 @@ interface Props {
 	checkStatus: () => void
 }
 
-export function GitPush({ repo, checkStatus }: Props) {
+export function RemoteGitActions({ repo, checkStatus }: Props) {
 	const { revalidate: push } = useExec("git", ["push"], {
 		cwd: repo,
 		execute: false,

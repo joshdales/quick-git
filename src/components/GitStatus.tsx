@@ -4,7 +4,7 @@ import { parseGitStatus } from "../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "./SelectRepo.js"
 import { showFailureToast, useExec } from "@raycast/utils"
-import { GitPush } from "./GitPush.js"
+import { RemoteGitActions } from "./RemoteGitActions.js"
 
 interface Props {
 	repo?: string
@@ -40,7 +40,7 @@ export function GitStatus({ repo }: Props) {
 			actions={
 				<ActionPanel>
 					<Action.Push title="Set Repo" target={<SelectRepo />} />
-					{repo && <GitPush repo={repo} checkStatus={revalidate} />}
+					{repo && <RemoteGitActions repo={repo} checkStatus={revalidate} />}
 				</ActionPanel>
 			}
 		>
