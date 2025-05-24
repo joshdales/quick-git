@@ -13,3 +13,4 @@ Supported git commands:
 - Push, pull and fetch a branch
 - Stash all unstaged files
 - Open or copy a file
+- Create, delete and switch branches
