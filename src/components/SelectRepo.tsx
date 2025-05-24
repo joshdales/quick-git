@@ -39,10 +39,12 @@ export default function SelectRepo() {
 				</ActionPanel>
 			}
 		>
-			<Form.TextField
+			<Form.FilePicker
 				id="newRepo"
 				title="Repo Directory"
-				defaultValue={value}
+				canChooseDirectories
+				canChooseFiles={false}
+				defaultValue={value ? [value] : undefined}
 				autoFocus
 			/>
 		</Form>
