@@ -1,4 +1,4 @@
-import { Action, ActionPanel, List } from "@raycast/api"
+import { Action, ActionPanel, Icon, List } from "@raycast/api"
 import type { GitStatus } from "../utils/status.js"
 import { parseGitStatus } from "../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
@@ -40,7 +40,11 @@ export function GitStatus({ repo }: Props) {
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
-					<Action.Push title="Set Repo" target={<SelectRepo />} />
+					<Action.Push
+						icon={Icon.Folder}
+						title="Set Repo"
+						target={<SelectRepo />}
+					/>
 					{repo ? (
 						<RemoteGitActions repo={repo} checkStatus={revalidate} />
 					) : null}
