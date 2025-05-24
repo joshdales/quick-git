@@ -11,8 +11,8 @@ export function GitStatusEmpty({ branch, repo }: Props) {
 	const title = useMemo(() => {
 		if (repo && branch) {
 			const title = `On branch ${branch?.name}`
-			if (branch.ahead && branch.behind) {
-				const { ahead, behind, upstream } = branch
+			const { ahead, behind, upstream } = branch
+			if (upstream && (ahead || behind)) {
 				if (ahead && behind) {
 					return (
 						title +
