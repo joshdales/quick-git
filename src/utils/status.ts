@@ -1,3 +1,6 @@
+import { GitStatus } from "../components/GitStatus.js"
+import { BranchInfo, parseBranchHeaders } from "./branch.js"
+
 export type GitStatus =
 	| /** unmodified */
 	"."
@@ -108,7 +111,7 @@ function isSubmodule(field: string) {
  * @param dataRow
  * @returns
  */
-export function parseGitStatus(dataRow: string): StatusItem {
+export function parseGitFileStatus(dataRow: string): StatusItem {
 	const fields = dataRow.split(" ")
 	const format = lineFormat(fields[0])
 	if (format === "untracked") {
@@ -126,4 +129,22 @@ export function parseGitStatus(dataRow: string): StatusItem {
 		unstaged,
 		submodule: isSubmodule(fields[2]),
 	}
+}
+
+export function parseGitStatus(porcelainStatus: string): {
+	branch: BranchInfo
+	files: StatusItem[]
+} {
+	const status = porcelainStatus.split("\n")
+	const branch = {} as BranchInfo
+	const files: StatusItem[] = []
+	status.forEach((statusRow) => {
+		if (statusRow.startsWith("#")) {
+			parseBranchHeaders(statusRow, branch)
+		} else {
+			files.push(parseGitFileStatus(statusRow))
+		}
+	})
+
+	return { branch, files }
 }

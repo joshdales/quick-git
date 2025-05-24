@@ -13,7 +13,7 @@ interface Props {
 export function GitStatus({ repo }: Props) {
 	const { data, isLoading, revalidate } = useExec(
 		"git",
-		["status", "--porcelain=2"],
+		["status", "--porcelain=2", "--branch"],
 		{
 			cwd: repo,
 			execute: !!repo,
@@ -27,8 +27,7 @@ export function GitStatus({ repo }: Props) {
 				if (!stdout) {
 					return
 				}
-				const statusRows = stdout.split("\n")
-				return statusRows.map(parseGitStatus)
+				return parseGitStatus(stdout)
 			},
 		},
 	)
@@ -42,8 +41,8 @@ export function GitStatus({ repo }: Props) {
 				</ActionPanel>
 			}
 		>
-			{repo && data?.length ? (
-				data.map((item) => {
+			{repo && data?.files.length ? (
+				data.files.map((item) => {
 					return (
 						<GitStatusItem
 							repo={repo}
@@ -58,9 +57,10 @@ export function GitStatus({ repo }: Props) {
 			) : (
 				<List.EmptyView
 					title={
-						!repo
-							? "Please select a repo"
-							: "Nothing to commit, working tree clean"
+						!repo ? "Please select a repo" : `On branch ${data?.branch.name}`
+					}
+					description={
+						repo ? "Nothing to commit, working tree clean" : undefined
 					}
 				/>
 			)}
