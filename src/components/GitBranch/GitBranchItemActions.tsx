@@ -23,7 +23,7 @@ export function GitBranchItemActions({
 		onData: () => {
 			checkBranches()
 			checkStatus()
-			showToast({ title: "Switched branch" })
+			showToast({ title: `Switched branch to ${branch}` })
 		},
 		onError: (error) => {
 			showFailureToast(error, { title: `Could not switch to ${branch}` })
