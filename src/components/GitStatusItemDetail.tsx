@@ -45,7 +45,13 @@ export function GitStatusItemDetail({ branch, status }: Props) {
 		}
 
 		return (
-			<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+			<>
+				<List.Item.Detail.Metadata.TagList.Item
+					text="Staged"
+					color={Color.PrimaryText}
+				/>
+				<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+			</>
 		)
 	}, [status.staged])
 
@@ -56,7 +62,13 @@ export function GitStatusItemDetail({ branch, status }: Props) {
 		}
 
 		return (
-			<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+			<>
+				<List.Item.Detail.Metadata.TagList.Item
+					text="Unstaged"
+					color={Color.SecondaryText}
+				/>
+				<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+			</>
 		)
 	}, [status.unstaged])
 
