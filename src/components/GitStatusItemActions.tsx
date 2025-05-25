@@ -94,7 +94,7 @@ export function GitStatusItemActions({
 					shortcut={Keyboard.Shortcut.Common.Copy}
 				/>
 				<Action.Open
-					title="Open This File"
+					title="Open File"
 					target={filePath}
 					shortcut={Keyboard.Shortcut.Common.Open}
 				/>
