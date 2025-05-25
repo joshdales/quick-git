@@ -17,7 +17,7 @@ export default function SelectRepo() {
 					showToast({
 						style: Toast.Style.Success,
 						title: "Repo set, restart command",
-						message: `${newRepo}`,
+						message: `${newRepo[0]}`,
 					})
 				})
 				.catch((error) => {
