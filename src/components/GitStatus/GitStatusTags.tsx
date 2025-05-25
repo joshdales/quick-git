@@ -62,8 +62,12 @@ export function GitStatusTags({ stagedStatus, unstagedStatus }: Props) {
 
 	return (
 		<List.Item.Detail.Metadata.TagList title="Status">
-			{tags.map((tag) => (
-				<List.Item.Detail.Metadata.TagList.Item text={tag[0]} color={tag[1]} />
+			{tags.map((tag, index) => (
+				<List.Item.Detail.Metadata.TagList.Item
+					key={index}
+					text={tag[0]}
+					color={tag[1]}
+				/>
 			))}
 		</List.Item.Detail.Metadata.TagList>
 	)
