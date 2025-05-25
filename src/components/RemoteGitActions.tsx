@@ -10,7 +10,10 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 	const { revalidate: push } = useExec("git", ["push"], {
 		cwd: repo,
 		execute: false,
-		onData: checkStatus,
+		onData: () => {
+			checkStatus()
+			showToast({ title: "Remote up to date" })
+		},
 		onError: (error) => {
 			showFailureToast(error, { title: "Could not push this branch" })
 		},
@@ -21,7 +24,10 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 	const { revalidate: pull } = useExec("git", ["pull"], {
 		cwd: repo,
 		execute: false,
-		onData: checkStatus,
+		onData: () => {
+			checkStatus()
+			showToast({ title: "Branch up to date" })
+		},
 		onError: (error) => {
 			showFailureToast(error, { title: "Could not pull this branch" })
 		},
@@ -32,9 +38,12 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 	const { revalidate: fetch } = useExec("git", ["fetch"], {
 		cwd: repo,
 		execute: false,
-		onData: checkStatus,
+		onData: () => {
+			checkStatus()
+			showToast({ title: "Fetched data" })
+		},
 		onError: (error) => {
-			showFailureToast(error, { title: "Could not fetch git data" })
+			showFailureToast(error, { title: "Could not fetch data" })
 		},
 		onWillExecute: () => {
 			showToast({ title: "Fetching repo data" })
