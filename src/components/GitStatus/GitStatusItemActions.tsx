@@ -5,6 +5,7 @@ import { GitCommit } from "../GitCommit.js"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
 import { GitBranch } from "../GitBranch/GitBranch.js"
+import SelectRepo from "../SelectRepo.js"
 
 interface Props {
 	isNotStaged: boolean
@@ -96,7 +97,12 @@ export function GitStatusItemActions({
 			/>
 			<BulkGitActions repo={repo} checkStatus={checkStatus} />
 			<RemoteGitActions repo={repo} checkStatus={checkStatus} />
-			<ActionPanel.Section title="File Utilities">
+			<ActionPanel.Section title="Utilities">
+				<Action.Push
+					icon={Icon.Folder}
+					title="Change Current Repo"
+					target={<SelectRepo />}
+				/>
 				<Action.CopyToClipboard
 					title="Copy Filename"
 					content={fileName}
