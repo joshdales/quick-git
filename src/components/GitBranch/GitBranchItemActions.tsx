@@ -36,7 +36,7 @@ export function GitBranchItemActions({
 			cwd: repo,
 			execute: false,
 			onData: () => {
-				showToast({ title: `${branch} deleted` })
+				showToast({ title: `Deleted branch ${branch}` })
 				checkBranches()
 				checkStatus()
 			},
