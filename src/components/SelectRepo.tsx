@@ -9,7 +9,7 @@ import {
 export default function SelectRepo() {
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
-	>("repo")
+	>("selectedRepo")
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit({ newRepo }: { newRepo: string[] }) {
 			setValue(newRepo[0])
