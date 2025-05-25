@@ -98,11 +98,7 @@ function parseRenamed(fields: string[]): StatusInfo {
 }
 
 function isSubmodule(field: string) {
-	if (field.startsWith("N")) {
-		return false
-	}
-
-	return true
+	return !field.startsWith("N")
 }
 
 /**
