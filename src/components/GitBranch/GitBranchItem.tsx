@@ -24,16 +24,16 @@ export function GitBranchItem({
 		return branch
 	}, [branch, currentBranch])
 
-	const icon = useMemo(() => {
+	const accessories = useMemo(() => {
 		if (currentBranch) {
-			return { value: Icon.Dot, tooltip: "Current branch" }
+			return [{ text: "Current branch" }]
 		}
 	}, [currentBranch])
 
 	return (
 		<List.Item
 			title={title}
-			icon={icon}
+			accessories={accessories}
 			actions={
 				<ActionPanel>
 					<GitBranchItemActions
