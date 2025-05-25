@@ -1,5 +1,11 @@
 import { useState } from "react"
-import { Action, ActionPanel, Form, useNavigation } from "@raycast/api"
+import {
+	Action,
+	ActionPanel,
+	Form,
+	showToast,
+	useNavigation,
+} from "@raycast/api"
 import {
 	FormValidation,
 	showFailureToast,
@@ -20,6 +26,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 		execute: false,
 		onData: () => {
 			checkStatus()
+			showToast({ title: "Commit successful" })
 			pop()
 		},
 		onError: (error) => {
