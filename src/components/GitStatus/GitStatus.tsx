@@ -51,7 +51,7 @@ export function GitStatus({ repo }: Props) {
 							<RemoteGitActions repo={repo} checkStatus={revalidate} />
 							<Action.Push
 								icon={Icon.Folder}
-								title="Set Repo"
+								title="Change Current Repo"
 								target={<SelectRepo />}
 							/>
 						</>
