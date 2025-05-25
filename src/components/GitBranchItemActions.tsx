@@ -1,4 +1,4 @@
-import { Action, Icon } from "@raycast/api"
+import { Action, Icon, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { GitBranchActions } from "./GitBranchActions.js"
 
@@ -23,6 +23,7 @@ export function GitBranchItemActions({
 		onData: () => {
 			checkBranches()
 			checkStatus()
+			showToast({ title: "Switched branch" })
 		},
 		onError: (error) => {
 			showFailureToast(error, { title: `Could not switch to ${branch}` })
@@ -35,6 +36,7 @@ export function GitBranchItemActions({
 			cwd: repo,
 			execute: false,
 			onData: () => {
+				showToast({ title: `${branch} deleted` })
 				checkBranches()
 				checkStatus()
 			},

@@ -1,4 +1,10 @@
-import { Action, ActionPanel, Form, useNavigation } from "@raycast/api"
+import {
+	Action,
+	ActionPanel,
+	Form,
+	showToast,
+	useNavigation,
+} from "@raycast/api"
 import { showFailureToast, useExec, useForm } from "@raycast/utils"
 import { useState } from "react"
 
@@ -23,6 +29,7 @@ export default function CreateBranch({
 			onData: () => {
 				checkBranches()
 				checkStatus()
+				showToast({ title: "Created branch" })
 				pop()
 			},
 			onError: (error) => {

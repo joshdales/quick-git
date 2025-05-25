@@ -1,4 +1,4 @@
-import { Action, Icon, Keyboard } from "@raycast/api"
+import { Action, Icon, Keyboard, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import CreateBranch from "./CreateBranch.js"
 
@@ -15,6 +15,7 @@ export function GitBranchActions({ repo, checkBranches, checkStatus }: Props) {
 		onData: () => {
 			checkBranches()
 			checkStatus()
+			showToast({ title: "Changed branch" })
 		},
 		onError: (error) => {
 			showFailureToast(error, { title: "Could not switch branches" })

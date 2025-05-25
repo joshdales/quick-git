@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Icon, Keyboard } from "@raycast/api"
+import { Action, ActionPanel, Icon, Keyboard, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
 import { GitCommit } from "./GitCommit.js"
@@ -19,30 +19,39 @@ export function GitStatusItemActions({
 	repo,
 	checkStatus,
 }: Props) {
-	const { revalidate: stageItem } = useExec("git", ["add", fileName], {
+	const { revalidate: AddFile } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
-		onData: checkStatus,
+		onData: () => {
+			checkStatus()
+			showToast({ title: `Added ${fileName}` })
+		},
 		onError: (error) => {
 			showFailureToast(error, { title: `Could not stage ${fileName}` })
 		},
 	})
-	const { revalidate: unstageItem } = useExec(
+	const { revalidate: unstageFile } = useExec(
 		"git",
 		["restore", "--staged", fileName],
 		{
 			cwd: repo,
 			execute: false,
-			onData: checkStatus,
+			onData: () => {
+				checkStatus()
+				showToast({ title: `Unstaged ${fileName}` })
+			},
 			onError: (error) => {
 				showFailureToast(error, { title: `Could not unstage ${fileName}` })
 			},
 		},
 	)
-	const { revalidate: restoreItem } = useExec("git", ["restore", fileName], {
+	const { revalidate: restoreFile } = useExec("git", ["restore", fileName], {
 		cwd: repo,
 		execute: false,
-		onData: checkStatus,
+		onData: () => {
+			checkStatus()
+			showToast({ title: "Restored files" })
+		},
 		onError: (error) => {
 			showFailureToast(error, { title: `Could not restore ${fileName}` })
 		},
@@ -50,11 +59,11 @@ export function GitStatusItemActions({
 
 	const mainAction = useCallback(() => {
 		if (isNotStaged) {
-			stageItem()
+			AddFile()
 		} else {
-			unstageItem()
+			unstageFile()
 		}
-	}, [isNotStaged, stageItem, unstageItem])
+	}, [isNotStaged, AddFile, unstageFile])
 
 	const filePath = useMemo(() => repo + "/" + fileName, [fileName, repo])
 
@@ -63,7 +72,7 @@ export function GitStatusItemActions({
 			<ActionPanel.Section>
 				<Action
 					icon={isNotStaged ? Icon.Plus : Icon.Minus}
-					title={isNotStaged ? "Stage" : "Unstage"}
+					title={isNotStaged ? "Add" : "Unstage"}
 					onAction={mainAction}
 				/>
 				<Action.Push
@@ -75,7 +84,7 @@ export function GitStatusItemActions({
 					<Action
 						icon={Icon.Undo}
 						title="Restore File"
-						onAction={restoreItem}
+						onAction={restoreFile}
 					/>
 				) : null}
 			</ActionPanel.Section>
