@@ -7,6 +7,7 @@ import { showFailureToast, useExec } from "@raycast/utils"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { GitStatusEmpty } from "./GitStatusEmpty.js"
 import { GitBranch } from "../GitBranch/GitBranch.js"
+import { useEffect } from "react"
 
 interface Props {
 	repo?: string
@@ -32,6 +33,12 @@ export function GitStatus({ repo, isLoadingRepo }: Props) {
 			},
 		},
 	)
+
+	useEffect(() => {
+		if (repo) {
+			revalidate()
+		}
+	}, [repo, revalidate])
 
 	return (
 		<List
