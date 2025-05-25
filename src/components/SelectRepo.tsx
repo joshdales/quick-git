@@ -1,11 +1,4 @@
-import {
-	Action,
-	ActionPanel,
-	Form,
-	showToast,
-	Toast,
-	useNavigation,
-} from "@raycast/api"
+import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api"
 import {
 	FormValidation,
 	showFailureToast,
@@ -14,7 +7,6 @@ import {
 } from "@raycast/utils"
 
 export default function SelectRepo() {
-	const { pop } = useNavigation()
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
 	>("repo")
@@ -24,10 +16,9 @@ export default function SelectRepo() {
 				.then(() => {
 					showToast({
 						style: Toast.Style.Success,
-						title: "Repo set!",
+						title: "Repo set, restart command",
 						message: `${newRepo}`,
 					})
-					pop()
 				})
 				.catch((error) => {
 					showFailureToast(error, {
