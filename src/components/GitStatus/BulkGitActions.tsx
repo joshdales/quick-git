@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Keyboard, showToast } from "@raycast/api"
-import { showFailureToast, useExec } from "@raycast/utils"
+import { useExec } from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -14,9 +14,7 @@ export function BulkGitActions({ repo, checkStatus }: Props) {
 			checkStatus()
 			showToast({ title: "Added files" })
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not stage files" })
-		},
+		failureToastOptions: { title: "Could not stage files" },
 	})
 	const { revalidate: unstageAllFiles } = useExec(
 		"git",
@@ -28,9 +26,7 @@ export function BulkGitActions({ repo, checkStatus }: Props) {
 				checkStatus()
 				showToast({ title: "Unstaged files" })
 			},
-			onError: (error) => {
-				showFailureToast(error, { title: "Could not unstage files" })
-			},
+			failureToastOptions: { title: "Could not unstage files" },
 		},
 	)
 	const { revalidate: stashFiles } = useExec("git", ["stash", "."], {
@@ -40,9 +36,7 @@ export function BulkGitActions({ repo, checkStatus }: Props) {
 			checkStatus()
 			showToast({ title: "Stashed files" })
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not stash files" })
-		},
+		failureToastOptions: { title: "Could not stash files" },
 	})
 
 	return (

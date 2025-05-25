@@ -3,7 +3,7 @@ import type { GitStatus } from "../../utils/status.js"
 import { parseGitStatus } from "../../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
 import SelectRepo from "../SelectRepo.js"
-import { showFailureToast, useExec } from "@raycast/utils"
+import { useExec } from "@raycast/utils"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { GitStatusEmpty } from "./GitStatusEmpty.js"
 import { GitBranch } from "../GitBranch/GitBranch.js"
@@ -21,9 +21,7 @@ export function GitStatus({ repo, isLoadingRepo }: Props) {
 			cwd: repo,
 			execute: !!repo,
 			keepPreviousData: false,
-			onError: (error) => {
-				showFailureToast(error, { title: "Could not fetch git status" })
-			},
+			failureToastOptions: { title: "Could not fetch git status" },
 			parseOutput: ({ stdout }) => {
 				if (!stdout) {
 					return

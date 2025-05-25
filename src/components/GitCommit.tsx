@@ -6,12 +6,7 @@ import {
 	showToast,
 	useNavigation,
 } from "@raycast/api"
-import {
-	FormValidation,
-	showFailureToast,
-	useExec,
-	useForm,
-} from "@raycast/utils"
+import { FormValidation, useExec, useForm } from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -29,9 +24,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 			showToast({ title: "Committed changed" })
 			pop()
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not commit changes" })
-		},
+		failureToastOptions: { title: "Could not commit changes" },
 	})
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit: commit,

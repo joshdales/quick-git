@@ -1,5 +1,5 @@
 import { ActionPanel, List } from "@raycast/api"
-import { showFailureToast, useExec } from "@raycast/utils"
+import { useExec } from "@raycast/utils"
 import { GitBranchItem } from "./GitBranchItem.js"
 import { GitBranchActions } from "./GitBranchActions.js"
 
@@ -14,14 +14,14 @@ export function GitBranch({ repo, checkStatus }: Props) {
 		["branch", "--sort=-committerdate"],
 		{
 			cwd: repo,
-			onError: (error) => {
-				showFailureToast(error, { title: "Could not get branch list" })
-			},
 			parseOutput: ({ stdout }) => {
 				return stdout.split("\n")
 			},
+			failureToastOptions: { title: "Could not get branch list" },
 		},
 	)
+
+	console.log("hello")
 
 	return (
 		<List

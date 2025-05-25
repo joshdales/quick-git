@@ -6,7 +6,7 @@ import {
 	showToast,
 	Toast,
 } from "@raycast/api"
-import { showFailureToast, useExec } from "@raycast/utils"
+import { useExec } from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -21,9 +21,7 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 			checkStatus()
 			showToast({ title: "Remote up to date" })
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not push this branch" })
-		},
+		failureToastOptions: { title: "Could not push this branch" },
 		onWillExecute: () => {
 			showToast({ title: "Pushing branch", style: Toast.Style.Animated })
 		},
@@ -35,9 +33,7 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 			checkStatus()
 			showToast({ title: "Branch up to date" })
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not pull this branch" })
-		},
+		failureToastOptions: { title: "Could not pull this branch" },
 		onWillExecute: () => {
 			showToast({ title: "Pulling branch", style: Toast.Style.Animated })
 		},
@@ -49,9 +45,7 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 			checkStatus()
 			showToast({ title: "Fetched data" })
 		},
-		onError: (error) => {
-			showFailureToast(error, { title: "Could not fetch data" })
-		},
+		failureToastOptions: { title: "Could not fetch data" },
 		onWillExecute: () => {
 			showToast({ title: "Fetching repo data", style: Toast.Style.Animated })
 		},
