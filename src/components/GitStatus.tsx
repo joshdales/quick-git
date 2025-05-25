@@ -21,12 +21,10 @@ export function GitStatus({ repo }: Props) {
 			cwd: repo,
 			execute: !!repo,
 			keepPreviousData: false,
-			parseOutput: ({ stdout, error }) => {
-				if (error) {
-					showFailureToast(error, { title: "Could not fetch git status" })
-					return
-				}
-
+			onError: (error) => {
+				showFailureToast(error, { title: "Could not fetch git status" })
+			},
+			parseOutput: ({ stdout }) => {
 				if (!stdout) {
 					return
 				}

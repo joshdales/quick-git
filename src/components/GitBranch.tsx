@@ -14,16 +14,10 @@ export function GitBranch({ repo, checkStatus }: Props) {
 		["branch", "--sort=-committerdate"],
 		{
 			cwd: repo,
-			parseOutput: ({ stdout, error }) => {
-				if (error) {
-					showFailureToast(error, { title: "Could not get branch list" })
-					return
-				}
-
-				if (!stdout) {
-					return
-				}
-
+			onError: (error) => {
+				showFailureToast(error, { title: "Could not get branch list" })
+			},
+			parseOutput: ({ stdout }) => {
 				return stdout.split("\n")
 			},
 		},
