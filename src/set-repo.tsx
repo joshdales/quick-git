@@ -1,4 +1,12 @@
-import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api"
+import {
+	Action,
+	ActionPanel,
+	Form,
+	launchCommand,
+	LaunchType,
+	showToast,
+	Toast,
+} from "@raycast/api"
 import {
 	FormValidation,
 	showFailureToast,
@@ -6,18 +14,24 @@ import {
 	useLocalStorage,
 } from "@raycast/utils"
 
-export default function SelectRepo() {
+export default function Command() {
 	const { value, setValue, removeValue, isLoading } = useLocalStorage<
 		string | undefined
 	>("selectedRepo")
+
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit({ newRepo }: { newRepo: string[] }) {
 			setValue(newRepo[0])
 				.then(() => {
 					showToast({
 						style: Toast.Style.Success,
-						title: "Repo set, restart command",
+						title: "Repo set",
 						message: `${newRepo[0]}`,
+					})
+					launchCommand({
+						name: "quick-git",
+						type: LaunchType.UserInitiated,
+						context: { foo: "bar" },
 					})
 				})
 				.catch((error) => {
