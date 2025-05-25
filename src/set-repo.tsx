@@ -31,7 +31,6 @@ export default function Command() {
 					launchCommand({
 						name: "quick-git",
 						type: LaunchType.UserInitiated,
-						context: { foo: "bar" },
 					})
 				})
 				.catch((error) => {
