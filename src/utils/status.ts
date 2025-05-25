@@ -1,4 +1,3 @@
-import { GitStatus } from "../components/GitStatus.js"
 import { BranchInfo, parseBranchHeaders } from "./branch.js"
 
 export type GitStatus =
