@@ -1,4 +1,4 @@
-import { ActionPanel, Icon, List } from "@raycast/api"
+import { ActionPanel, List } from "@raycast/api"
 import { useMemo } from "react"
 import { GitBranchItemActions } from "./GitBranchItemActions.js"
 
