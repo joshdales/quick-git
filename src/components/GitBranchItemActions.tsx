@@ -1,4 +1,4 @@
-import { Action } from "@raycast/api"
+import { Action, Icon } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { GitBranchActions } from "./GitBranchActions.js"
 
@@ -52,8 +52,16 @@ export function GitBranchItemActions({
 		/>
 	) : (
 		<>
-			<Action title="Switch to This Branch" onAction={switchBranch} />
-			<Action title="Delete This Branch" onAction={deleteBranch} />
+			<Action
+				icon={Icon.Repeat}
+				title="Switch to This Branch"
+				onAction={switchBranch}
+			/>
+			<Action
+				icon={Icon.Trash}
+				title="Delete This Branch"
+				onAction={deleteBranch}
+			/>
 			<GitBranchActions
 				repo={repo}
 				checkBranches={checkBranches}

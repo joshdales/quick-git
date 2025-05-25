@@ -1,4 +1,4 @@
-import { Action } from "@raycast/api"
+import { Action, Icon, Keyboard } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import CreateBranch from "./CreateBranch.js"
 
@@ -24,6 +24,8 @@ export function GitBranchActions({ repo, checkBranches, checkStatus }: Props) {
 	return (
 		<>
 			<Action.Push
+				icon={Icon.Plus}
+				shortcut={Keyboard.Shortcut.Common.New}
 				title="Create a New Branch"
 				target={
 					<CreateBranch
@@ -34,6 +36,8 @@ export function GitBranchActions({ repo, checkBranches, checkStatus }: Props) {
 				}
 			/>
 			<Action
+				icon={Icon.Replace}
+				shortcut={{ key: "-", modifiers: ["cmd"] }}
 				title="Switch to Your Last Branch"
 				onAction={switchToLastBranch}
 			/>
