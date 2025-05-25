@@ -1,10 +1,10 @@
 import { Action, ActionPanel, Icon, Keyboard, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { useCallback, useMemo } from "react"
-import { GitCommit } from "./GitCommit.js"
+import { GitCommit } from "../GitCommit.js"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
-import { GitBranch } from "./GitBranch.js"
+import { GitBranch } from "../GitBranch/GitBranch.js"
 
 interface Props {
 	isNotStaged: boolean

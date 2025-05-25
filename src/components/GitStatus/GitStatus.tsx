@@ -1,12 +1,12 @@
 import { Action, ActionPanel, Icon, List } from "@raycast/api"
-import type { GitStatus } from "../utils/status.js"
-import { parseGitStatus } from "../utils/status.js"
+import type { GitStatus } from "../../utils/status.js"
+import { parseGitStatus } from "../../utils/status.js"
 import { GitStatusItem } from "./GitStatusItem.js"
-import SelectRepo from "./SelectRepo.js"
+import SelectRepo from "../SelectRepo.js"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { GitStatusEmpty } from "./GitStatusEmpty.js"
-import { GitBranch } from "./GitBranch.js"
+import { GitBranch } from "../GitBranch/GitBranch.js"
 
 interface Props {
 	repo?: string
