@@ -26,7 +26,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 		execute: false,
 		onData: () => {
 			checkStatus()
-			showToast({ title: "Commit successful" })
+			showToast({ title: "Committed changed" })
 			pop()
 		},
 		onError: (error) => {
