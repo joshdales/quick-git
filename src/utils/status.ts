@@ -138,6 +138,10 @@ export function parseGitStatus(porcelainStatus: string): {
 	const branch = {} as BranchInfo
 	const files: StatusInfo[] = []
 	status.forEach((statusRow) => {
+		if (!statusRow) {
+			return
+		}
+
 		if (statusRow.startsWith("#")) {
 			parseBranchHeaders(statusRow, branch)
 		} else {
