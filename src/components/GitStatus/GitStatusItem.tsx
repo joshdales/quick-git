@@ -1,8 +1,8 @@
 import { Icon, List } from "@raycast/api"
 import { useMemo } from "react"
 import { GitStatusItemActions } from "./GitStatusItemActions.js"
-import type { StatusInfo } from "../utils/status.js"
-import { BranchInfo } from "../utils/branch.js"
+import type { StatusInfo } from "../../utils/status.js"
+import { BranchInfo } from "../../utils/branch.js"
 import { GitStatusItemDetail } from "./GitStatusItemDetail.js"
 
 interface Props {

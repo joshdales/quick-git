@@ -1,6 +1,6 @@
 import { Color, List } from "@raycast/api"
-import type { BranchInfo } from "../utils/branch.js"
-import type { GitStatus, StatusInfo } from "../utils/status.js"
+import type { BranchInfo } from "../../utils/branch.js"
+import type { GitStatus, StatusInfo } from "../../utils/status.js"
 import { useMemo } from "react"
 
 interface Props {

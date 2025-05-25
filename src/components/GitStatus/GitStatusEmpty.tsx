@@ -1,5 +1,5 @@
 import { List } from "@raycast/api"
-import { BranchInfo } from "../utils/branch.js"
+import { BranchInfo } from "../../utils/branch.js"
 import { useMemo } from "react"
 
 interface Props {
