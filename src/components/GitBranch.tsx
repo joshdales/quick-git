@@ -31,6 +31,7 @@ export function GitBranch({ repo, checkStatus }: Props) {
 
 	return (
 		<List
+			searchBarPlaceholder="Search branches…"
 			navigationTitle="Change Branches"
 			isLoading={isLoading}
 			actions={
