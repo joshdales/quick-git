@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Icon, Keyboard } from "@raycast/api"
-import { useExec } from "@raycast/utils"
+import { showFailureToast, useExec } from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -11,16 +11,25 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 		cwd: repo,
 		execute: false,
 		onData: checkStatus,
+		onError: (error) => {
+			showFailureToast(error, { title: "Could not push this branch" })
+		},
 	})
 	const { revalidate: pull } = useExec("git", ["pull"], {
 		cwd: repo,
 		execute: false,
 		onData: checkStatus,
+		onError: (error) => {
+			showFailureToast(error, { title: "Could not pull this branch" })
+		},
 	})
 	const { revalidate: fetch } = useExec("git", ["fetch"], {
 		cwd: repo,
 		execute: false,
 		onData: checkStatus,
+		onError: (error) => {
+			showFailureToast(error, { title: "Could not fetch git data" })
+		},
 	})
 
 	return (

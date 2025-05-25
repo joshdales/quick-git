@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api"
-import { FormValidation, useExec, useForm } from "@raycast/utils"
+import {
+	FormValidation,
+	showFailureToast,
+	useExec,
+	useForm,
+} from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -17,6 +22,9 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 			checkStatus()
 			pop()
 		},
+		onError: (error) => {
+			showFailureToast(error, { title: "Could not commit changes" })
+		},
 	})
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit: commit,
@@ -27,7 +35,7 @@ export const GitCommit = ({ repo, checkStatus }: Props) => {
 
 	return (
 		<Form
-			navigationTitle="Commit Changes"
+			navigationTitle="Commit Staged Changes"
 			actions={
 				<ActionPanel>
 					<Action.SubmitForm title="Commit" onSubmit={handleSubmit} />

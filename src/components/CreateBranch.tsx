@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api"
-import { FormValidation, useExec, useForm } from "@raycast/utils"
+import { showFailureToast, useExec, useForm } from "@raycast/utils"
 import { useState } from "react"
 
 interface Props {
@@ -25,13 +25,24 @@ export default function CreateBranch({
 				checkStatus()
 				pop()
 			},
+			onError: (error) => {
+				showFailureToast(error, {
+					title: `Could not create a branch called ${branchName}`,
+				})
+			},
 		},
 	)
 	const { pop } = useNavigation()
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit: revalidate,
 		validation: {
-			newBranch: FormValidation.Required,
+			newBranch: (value) => {
+				if (!value) {
+					return "A branch name is required"
+				} else if (/\s/g.test(value)) {
+					return "No whitespace characters are allowed, please use a '-' or '_' instead"
+				}
+			},
 		},
 	})
 
@@ -47,9 +58,11 @@ export default function CreateBranch({
 		>
 			<Form.TextField
 				id="newBranch"
-				title="Branch Name"
+				title="New branch name"
+				info="Do not include any whitespace characters"
 				value={branchName}
 				onChange={setBranchName}
+				placeholder="new-feature-branch"
 				autoFocus
 				error={itemProps.newBranch.error}
 			/>

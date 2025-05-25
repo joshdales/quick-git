@@ -6,7 +6,12 @@ import {
 	Toast,
 	useNavigation,
 } from "@raycast/api"
-import { FormValidation, useForm, useLocalStorage } from "@raycast/utils"
+import {
+	FormValidation,
+	showFailureToast,
+	useForm,
+	useLocalStorage,
+} from "@raycast/utils"
 
 export default function SelectRepo() {
 	const { pop } = useNavigation()
@@ -15,14 +20,20 @@ export default function SelectRepo() {
 	>("repo")
 	const { handleSubmit, itemProps } = useForm({
 		onSubmit({ newRepo }: { newRepo: string[] }) {
-			setValue(newRepo[0]).then(() => {
-				showToast({
-					style: Toast.Style.Success,
-					title: "Repo set!",
-					message: `${newRepo}`,
+			setValue(newRepo[0])
+				.then(() => {
+					showToast({
+						style: Toast.Style.Success,
+						title: "Repo set!",
+						message: `${newRepo}`,
+					})
+					pop()
 				})
-				pop()
-			})
+				.catch((error) => {
+					showFailureToast(error, {
+						title: "Could not set this as your selected repo",
+					})
+				})
 		},
 		validation: {
 			newRepo: FormValidation.Required,
