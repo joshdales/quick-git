@@ -10,10 +10,10 @@ import { GitBranch } from "../GitBranch/GitBranch.js"
 
 interface Props {
 	repo?: string
-	isLoading: boolean
+	isLoadingRepo: boolean
 }
 
-export function GitStatus({ repo }: Props) {
+export function GitStatus({ repo, isLoadingRepo }: Props) {
 	const { data, isLoading, revalidate } = useExec(
 		"git",
 		["status", "--porcelain=2", "--branch"],
@@ -38,7 +38,7 @@ export function GitStatus({ repo }: Props) {
 			searchBarPlaceholder="Search modified files…"
 			navigationTitle="Git Status"
 			isShowingDetail={!!repo && !!data?.files.length}
-			isLoading={isLoading}
+			isLoading={isLoadingRepo || isLoading}
 			actions={
 				<ActionPanel>
 					{repo ? (
