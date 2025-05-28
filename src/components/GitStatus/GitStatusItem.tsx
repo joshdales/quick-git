@@ -1,9 +1,10 @@
-import { Icon, List } from "@raycast/api"
+import { Action, Icon, List } from "@raycast/api"
 import { useMemo } from "react"
 import { GitStatusItemActions } from "./GitStatusItemActions.js"
 import type { StatusInfo } from "../../utils/status.js"
 import { BranchInfo } from "../../utils/branch.js"
 import { GitStatusItemDetail } from "./GitStatusItemDetail.js"
+import { useExec } from "@raycast/utils"
 
 interface Props {
 	repo: string
@@ -13,6 +14,14 @@ interface Props {
 }
 
 export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
+	const { data: diff, revalidate } = useExec(
+		"git",
+		["diff", "--histogram", "head", status.fileName],
+		{
+			cwd: repo,
+			execute: false,
+		},
+	)
 	const isNotStaged = useMemo(() => {
 		return status.staged === "." || status.staged === "?"
 	}, [status.staged])
@@ -34,9 +43,19 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
 					repo={repo}
 					fileName={status.fileName}
 					checkStatus={checkStatus}
-				/>
+				>
+					{!diff && (
+						<Action
+							icon={Icon.Paragraph}
+							title="Show Diff"
+							onAction={revalidate}
+						/>
+					)}
+				</GitStatusItemActions>
 			}
-			detail={<GitStatusItemDetail branch={branch} status={status} />}
+			detail={
+				<GitStatusItemDetail branch={branch} status={status} diff={diff} />
+			}
 		/>
 	)
 }

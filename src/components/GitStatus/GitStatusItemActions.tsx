@@ -8,7 +8,7 @@ import {
 	showToast,
 } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
-import { useCallback, useMemo } from "react"
+import { PropsWithChildren, useCallback, useMemo } from "react"
 import { GitCommit } from "../GitCommit.js"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
@@ -27,7 +27,8 @@ export function GitStatusItemActions({
 	fileName,
 	repo,
 	checkStatus,
-}: Props) {
+	children,
+}: PropsWithChildren<Props>) {
 	const { revalidate: addFile } = useExec("git", ["add", fileName], {
 		cwd: repo,
 		execute: false,
@@ -96,6 +97,7 @@ export function GitStatusItemActions({
 						onAction={restoreFile}
 					/>
 				) : null}
+				{children}
 			</ActionPanel.Section>
 			<Action.Push
 				icon={Icon.Tree}

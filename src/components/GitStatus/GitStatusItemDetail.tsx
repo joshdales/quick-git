@@ -2,15 +2,23 @@ import { List } from "@raycast/api"
 import type { BranchInfo } from "../../utils/branch.js"
 import type { StatusInfo } from "../../utils/status.js"
 import { GitStatusTags } from "./GitStatusTags.js"
+import { useMemo } from "react"
 
 interface Props {
 	branch: BranchInfo
 	status: StatusInfo
+	diff?: string
 }
 
-export function GitStatusItemDetail({ branch, status }: Props) {
+export function GitStatusItemDetail({ branch, status, diff }: Props) {
+	const markdown = useMemo(() => {
+		if (!diff) return
+
+		return "```diff\n" + diff
+	}, [diff])
 	return (
 		<List.Item.Detail
+			markdown={markdown}
 			metadata={
 				<List.Item.Detail.Metadata>
 					<List.Item.Detail.Metadata.Label
