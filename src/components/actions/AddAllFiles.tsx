@@ -6,7 +6,7 @@ interface Props {
 	checkStatus: () => void
 }
 
-export function StageAllFiles({ checkStatus }: Props) {
+export function AddAllFiles({ checkStatus }: Props) {
 	const { value } = useRepo()
 	const { revalidate } = useExec("git", ["add", "."], {
 		cwd: value,
@@ -22,7 +22,7 @@ export function StageAllFiles({ checkStatus }: Props) {
 
 	return (
 		<Action
-			title="Stage All Files"
+			title="Add All Files"
 			onAction={revalidate}
 			shortcut={{ key: "a", modifiers: ["cmd", "shift"] }}
 		/>

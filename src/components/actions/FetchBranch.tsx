@@ -1,4 +1,4 @@
-import { Action, showToast, Toast } from "@raycast/api"
+import { Action, Icon, showToast, Toast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { useRepo } from "../../hooks/useRepo.js"
 
@@ -23,5 +23,7 @@ export function FetchBranch({ checkStatus }: Props) {
 		},
 	})
 
-	return <Action title="Fetch" onAction={revalidate} />
+	return (
+		<Action icon={Icon.ArrowClockwise} title="Fetch" onAction={revalidate} />
+	)
 }

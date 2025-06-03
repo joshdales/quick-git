@@ -25,6 +25,14 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
 		return status.fileName
 	}, [status.fileName, status.origPath])
 
+	const showDiff = useMemo(() => {
+		if (status.unstaged === "?" || status.unstaged === "D") {
+			return false
+		}
+
+		return true
+	}, [status.unstaged])
+
 	return (
 		<List.Item
 			icon={isNotStaged ? Icon.Circle : Icon.CheckCircle}
@@ -32,6 +40,7 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
 			actions={
 				<GitStatusItemActions
 					isNotStaged={isNotStaged}
+					showDiffAction={showDiff}
 					repo={repo}
 					fileName={status.fileName}
 					checkStatus={checkStatus}

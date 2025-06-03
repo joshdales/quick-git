@@ -13,6 +13,7 @@ import { FileDiff } from "../actions/FileDiff.js"
 
 interface Props {
 	isNotStaged: boolean
+	showDiffAction: boolean
 	fileName: string
 	repo: string
 	checkStatus: () => void
@@ -21,6 +22,7 @@ interface Props {
 
 export function GitStatusItemActions({
 	isNotStaged,
+	showDiffAction,
 	fileName,
 	checkStatus,
 	updateDiff,
@@ -40,7 +42,9 @@ export function GitStatusItemActions({
 					<RestoreFile checkStatus={checkStatus} fileName={fileName} />
 				) : null}
 
-				<FileDiff fileName={fileName} updateDiff={updateDiff} />
+				{showDiffAction ? (
+					<FileDiff fileName={fileName} updateDiff={updateDiff} />
+				) : null}
 			</ActionPanel.Section>
 
 			<SwitchBranch checkStatus={checkStatus} />

@@ -1,5 +1,5 @@
 import { Action, Icon } from "@raycast/api"
-import { useExec } from "@raycast/utils"
+import { showFailureToast, useExec } from "@raycast/utils"
 import { useRepo } from "../../hooks/useRepo.js"
 
 interface Props {
@@ -15,8 +15,14 @@ export function FileDiff({ fileName, updateDiff }: Props) {
 		{
 			cwd: repo,
 			execute: false,
+			keepPreviousData: false,
 			onData: (data) => {
 				updateDiff(data)
+			},
+			onError: (error) => {
+				showFailureToast(error, {
+					title: `Could not generate diff for ${fileName}`,
+				})
 			},
 		},
 	)

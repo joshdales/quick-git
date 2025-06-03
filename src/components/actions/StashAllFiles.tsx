@@ -1,4 +1,4 @@
-import { Action, showToast } from "@raycast/api"
+import { Action, Icon, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { useRepo } from "../../hooks/useRepo.js"
 
@@ -20,5 +20,11 @@ export function StashAllFiles({ checkStatus }: Props) {
 		},
 	})
 
-	return <Action title="Stash Files" onAction={revalidate} />
+	return (
+		<Action
+			icon={Icon.SaveDocument}
+			title="Stash Files"
+			onAction={revalidate}
+		/>
+	)
 }

@@ -1,4 +1,4 @@
-import { Action, Icon, showToast } from "@raycast/api"
+import { Action, Icon, Keyboard, showToast } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { useRepo } from "../../hooks/useRepo.js"
 
@@ -21,5 +21,12 @@ export function RestoreFile({ fileName, checkStatus }: Props) {
 		},
 	})
 
-	return <Action icon={Icon.Undo} title="Restore File" onAction={revalidate} />
+	return (
+		<Action
+			icon={Icon.Undo}
+			shortcut={Keyboard.Shortcut.Common.Remove}
+			title="Restore File"
+			onAction={revalidate}
+		/>
+	)
 }
