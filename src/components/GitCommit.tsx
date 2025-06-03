@@ -12,14 +12,15 @@ import {
 	useExec,
 	useForm,
 } from "@raycast/utils"
+import { useRepo } from "../hooks/useRepo.js"
 
 interface Props {
-	repo: string
 	checkStatus: () => void
 }
 
-export const GitCommit = ({ repo, checkStatus }: Props) => {
+export const GitCommit = ({ checkStatus }: Props) => {
 	const { pop } = useNavigation()
+	const { value: repo } = useRepo()
 	const [commitMsg, setCommitMsg] = useState("")
 	const { revalidate: commit } = useExec("git", ["commit", "-m", commitMsg], {
 		cwd: repo,

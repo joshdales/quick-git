@@ -1,133 +1,58 @@
-import {
-	Action,
-	ActionPanel,
-	Icon,
-	Keyboard,
-	launchCommand,
-	LaunchType,
-	showToast,
-} from "@raycast/api"
-import { showFailureToast, useExec } from "@raycast/utils"
-import { PropsWithChildren, useCallback, useMemo } from "react"
-import { GitCommit } from "../GitCommit.js"
+import { ActionPanel } from "@raycast/api"
 import { RemoteGitActions } from "./RemoteGitActions.js"
 import { BulkGitActions } from "./BulkGitActions.js"
-import { GitBranch } from "../GitBranch/GitBranch.js"
-import { join } from "node:path"
+import { OpenFile } from "../actions/OpenFile.js"
+import { CopyFilename } from "../actions/CopyFilename.js"
+import { ChangeCurrentRepo } from "../actions/ChangeCurrentRepo.js"
+import { SwitchBranch } from "../actions/SwitchBranch.js"
+import { AddFile } from "../actions/AddFile.js"
+import { RestoreStagedFile } from "../actions/RestoreStagedFile.js"
+import { CommitMessage } from "../actions/CommitMessage.js"
+import { RestoreFile } from "../actions/RestoreFile.js"
+import { FileDiff } from "../actions/FileDiff.js"
 
 interface Props {
 	isNotStaged: boolean
 	fileName: string
 	repo: string
 	checkStatus: () => void
+	updateDiff: (data: string) => void
 }
 
 export function GitStatusItemActions({
 	isNotStaged,
 	fileName,
-	repo,
 	checkStatus,
-	children,
-}: PropsWithChildren<Props>) {
-	const { revalidate: addFile } = useExec("git", ["add", fileName], {
-		cwd: repo,
-		execute: false,
-		onData: () => {
-			checkStatus()
-			showToast({ title: `Added ${fileName}` })
-		},
-		onError: (error) => {
-			showFailureToast(error, { title: `Could not stage ${fileName}` })
-		},
-	})
-	const { revalidate: unstageFile } = useExec(
-		"git",
-		["restore", "--staged", fileName],
-		{
-			cwd: repo,
-			execute: false,
-			onData: () => {
-				checkStatus()
-				showToast({ title: `Unstaged ${fileName}` })
-			},
-			onError: (error) => {
-				showFailureToast(error, { title: `Could not unstage ${fileName}` })
-			},
-		},
-	)
-	const { revalidate: restoreFile } = useExec("git", ["restore", fileName], {
-		cwd: repo,
-		execute: false,
-		onData: () => {
-			checkStatus()
-			showToast({ title: `Restored ${fileName} to its previous state` })
-		},
-		onError: (error) => {
-			showFailureToast(error, { title: `Could not restore ${fileName}` })
-		},
-	})
-
-	const mainAction = useCallback(() => {
-		if (isNotStaged) {
-			addFile()
-		} else {
-			unstageFile()
-		}
-	}, [isNotStaged, addFile, unstageFile])
-
-	const filePath = useMemo(() => join(repo, fileName), [fileName, repo])
-
+	updateDiff,
+}: Props) {
 	return (
 		<ActionPanel>
 			<ActionPanel.Section>
-				<Action
-					icon={isNotStaged ? Icon.Plus : Icon.Minus}
-					title={isNotStaged ? "Add" : "Unstage"}
-					onAction={mainAction}
-				/>
-				<Action.Push
-					icon={Icon.Pencil}
-					title="Commit"
-					target={<GitCommit repo={repo} checkStatus={checkStatus} />}
-				/>
 				{isNotStaged ? (
-					<Action
-						icon={Icon.Undo}
-						title="Restore File"
-						onAction={restoreFile}
-					/>
+					<AddFile fileName={fileName} checkStatus={checkStatus} />
+				) : (
+					<RestoreStagedFile fileName={fileName} checkStatus={checkStatus} />
+				)}
+
+				<CommitMessage checkStatus={checkStatus} />
+
+				{isNotStaged ? (
+					<RestoreFile checkStatus={checkStatus} fileName={fileName} />
 				) : null}
-				{children}
+
+				<FileDiff fileName={fileName} updateDiff={updateDiff} />
 			</ActionPanel.Section>
-			<Action.Push
-				icon={Icon.Tree}
-				title="Switch Branch"
-				shortcut={{ key: "b", modifiers: ["cmd"] }}
-				target={<GitBranch repo={repo} checkStatus={checkStatus} />}
-			/>
-			<BulkGitActions repo={repo} checkStatus={checkStatus} />
-			<RemoteGitActions repo={repo} checkStatus={checkStatus} />
+
+			<SwitchBranch checkStatus={checkStatus} />
+
+			<BulkGitActions checkStatus={checkStatus} />
+
+			<RemoteGitActions checkStatus={checkStatus} />
+
 			<ActionPanel.Section title="Utilities">
-				<Action
-					icon={Icon.Folder}
-					title="Change Current Repo"
-					onAction={() =>
-						launchCommand({
-							name: "set-repo",
-							type: LaunchType.UserInitiated,
-						})
-					}
-				/>
-				<Action.CopyToClipboard
-					title="Copy Filename"
-					content={fileName}
-					shortcut={Keyboard.Shortcut.Common.Copy}
-				/>
-				<Action.Open
-					title="Open File"
-					target={filePath}
-					shortcut={Keyboard.Shortcut.Common.Open}
-				/>
+				<ChangeCurrentRepo />
+				<CopyFilename fileName={fileName} />
+				<OpenFile fileName={fileName} />
 			</ActionPanel.Section>
 		</ActionPanel>
 	)
