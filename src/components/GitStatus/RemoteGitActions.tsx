@@ -71,7 +71,11 @@ export function RemoteGitActions({ repo, checkStatus }: Props) {
 				icon={Icon.Download}
 				shortcut={Keyboard.Shortcut.Common.MoveDown}
 			/>
-			<Action title="Fetch" onAction={fetch} />
+			<Action
+				title="Fetch"
+				onAction={fetch}
+				icon={Icon.ArrowCounterClockwise}
+			/>
 		</ActionPanel.Section>
 	)
 }

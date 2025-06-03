@@ -98,7 +98,7 @@ export function GitStatusItemActions({
 				) : null}
 			</ActionPanel.Section>
 			<Action.Push
-				icon={Icon.Tree}
+				icon={Icon.Switch}
 				title="Switch Branch"
 				shortcut={{ key: "b", modifiers: ["cmd"] }}
 				target={<GitBranch repo={repo} checkStatus={checkStatus} />}
