@@ -1,4 +1,4 @@
-import { GitStatus } from "./components/GitStatus/GitStatus.js"
+import { GitStatus } from "./components/GitStatus.js"
 
 export default function Command() {
 	return <GitStatus />

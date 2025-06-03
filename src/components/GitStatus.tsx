@@ -1,14 +1,14 @@
 import { useMemo } from "react"
 import { ActionPanel, List } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
-import type { GitStatus } from "../../utils/status.js"
-import { parseGitStatus } from "../../utils/status.js"
-import { useRepo } from "../../hooks/useRepo.js"
-import { SwitchBranch } from "../actions/SwitchBranch.js"
-import { ChangeCurrentRepo } from "../actions/ChangeCurrentRepo.js"
-import { GitStatusItem } from "./GitStatusItem.js"
-import { RemoteGitActions } from "./RemoteGitActions.js"
-import { GitStatusEmpty } from "./GitStatusEmpty.js"
+import type { GitStatus } from "../utils/status.js"
+import { parseGitStatus } from "../utils/status.js"
+import { useRepo } from "../hooks/useRepo.js"
+import { SwitchBranch } from "./actions/SwitchBranch.js"
+import { ChangeCurrentRepo } from "./actions/ChangeCurrentRepo.js"
+import { GitStatusItem } from "./GitStatus/GitStatusItem.js"
+import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js"
+import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js"
 
 export function GitStatus() {
 	const { value: repo, isLoading: isLoadingRepo } = useRepo()

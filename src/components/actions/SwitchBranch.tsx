@@ -1,5 +1,5 @@
 import { Action, Icon } from "@raycast/api"
-import { GitBranches } from "../GitBranches/GitBranches.js"
+import { GitBranches } from "../GitBranches.js"
 
 interface Props {
 	checkStatus: () => void

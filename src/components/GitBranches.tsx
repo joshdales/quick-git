@@ -1,8 +1,8 @@
 import { ActionPanel, List } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
-import { GitBranchItem } from "./GitBranchItem.js"
-import { GitBranchActions } from "./GitBranchActions.js"
-import { useRepo } from "../../hooks/useRepo.js"
+import { GitBranchItem } from "./GitBranches/GitBranchItem.js"
+import { GitBranchActions } from "./GitBranches/GitBranchActions.js"
+import { useRepo } from "../hooks/useRepo.js"
 
 interface Props {
 	checkStatus: () => void
