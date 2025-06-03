@@ -2,13 +2,14 @@ import { ActionPanel, List } from "@raycast/api"
 import { showFailureToast, useExec } from "@raycast/utils"
 import { GitBranchItem } from "./GitBranchItem.js"
 import { GitBranchActions } from "./GitBranchActions.js"
+import { useRepo } from "../../hooks/useRepo.js"
 
 interface Props {
-	repo: string
 	checkStatus: () => void
 }
 
-export function GitBranch({ repo, checkStatus }: Props) {
+export function GitBranches({ checkStatus }: Props) {
+	const { value: repo } = useRepo()
 	const { data, isLoading, revalidate } = useExec(
 		"git",
 		["branch", "--sort=-committerdate"],
@@ -17,6 +18,7 @@ export function GitBranch({ repo, checkStatus }: Props) {
 			parseOutput: ({ stdout }) => {
 				return stdout.split("\n")
 			},
+			onData: checkStatus,
 			onError: (error) => {
 				showFailureToast(error, { title: "Could not get branch list" })
 			},
@@ -31,11 +33,7 @@ export function GitBranch({ repo, checkStatus }: Props) {
 			isLoading={isLoading}
 			actions={
 				<ActionPanel>
-					<GitBranchActions
-						repo={repo}
-						checkBranches={revalidate}
-						checkStatus={checkStatus}
-					/>
+					<GitBranchActions checkBranches={revalidate} />
 				</ActionPanel>
 			}
 		>
@@ -43,9 +41,7 @@ export function GitBranch({ repo, checkStatus }: Props) {
 				<GitBranchItem
 					key={branch.replace(/^\*\s/, "")}
 					branch={branch.trim()}
-					repo={repo}
 					checkBranches={revalidate}
-					checkStatus={checkStatus}
 				/>
 			)) ?? <List.EmptyView title="There are no branches" />}
 		</List>
