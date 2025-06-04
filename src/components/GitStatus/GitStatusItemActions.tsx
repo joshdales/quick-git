@@ -17,6 +17,7 @@ import { join } from "node:path"
 
 interface Props {
 	isNotStaged: boolean
+	isCommittedFile: boolean
 	fileName: string
 	repo: string
 	checkStatus: () => void
@@ -24,6 +25,7 @@ interface Props {
 
 export function GitStatusItemActions({
 	isNotStaged,
+	isCommittedFile,
 	fileName,
 	repo,
 	checkStatus,
@@ -89,7 +91,7 @@ export function GitStatusItemActions({
 					title="Commit"
 					target={<GitCommit repo={repo} checkStatus={checkStatus} />}
 				/>
-				{isNotStaged ? (
+				{isNotStaged && isCommittedFile ? (
 					<Action
 						icon={Icon.Undo}
 						title="Restore File"
