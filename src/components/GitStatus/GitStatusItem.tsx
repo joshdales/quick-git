@@ -18,8 +18,8 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
 	}, [status.staged])
 
 	const isCommittedFile = useMemo(() => {
-		return status.staged === "?"
-	}, [status.staged])
+		return status.format !== "untracked" && status.format !== "ignored"
+	}, [status.format])
 
 	const title = useMemo(() => {
 		if (status.origPath) {
