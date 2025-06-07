@@ -2,13 +2,14 @@ import { ActionPanel, List } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { GitBranchItem } from "./GitBranchItem.js";
 import { GitBranchActions } from "./GitBranchActions.js";
+import { useRepo } from "../../hooks/useRepo.js";
 
 interface Props {
-  repo: string;
   checkStatus: () => void;
 }
 
-export function GitBranch({ repo, checkStatus }: Props) {
+export function GitBranch({ checkStatus }: Props) {
+  const { value: repo } = useRepo();
   const { data, isLoading, revalidate } = useExec("git", ["branch", "--sort=-committerdate"], {
     cwd: repo,
     parseOutput: ({ stdout }) => {
