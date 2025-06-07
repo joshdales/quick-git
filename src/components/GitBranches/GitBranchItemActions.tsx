@@ -8,7 +8,6 @@ interface Props {
   branch: string;
   isCurrentBranch: boolean;
   checkBranches: () => void;
-  checkStatus: () => void;
 }
 
 export function GitBranchItemActions({ branch, isCurrentBranch, checkBranches }: Props) {

@@ -1,14 +1,13 @@
-import { ActionPanel, List } from "@raycast/api";
+import { List } from "@raycast/api";
 import { useMemo } from "react";
 import { GitBranchItemActions } from "./GitBranchItemActions.js";
 
 interface Props {
   branch: string;
   checkBranches: () => void;
-  checkStatus: () => void;
 }
 
-export function GitBranchItem({ branch, checkBranches, checkStatus }: Props) {
+export function GitBranchItem({ branch, checkBranches }: Props) {
   // Git indicates the current branch by start that row with with a `*`
   const currentBranch = useMemo(() => branch.startsWith("*"), [branch]);
 
@@ -31,14 +30,7 @@ export function GitBranchItem({ branch, checkBranches, checkStatus }: Props) {
     <List.Item
       title={title}
       accessories={accessories}
-      actions={
-        <GitBranchItemActions
-          branch={title}
-          isCurrentBranch={currentBranch}
-          checkStatus={checkStatus}
-          checkBranches={checkBranches}
-        />
-      }
+      actions={<GitBranchItemActions branch={title} isCurrentBranch={currentBranch} checkBranches={checkBranches} />}
     />
   );
 }
