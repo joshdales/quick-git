@@ -1,8 +1,9 @@
 import { Action, ActionPanel, Form, Icon, launchCommand, LaunchType, showToast, Toast } from "@raycast/api";
-import { FormValidation, showFailureToast, useForm, useLocalStorage } from "@raycast/utils";
+import { FormValidation, showFailureToast, useForm } from "@raycast/utils";
+import { useRepo } from "./hooks/useRepo.js";
 
 export default function Command() {
-  const { value, setValue, removeValue, isLoading } = useLocalStorage<string | undefined>("selectedRepo");
+  const { value, setValue, removeValue, isLoading } = useRepo();
 
   const { handleSubmit, itemProps } = useForm({
     onSubmit({ newRepo }: { newRepo: string[] }) {
