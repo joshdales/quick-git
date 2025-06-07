@@ -32,14 +32,12 @@ export function GitBranchItem({ branch, checkBranches, checkStatus }: Props) {
       title={title}
       accessories={accessories}
       actions={
-        <ActionPanel>
-          <GitBranchItemActions
-            branch={title}
-            isCurrentBranch={currentBranch}
-            checkStatus={checkStatus}
-            checkBranches={checkBranches}
-          />
-        </ActionPanel>
+        <GitBranchItemActions
+          branch={title}
+          isCurrentBranch={currentBranch}
+          checkStatus={checkStatus}
+          checkBranches={checkBranches}
+        />
       }
     />
   );

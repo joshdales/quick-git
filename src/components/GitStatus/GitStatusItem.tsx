@@ -6,13 +6,12 @@ import { BranchInfo } from "../../utils/branch.js";
 import { GitStatusItemDetail } from "./GitStatusItemDetail.js";
 
 interface Props {
-  repo: string;
   branch: BranchInfo;
   status: StatusInfo;
   checkStatus: () => void;
 }
 
-export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
+export function GitStatusItem({ status, branch, checkStatus }: Props) {
   const isNotStaged = useMemo(() => {
     return status.staged === "." || status.staged === "?";
   }, [status.staged]);
@@ -36,7 +35,6 @@ export function GitStatusItem({ repo, status, branch, checkStatus }: Props) {
         <GitStatusItemActions
           isNotStaged={isNotStaged}
           isCommittedFile={isCommittedFile}
-          repo={repo}
           fileName={status.fileName}
           checkStatus={checkStatus}
         />

@@ -1,99 +1,51 @@
-import { Action, ActionPanel, Icon, Keyboard, launchCommand, LaunchType, showToast } from "@raycast/api";
-import { showFailureToast, useExec } from "@raycast/utils";
-import { useCallback, useMemo } from "react";
-import { GitCommit } from "../GitCommit.js";
+import { ActionPanel } from "@raycast/api";
 import { RemoteGitActions } from "./RemoteGitActions.js";
-import { BulkGitActions } from "./BulkGitActions.js";
-import { GitBranches } from "../GitBranches.js";
-import { join } from "node:path";
+import { AddFile } from "../actions/AddFile.js";
+import { UnstageFile } from "../actions/UnstageFile.js";
+import { CommitMessage } from "../actions/CommitMessage.js";
+import { RestoreFile } from "../actions/RestoreFile.js";
+import { ChangeCurrentBranch } from "../actions/ChangeCurrentBranch.js";
+import { SetRepo } from "../actions/SetRepo.js";
+import { CopyFilename } from "../actions/CopyFilename.js";
+import { OpenFile } from "../actions/OpenFile.js";
+import { AddAllFiles } from "../actions/AddAllFiles.js";
+import { UnstageAllFiles } from "../actions/UnstageAllFiles.js";
+import { StashAllFiles } from "../actions/StashAllFiles.js";
 
 interface Props {
   isNotStaged: boolean;
   isCommittedFile: boolean;
   fileName: string;
-  repo: string;
   checkStatus: () => void;
 }
 
-export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, repo, checkStatus }: Props) {
-  const { revalidate: addFile } = useExec("git", ["add", fileName], {
-    cwd: repo,
-    execute: false,
-    onData: () => {
-      checkStatus();
-      showToast({ title: `Added ${fileName}` });
-    },
-    onError: (error) => {
-      showFailureToast(error, { title: `Could not stage ${fileName}` });
-    },
-  });
-  const { revalidate: unstageFile } = useExec("git", ["restore", "--staged", fileName], {
-    cwd: repo,
-    execute: false,
-    onData: () => {
-      checkStatus();
-      showToast({ title: `Unstaged ${fileName}` });
-    },
-    onError: (error) => {
-      showFailureToast(error, { title: `Could not unstage ${fileName}` });
-    },
-  });
-  const { revalidate: restoreFile } = useExec("git", ["restore", fileName], {
-    cwd: repo,
-    execute: false,
-    onData: () => {
-      checkStatus();
-      showToast({ title: `Restored ${fileName} to its previous state` });
-    },
-    onError: (error) => {
-      showFailureToast(error, { title: `Could not restore ${fileName}` });
-    },
-  });
-
-  const mainAction = useCallback(() => {
-    if (isNotStaged) {
-      addFile();
-    } else {
-      unstageFile();
-    }
-  }, [isNotStaged, addFile, unstageFile]);
-
-  const filePath = useMemo(() => join(repo, fileName), [fileName, repo]);
-
+export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, checkStatus }: Props) {
   return (
     <ActionPanel>
       <ActionPanel.Section>
-        <Action
-          icon={isNotStaged ? Icon.Plus : Icon.Minus}
-          title={isNotStaged ? "Add" : "Unstage"}
-          onAction={mainAction}
-        />
-        <Action.Push icon={Icon.Pencil} title="Commit" target={<GitCommit repo={repo} checkStatus={checkStatus} />} />
-        {isNotStaged && isCommittedFile ? (
-          <Action icon={Icon.Undo} title="Restore File" onAction={restoreFile} />
-        ) : null}
+        {isNotStaged ? (
+          <AddFile fileName={fileName} checkStatus={checkStatus} />
+        ) : (
+          <UnstageFile fileName={fileName} checkStatus={checkStatus} />
+        )}
+        <CommitMessage checkStatus={checkStatus} />
+        {isNotStaged && isCommittedFile ? <RestoreFile fileName={fileName} checkStatus={checkStatus} /> : null}
       </ActionPanel.Section>
-      <Action.Push
-        icon={Icon.Switch}
-        title="Switch Branch"
-        shortcut={{ key: "b", modifiers: ["cmd"] }}
-        target={<GitBranches repo={repo} checkStatus={checkStatus} />}
-      />
-      <BulkGitActions repo={repo} checkStatus={checkStatus} />
-      <RemoteGitActions repo={repo} checkStatus={checkStatus} />
+
+      <ChangeCurrentBranch checkStatus={checkStatus} />
+
+      <ActionPanel.Section title="Bulk Actions">
+        <AddAllFiles checkStatus={checkStatus} />
+        <UnstageAllFiles checkStatus={checkStatus} />
+        <StashAllFiles checkStatus={checkStatus} />
+      </ActionPanel.Section>
+
+      <RemoteGitActions checkStatus={checkStatus} />
+
       <ActionPanel.Section title="Utilities">
-        <Action
-          icon={Icon.Folder}
-          title="Change Current Repo"
-          onAction={() =>
-            launchCommand({
-              name: "set-repo",
-              type: LaunchType.UserInitiated,
-            })
-          }
-        />
-        <Action.CopyToClipboard title="Copy Filename" content={fileName} shortcut={Keyboard.Shortcut.Common.Copy} />
-        <Action.Open title="Open File" target={filePath} shortcut={Keyboard.Shortcut.Common.Open} />
+        <SetRepo />
+        <CopyFilename fileName={fileName} />
+        <OpenFile fileName={fileName} />
       </ActionPanel.Section>
     </ActionPanel>
   );

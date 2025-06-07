@@ -32,7 +32,7 @@ export function GitStatus() {
           {repo ? (
             <>
               <ChangeCurrentBranch checkStatus={revalidate} />
-              <RemoteGitActions repo={repo} checkStatus={revalidate} />
+              <RemoteGitActions checkStatus={revalidate} />
               <SetRepo title="Change Current Repo" />
             </>
           ) : (
@@ -43,15 +43,7 @@ export function GitStatus() {
     >
       {repo && data?.files.length ? (
         data.files.map((item) => {
-          return (
-            <GitStatusItem
-              key={item.fileName}
-              repo={repo}
-              status={item}
-              branch={data.branch}
-              checkStatus={revalidate}
-            />
-          );
+          return <GitStatusItem key={item.fileName} status={item} branch={data.branch} checkStatus={revalidate} />;
         })
       ) : (
         <GitStatusEmpty repo={repo} branch={data?.branch} />
