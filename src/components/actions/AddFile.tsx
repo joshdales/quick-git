@@ -9,7 +9,7 @@ interface Props {
 
 export function AddFile({ fileName, checkStatus }: Props) {
   const { value } = useRepo();
-  const { revalidate: addFile } = useExec("git", ["add", fileName], {
+  const { revalidate } = useExec("git", ["add", fileName], {
     cwd: value,
     execute: false,
     onData: () => {
@@ -21,5 +21,5 @@ export function AddFile({ fileName, checkStatus }: Props) {
     },
   });
 
-  return <Action title="Add" icon={Icon.Plus} onAction={addFile} />;
+  return <Action title="Add" icon={Icon.Plus} onAction={revalidate} />;
 }

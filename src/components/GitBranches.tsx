@@ -10,9 +10,9 @@ interface Props {
 }
 
 export function GitBranches({ checkStatus }: Props) {
-  const { value: repo } = useRepo();
+  const { value } = useRepo();
   const { data, isLoading, revalidate } = useExec("git", ["branch", "--sort=-committerdate"], {
-    cwd: repo,
+    cwd: value,
     parseOutput: ({ stdout }) => {
       return stdout.split("\n");
     },

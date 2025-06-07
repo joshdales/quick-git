@@ -8,9 +8,9 @@ interface Props {
 }
 
 export function DeleteBranch({ branch, checkBranches }: Props) {
-  const { value: repo } = useRepo();
+  const { value } = useRepo();
   const { revalidate: hardDeleteBranch } = useExec("git", ["branch", "-D", branch], {
-    cwd: repo,
+    cwd: value,
     execute: false,
     onData: () => {
       showToast({ title: `Deleted branch ${branch}` });
@@ -21,7 +21,7 @@ export function DeleteBranch({ branch, checkBranches }: Props) {
     },
   });
   const { revalidate: deleteBranch } = useExec("git", ["branch", "-d", branch], {
-    cwd: repo,
+    cwd: value,
     execute: false,
     onData: () => {
       showToast({ title: `Deleted branch ${branch}` });

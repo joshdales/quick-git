@@ -11,7 +11,7 @@ export const GitCommit = ({ checkStatus }: Props) => {
   const { value } = useRepo();
   const { pop } = useNavigation();
   const [commitMsg, setCommitMsg] = useState("");
-  const { revalidate: commit } = useExec("git", ["commit", "-m", commitMsg], {
+  const { revalidate } = useExec("git", ["commit", "-m", commitMsg], {
     cwd: value,
     execute: false,
     onData: () => {
@@ -24,7 +24,7 @@ export const GitCommit = ({ checkStatus }: Props) => {
     },
   });
   const { handleSubmit, itemProps } = useForm({
-    onSubmit: commit,
+    onSubmit: revalidate,
     validation: {
       commitMsg: FormValidation.Required,
     },

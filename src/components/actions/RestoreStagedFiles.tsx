@@ -9,7 +9,7 @@ interface Props {
 
 export function RestoreStagedFile({ checkStatus }: Props) {
   const { value } = useRepo();
-  const { revalidate: unstageAllFiles } = useExec("git", ["restore", "--staged", "."], {
+  const { revalidate } = useExec("git", ["restore", "--staged", "."], {
     cwd: value,
     execute: false,
     onData: () => {
@@ -24,7 +24,7 @@ export function RestoreStagedFile({ checkStatus }: Props) {
   return (
     <Action
       title="Restore Staged Files"
-      onAction={unstageAllFiles}
+      onAction={revalidate}
       icon={Icon.MinusCircle}
       shortcut={Keyboard.Shortcut.Common.RemoveAll}
     />

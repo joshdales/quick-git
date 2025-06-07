@@ -8,7 +8,7 @@ interface Props {
 
 export function SwitchToLastBranch({ checkBranches }: Props) {
   const { value } = useRepo();
-  const { revalidate: switchToLastBranch } = useExec("git", ["switch", "-"], {
+  const { revalidate } = useExec("git", ["switch", "-"], {
     cwd: value,
     execute: false,
     onData: () => {
@@ -24,7 +24,7 @@ export function SwitchToLastBranch({ checkBranches }: Props) {
     <Action
       title="Switch to Your Last Branch"
       icon={Icon.Replace}
-      onAction={switchToLastBranch}
+      onAction={revalidate}
       shortcut={{ key: "-", modifiers: ["cmd"] }}
     />
   );

@@ -10,10 +10,10 @@ import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
 import { SetRepo } from "./actions/SetRepo.js";
 
 export function GitStatus() {
-  const { value: repo, isLoading: isLoadingRepo } = useRepo();
+  const repo = useRepo();
   const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
-    cwd: repo,
-    execute: !!repo,
+    cwd: repo.value,
+    execute: !!repo.value,
     keepPreviousData: false,
     onError: (error) => {
       showFailureToast(error, { title: "Could not fetch git status" });
@@ -25,11 +25,11 @@ export function GitStatus() {
     <List
       searchBarPlaceholder="Search modified files…"
       navigationTitle="Git Status"
-      isShowingDetail={!!repo && !!data?.files.length}
-      isLoading={isLoadingRepo || isLoading}
+      isShowingDetail={!!repo.value && !!data?.files.length}
+      isLoading={repo.isLoading || isLoading}
       actions={
         <ActionPanel>
-          {repo ? (
+          {repo.value ? (
             <>
               <ChangeCurrentBranch checkStatus={revalidate} />
               <RemoteGitActions checkStatus={revalidate} />
@@ -41,12 +41,12 @@ export function GitStatus() {
         </ActionPanel>
       }
     >
-      {repo && data?.files.length ? (
+      {repo.value && data?.files.length ? (
         data.files.map((item) => {
           return <GitStatusItem key={item.fileName} status={item} branch={data.branch} checkStatus={revalidate} />;
         })
       ) : (
-        <GitStatusEmpty repo={repo} branch={data?.branch} />
+        <GitStatusEmpty branch={data?.branch} />
       )}
     </List>
   );
