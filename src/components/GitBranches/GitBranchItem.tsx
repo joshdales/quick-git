@@ -4,12 +4,11 @@ import { GitBranchItemActions } from "./GitBranchItemActions.js";
 
 interface Props {
   branch: string;
-  repo: string;
   checkBranches: () => void;
   checkStatus: () => void;
 }
 
-export function GitBranchItem({ branch, repo, checkBranches, checkStatus }: Props) {
+export function GitBranchItem({ branch, checkBranches, checkStatus }: Props) {
   // Git indicates the current branch by start that row with with a `*`
   const currentBranch = useMemo(() => branch.startsWith("*"), [branch]);
 
@@ -35,7 +34,6 @@ export function GitBranchItem({ branch, repo, checkBranches, checkStatus }: Prop
       actions={
         <ActionPanel>
           <GitBranchItemActions
-            repo={repo}
             branch={title}
             isCurrentBranch={currentBranch}
             checkStatus={checkStatus}

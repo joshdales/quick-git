@@ -1,8 +1,9 @@
 import { ActionPanel, List } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
-import { GitBranchItem } from "./GitBranches/GitBranchItem.js";
-import { GitBranchActions } from "./GitBranches/GitBranchActions.js";
 import { useRepo } from "../hooks/useRepo.js";
+import { GitBranchItem } from "./GitBranches/GitBranchItem.js";
+import { CreateNewBranch } from "./actions/CreateNewBranch.js";
+import { SwitchToLastBranch } from "./actions/SwitchToLastBranch.js";
 
 interface Props {
   checkStatus: () => void;
@@ -31,7 +32,8 @@ export function GitBranches({ checkStatus }: Props) {
       isLoading={isLoading}
       actions={
         <ActionPanel>
-          <GitBranchActions checkBranches={revalidate} />
+          <CreateNewBranch checkBranches={revalidate} />
+          <SwitchToLastBranch checkBranches={revalidate} />
         </ActionPanel>
       }
     >
@@ -39,7 +41,6 @@ export function GitBranches({ checkStatus }: Props) {
         <GitBranchItem
           key={branch.replace(/^\*\s/, "")}
           branch={branch.trim()}
-          repo={repo}
           checkBranches={revalidate}
           checkStatus={checkStatus}
         />
