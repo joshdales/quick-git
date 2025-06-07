@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { GitCommit } from "../GitCommit.js";
 import { RemoteGitActions } from "./RemoteGitActions.js";
 import { BulkGitActions } from "./BulkGitActions.js";
-import { GitBranch } from "../GitBranch/GitBranch.js";
+import { GitBranches } from "../GitBranches.js";
 import { join } from "node:path";
 
 interface Props {
@@ -77,7 +77,7 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, r
         icon={Icon.Switch}
         title="Switch Branch"
         shortcut={{ key: "b", modifiers: ["cmd"] }}
-        target={<GitBranch repo={repo} checkStatus={checkStatus} />}
+        target={<GitBranches repo={repo} checkStatus={checkStatus} />}
       />
       <BulkGitActions repo={repo} checkStatus={checkStatus} />
       <RemoteGitActions repo={repo} checkStatus={checkStatus} />

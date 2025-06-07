@@ -1,16 +1,12 @@
 import { Action, ActionPanel, Icon, launchCommand, LaunchType, List } from "@raycast/api";
-import type { GitStatus } from "../../utils/status.js";
-import { parseGitStatus } from "../../utils/status.js";
-import { GitStatusItem } from "./GitStatusItem.js";
+import type { GitStatus } from "../utils/status.js";
+import { parseGitStatus } from "../utils/status.js";
+import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { showFailureToast, useExec } from "@raycast/utils";
-import { RemoteGitActions } from "./RemoteGitActions.js";
-import { GitStatusEmpty } from "./GitStatusEmpty.js";
-import { GitBranch } from "../GitBranch/GitBranch.js";
-
-interface Props {
-  repo?: string;
-  isLoadingRepo: boolean;
-}
+import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
+import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
+import { GitBranches } from "./GitBranches.js";
+import { useRepo } from "../hooks/useRepo.js";
 
 const launchSetRepo = () =>
   launchCommand({
@@ -22,7 +18,8 @@ const launchSetRepo = () =>
     });
   });
 
-export function GitStatus({ repo, isLoadingRepo }: Props) {
+export function GitStatus() {
+  const { value: repo, isLoading: isLoadingRepo } = useRepo();
   const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
     cwd: repo,
     execute: !!repo,
@@ -43,11 +40,7 @@ export function GitStatus({ repo, isLoadingRepo }: Props) {
         <ActionPanel>
           {repo ? (
             <>
-              <Action.Push
-                icon={Icon.Switch}
-                title="Switch Branch"
-                target={<GitBranch repo={repo} checkStatus={revalidate} />}
-              />
+              <Action.Push icon={Icon.Switch} title="Switch Branch" target={<GitBranches checkStatus={revalidate} />} />
               <RemoteGitActions repo={repo} checkStatus={revalidate} />
               <Action icon={Icon.Folder} title="Change Current Repo" onAction={launchSetRepo} />
             </>

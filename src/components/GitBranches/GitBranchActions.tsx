@@ -1,6 +1,6 @@
 import { Action, Icon, Keyboard, showToast } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
-import CreateBranch from "./CreateBranch.js";
+import { CreateBranch } from "../CreateBranch.js";
 
 interface Props {
   repo: string;
@@ -28,7 +28,7 @@ export function GitBranchActions({ repo, checkBranches, checkStatus }: Props) {
         icon={Icon.Plus}
         title="Create a New Branch"
         shortcut={Keyboard.Shortcut.Common.New}
-        target={<CreateBranch repo={repo} checkBranches={checkBranches} checkStatus={checkStatus} />}
+        target={<CreateBranch checkBranches={checkBranches} />}
       />
       <Action
         icon={Icon.Replace}

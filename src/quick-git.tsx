@@ -1,8 +1,5 @@
-import { GitStatus } from "./components/GitStatus/GitStatus.js";
-import { useRepo } from "./hooks/useRepo.js";
+import { GitStatus } from "./components/GitStatus.js";
 
 export default function Command() {
-  const { value, isLoading } = useRepo();
-
-  return <GitStatus repo={value} isLoadingRepo={isLoading} />;
+  return <GitStatus />;
 }

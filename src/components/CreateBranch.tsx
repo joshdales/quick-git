@@ -1,14 +1,13 @@
 import { Action, ActionPanel, Form, Icon, showToast, useNavigation } from "@raycast/api";
 import { showFailureToast, useExec, useForm } from "@raycast/utils";
 import { useState } from "react";
-import { useRepo } from "../../hooks/useRepo.js";
+import { useRepo } from "../hooks/useRepo.js";
 
 interface Props {
   checkBranches: () => void;
-  checkStatus: () => void;
 }
 
-export default function CreateBranch({ checkBranches, checkStatus }: Props) {
+export function CreateBranch({ checkBranches }: Props) {
   const { value } = useRepo();
   const [branchName, setBranchName] = useState("");
   const { revalidate, isLoading } = useExec("git", ["switch", "-c", branchName], {
@@ -16,7 +15,6 @@ export default function CreateBranch({ checkBranches, checkStatus }: Props) {
     execute: false,
     onData: () => {
       checkBranches();
-      checkStatus();
       showToast({ title: "Created branch" });
       pop();
     },

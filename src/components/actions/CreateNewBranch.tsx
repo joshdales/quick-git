@@ -1,5 +1,5 @@
 import { Action, Icon, Keyboard } from "@raycast/api";
-import CreateBranch from "../GitBranch/CreateBranch.js";
+import { CreateBranch } from "../CreateBranch.js";
 
 interface Props {
   checkBranches: () => void;
