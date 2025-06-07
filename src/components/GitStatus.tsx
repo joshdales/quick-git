@@ -1,22 +1,13 @@
-import { Action, ActionPanel, Icon, launchCommand, LaunchType, List } from "@raycast/api";
+import { ActionPanel, List } from "@raycast/api";
 import type { GitStatus } from "../utils/status.js";
 import { parseGitStatus } from "../utils/status.js";
 import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
 import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
-import { GitBranches } from "./GitBranches.js";
 import { useRepo } from "../hooks/useRepo.js";
-
-const launchSetRepo = () =>
-  launchCommand({
-    name: "set-repo",
-    type: LaunchType.UserInitiated,
-  }).catch((error) => {
-    showFailureToast(error, {
-      title: "Could not launch the Set Quick Git Repo Command",
-    });
-  });
+import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
+import { SetRepo } from "./actions/SetRepo.js";
 
 export function GitStatus() {
   const { value: repo, isLoading: isLoadingRepo } = useRepo();
@@ -40,12 +31,12 @@ export function GitStatus() {
         <ActionPanel>
           {repo ? (
             <>
-              <Action.Push icon={Icon.Switch} title="Switch Branch" target={<GitBranches checkStatus={revalidate} />} />
+              <ChangeCurrentBranch checkStatus={revalidate} />
               <RemoteGitActions repo={repo} checkStatus={revalidate} />
-              <Action icon={Icon.Folder} title="Change Current Repo" onAction={launchSetRepo} />
+              <SetRepo title="Change Current Repo" />
             </>
           ) : (
-            <Action icon={Icon.Folder} title="Set Repo" onAction={launchSetRepo} />
+            <SetRepo />
           )}
         </ActionPanel>
       }
