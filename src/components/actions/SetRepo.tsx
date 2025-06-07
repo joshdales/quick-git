@@ -1,5 +1,5 @@
-import { Action, Icon, launchCommand, LaunchType } from "@raycast/api";
 import { useMemo } from "react";
+import { Action, Icon, launchCommand, LaunchType } from "@raycast/api";
 
 interface Props {
   title?: string;

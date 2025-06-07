@@ -1,5 +1,5 @@
-import { List } from "@raycast/api";
 import { useMemo } from "react";
+import { List } from "@raycast/api";
 import { GitBranchItemActions } from "./GitBranchItemActions.js";
 
 interface Props {

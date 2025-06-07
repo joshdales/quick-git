@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Action, ActionPanel, Form, Icon, showToast, useNavigation } from "@raycast/api";
 import { showFailureToast, useExec, useForm } from "@raycast/utils";
-import { useState } from "react";
 import { useRepo } from "../hooks/useRepo.js";
 
 interface Props {

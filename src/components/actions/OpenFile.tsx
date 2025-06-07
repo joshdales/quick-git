@@ -1,6 +1,6 @@
-import { Action, Keyboard } from "@raycast/api";
 import { PropsWithChildren, useMemo } from "react";
 import { join } from "node:path";
+import { Action, Keyboard } from "@raycast/api";
 import { useRepo } from "../../hooks/useRepo.js";
 
 interface Props {

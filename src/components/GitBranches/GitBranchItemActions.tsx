@@ -1,8 +1,8 @@
+import { ActionPanel } from "@raycast/api";
 import { SwitchToBranch } from "../actions/SwitchToBranch.js";
 import { DeleteBranch } from "../actions/DeleteBranch.js";
 import { CreateNewBranch } from "../actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "../actions/SwitchToLastBranch.js";
-import { ActionPanel } from "@raycast/api";
 
 interface Props {
   branch: string;
