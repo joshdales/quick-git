@@ -8,6 +8,7 @@ import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
 import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
 import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
 import { SetRepo } from "./actions/SetRepo.js";
+import { useMemo } from "react";
 
 export function GitStatus() {
   const repo = useRepo();
@@ -21,33 +22,41 @@ export function GitStatus() {
     parseOutput: ({ stdout }) => parseGitStatus(stdout),
   });
 
+  const showDetails = useMemo(() => !!repo.value && !!data?.files.length, [data?.files.length, repo.value]);
+
+  const actions = useMemo(() => {
+    if (!repo.value) {
+      return <SetRepo />;
+    }
+
+    return (
+      <>
+        <ChangeCurrentBranch checkStatus={revalidate} />
+        <RemoteGitActions checkStatus={revalidate} />
+        <SetRepo title="Change Current Repo" />
+      </>
+    );
+  }, [repo.value, revalidate]);
+
+  const statusItems = useMemo(() => {
+    if (!data?.files.length) {
+      return <GitStatusEmpty branch={data?.branch} />;
+    }
+
+    return data.files.map((item) => (
+      <GitStatusItem key={item.fileName} status={item} branch={data.branch} checkStatus={revalidate} />
+    ));
+  }, [data, revalidate]);
+
   return (
     <List
       searchBarPlaceholder="Search modified files…"
       navigationTitle="Git Status"
-      isShowingDetail={!!repo.value && !!data?.files.length}
+      isShowingDetail={showDetails}
       isLoading={repo.isLoading || isLoading}
-      actions={
-        <ActionPanel>
-          {repo.value ? (
-            <>
-              <ChangeCurrentBranch checkStatus={revalidate} />
-              <RemoteGitActions checkStatus={revalidate} />
-              <SetRepo title="Change Current Repo" />
-            </>
-          ) : (
-            <SetRepo />
-          )}
-        </ActionPanel>
-      }
+      actions={<ActionPanel>{actions}</ActionPanel>}
     >
-      {repo.value && data?.files.length ? (
-        data.files.map((item) => {
-          return <GitStatusItem key={item.fileName} status={item} branch={data.branch} checkStatus={revalidate} />;
-        })
-      ) : (
-        <GitStatusEmpty branch={data?.branch} />
-      )}
+      {statusItems}
     </List>
   );
 }

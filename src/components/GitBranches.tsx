@@ -4,6 +4,7 @@ import { useRepo } from "../hooks/useRepo.js";
 import { GitBranchItem } from "./GitBranches/GitBranchItem.js";
 import { CreateNewBranch } from "./actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "./actions/SwitchToLastBranch.js";
+import { useMemo } from "react";
 
 interface Props {
   checkStatus: () => void;
@@ -25,6 +26,16 @@ export function GitBranches({ checkStatus }: Props) {
     stripFinalNewline: true,
   });
 
+  const branchItems = useMemo(() => {
+    if (!data) {
+      return <List.EmptyView title="There are no branches" />;
+    }
+
+    return data.map((branch) => (
+      <GitBranchItem key={branch.replace(/^\*\s/, "")} branch={branch.trim()} checkBranches={revalidate} />
+    ));
+  }, [data, revalidate]);
+
   return (
     <List
       searchBarPlaceholder="Search branches…"
@@ -37,9 +48,7 @@ export function GitBranches({ checkStatus }: Props) {
         </ActionPanel>
       }
     >
-      {data?.map((branch) => (
-        <GitBranchItem key={branch.replace(/^\*\s/, "")} branch={branch.trim()} checkBranches={revalidate} />
-      )) ?? <List.EmptyView title="There are no branches" />}
+      {branchItems}
     </List>
   );
 }
