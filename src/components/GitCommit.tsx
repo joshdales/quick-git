@@ -7,7 +7,7 @@ interface Props {
   checkStatus: () => void;
 }
 
-export const GitCommit = ({ checkStatus }: Props) => {
+export function GitCommit({ checkStatus }: Props) {
   const { value } = useRepo();
   const { pop } = useNavigation();
   const [commitMsg, setCommitMsg] = useState("");
@@ -48,4 +48,4 @@ export const GitCommit = ({ checkStatus }: Props) => {
       />
     </Form>
   );
-};
+}
