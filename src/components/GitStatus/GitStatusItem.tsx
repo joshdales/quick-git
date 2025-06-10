@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Icon, List } from "@raycast/api";
 import type { StatusInfo } from "../../utils/status.js";
 import type { BranchInfo } from "../../utils/branch.js";
@@ -12,6 +12,7 @@ interface Props {
 }
 
 export function GitStatusItem({ status, branch, checkStatus }: Props) {
+  const [diff, setDiff] = useState("");
   const isNotStaged = useMemo(() => {
     return status.staged === "." || status.staged === "?";
   }, [status.staged]);
@@ -37,9 +38,10 @@ export function GitStatusItem({ status, branch, checkStatus }: Props) {
           isCommittedFile={isCommittedFile}
           fileName={status.fileName}
           checkStatus={checkStatus}
+          updateDiff={setDiff}
         />
       }
-      detail={<GitStatusItemDetail branch={branch} status={status} />}
+      detail={<GitStatusItemDetail branch={branch} status={status} diff={diff} />}
     />
   );
 }

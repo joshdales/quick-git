@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { ActionPanel } from "@raycast/api";
 import { RemoteGitActions } from "./RemoteGitActions.js";
 import { AddFile } from "../actions/AddFile.js";
@@ -11,16 +12,17 @@ import { OpenFile } from "../actions/OpenFile.js";
 import { AddAllFiles } from "../actions/AddAllFiles.js";
 import { UnstageAllFiles } from "../actions/UnstageAllFiles.js";
 import { StashAllFiles } from "../actions/StashAllFiles.js";
-import { useMemo } from "react";
+import { FileDiff } from "../actions/FileDiff.js";
 
 interface Props {
   isNotStaged: boolean;
   isCommittedFile: boolean;
   fileName: string;
   checkStatus: () => void;
+  updateDiff: (data: string) => void;
 }
 
-export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, checkStatus }: Props) {
+export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, checkStatus, updateDiff }: Props) {
   const mainAction = useMemo(() => {
     return isNotStaged ? (
       <AddFile fileName={fileName} checkStatus={checkStatus} />
@@ -30,12 +32,17 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, c
   }, [checkStatus, fileName, isNotStaged]);
 
   const restoreFile = useMemo(() => {
-    if (isNotStaged && isCommittedFile) {
-      return <RestoreFile fileName={fileName} checkStatus={checkStatus} />;
+    if (!isNotStaged || !isCommittedFile) {
+      return null;
     }
 
-    return null;
-  }, [checkStatus, fileName, isCommittedFile, isNotStaged]);
+    return (
+      <>
+        <FileDiff fileName={fileName} updateDiff={updateDiff} />
+        <RestoreFile fileName={fileName} checkStatus={checkStatus} />
+      </>
+    );
+  }, [checkStatus, fileName, isCommittedFile, isNotStaged, updateDiff]);
 
   return (
     <ActionPanel>

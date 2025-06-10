@@ -7,9 +7,10 @@ import { useMemo } from "react";
 interface Props {
   branch: BranchInfo;
   status: StatusInfo;
+  diff: string;
 }
 
-export function GitStatusItemDetail({ branch, status }: Props) {
+export function GitStatusItemDetail({ branch, status, diff }: Props) {
   const upstreamData = useMemo(() => {
     if (!branch.upstream) {
       return null;
@@ -24,8 +25,17 @@ export function GitStatusItemDetail({ branch, status }: Props) {
     );
   }, [branch.ahead, branch.behind, branch.upstream]);
 
+  const diffMarkdown = useMemo(() => {
+    if (!diff) {
+      return null;
+    }
+
+    return "```diff\n" + diff;
+  }, [diff]);
+
   return (
     <List.Item.Detail
+      markdown={diffMarkdown}
       metadata={
         <List.Item.Detail.Metadata>
           <List.Item.Detail.Metadata.Label title="File path" text={status.fileName} />
