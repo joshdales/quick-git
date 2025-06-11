@@ -1,8 +1,9 @@
 # Quick Git Changelog
 
-## [UNRELEASED] = {PR_MERGE_DATE}
+## [Diffs and deletes] = {PR_MERGE_DATE}
 
 - Allow unmerged branches to be deleted
+- Show diffs for changed files
 - Various under the hood changes
 
 ## [Initial Version] - 2025-06-10
