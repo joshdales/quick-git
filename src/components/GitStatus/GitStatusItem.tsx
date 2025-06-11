@@ -36,6 +36,7 @@ export function GitStatusItem({ status, branch, checkStatus }: Props) {
         <GitStatusItemActions
           isNotStaged={isNotStaged}
           isCommittedFile={isCommittedFile}
+          isShowingDiff={!!diff}
           fileName={status.fileName}
           checkStatus={checkStatus}
           updateDiff={setDiff}

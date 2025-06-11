@@ -17,12 +17,20 @@ import { FileDiff } from "../actions/FileDiff.js";
 interface Props {
   isNotStaged: boolean;
   isCommittedFile: boolean;
+  isShowingDiff: boolean;
   fileName: string;
   checkStatus: () => void;
   updateDiff: (data: string) => void;
 }
 
-export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, checkStatus, updateDiff }: Props) {
+export function GitStatusItemActions({
+  isNotStaged,
+  isCommittedFile,
+  isShowingDiff,
+  fileName,
+  checkStatus,
+  updateDiff,
+}: Props) {
   const mainAction = useMemo(() => {
     return isNotStaged ? (
       <AddFile fileName={fileName} checkStatus={checkStatus} />
@@ -38,11 +46,11 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, fileName, c
 
     return (
       <>
-        <FileDiff fileName={fileName} updateDiff={updateDiff} />
+        <FileDiff fileName={fileName} updateDiff={updateDiff} isShowingDiff={isShowingDiff} />
         <RestoreFile fileName={fileName} checkStatus={checkStatus} />
       </>
     );
-  }, [checkStatus, fileName, isCommittedFile, isNotStaged, updateDiff]);
+  }, [checkStatus, fileName, isCommittedFile, isNotStaged, isShowingDiff, updateDiff]);
 
   return (
     <ActionPanel>
