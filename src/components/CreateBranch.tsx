@@ -9,6 +9,7 @@ interface Props {
 
 export function CreateBranch({ checkBranches }: Props) {
   const { value } = useRepo();
+  const { pop } = useNavigation();
   const [branchName, setBranchName] = useState("");
   const { revalidate, isLoading } = useExec("git", ["switch", "-c", branchName], {
     cwd: value,
@@ -24,7 +25,6 @@ export function CreateBranch({ checkBranches }: Props) {
       });
     },
   });
-  const { pop } = useNavigation();
   const { handleSubmit, itemProps } = useForm({
     onSubmit: revalidate,
     validation: {
