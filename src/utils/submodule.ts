@@ -10,7 +10,7 @@ export interface SubmoduleStatus {
  * @param sub A 4 character field describing the submodule state
  */
 export function parseSubmodule(sub: string): SubmoduleStatus {
-  if (!sub || sub === "N...") {
+  if (!sub || !sub.startsWith("S")) {
     return {
       isSubmodule: false,
       commitHasChanged: false,
