@@ -1,4 +1,4 @@
-import { Action, Keyboard, showToast } from "@raycast/api";
+import { Action, Icon, Keyboard, showToast } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { useRepo } from "../../hooks/useRepo.js";
 
@@ -20,5 +20,12 @@ export function UnstageAllFiles({ checkStatus }: Props) {
     },
   });
 
-  return <Action title="Unstage All Files" onAction={revalidate} shortcut={Keyboard.Shortcut.Common.RemoveAll} />;
+  return (
+    <Action
+      title="Unstage All Files"
+      icon={Icon.MinusCircle}
+      onAction={revalidate}
+      shortcut={Keyboard.Shortcut.Common.RemoveAll}
+    />
+  );
 }
