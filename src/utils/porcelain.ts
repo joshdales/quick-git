@@ -36,9 +36,11 @@ type LineIndicator =
 
 interface LineFormat {
   indicator: LineIndicator;
+  /** Status of the index */
   stagedChanges: XYStatus;
+  /** Status of the woking tree */
   unstagedChanges: XYStatus;
-  /** Submodule */
+  /** Status of the git submodule */
   submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
   mH: string;
