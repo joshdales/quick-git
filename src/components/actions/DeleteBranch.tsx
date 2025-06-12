@@ -38,5 +38,7 @@ export function DeleteBranch({ branch, checkBranches }: Props) {
     },
   });
 
-  return <Action title="Delete This Branch" icon={Icon.Trash} onAction={deleteBranch} />;
+  return (
+    <Action title="Delete This Branch" icon={Icon.Trash} onAction={deleteBranch} style={Action.Style.Destructive} />
+  );
 }

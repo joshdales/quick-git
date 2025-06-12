@@ -22,6 +22,12 @@ export function RestoreFile({ fileName, checkStatus }: Props) {
   });
 
   return (
-    <Action title="Restore File" icon={Icon.Undo} onAction={revalidate} shortcut={Keyboard.Shortcut.Common.Remove} />
+    <Action
+      title="Restore File"
+      icon={Icon.Undo}
+      onAction={revalidate}
+      shortcut={Keyboard.Shortcut.Common.Remove}
+      style={Action.Style.Destructive}
+    />
   );
 }
