@@ -1,6 +1,6 @@
 import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
 
-type XYStatus =
+export type XYStatus =
   | /** unmodified */
   "."
   /** modified */
@@ -134,9 +134,18 @@ function parseChanges(xy: string): [XYStatus, XYStatus] {
 /** Match unescaped space characters, in case there are spaces in a filename */
 const spaceRegex = /(?<!\\) /;
 
+function parsePaths(strings: string[]): [string, string] {
+  const rejoinedPaths = strings.join(" ");
+  // in the case of a rename pathnames are separated by a tab character
+  const [path, origPath] = rejoinedPaths.split(/\t/);
+  return [path, origPath];
+}
+
 function parseChangedFile(line: string): ChangedFile {
-  const [, xy, sub, mH, mI, mW, hH, hI, path] = line.split(spaceRegex);
+  const [, xy, sub, mH, mI, mW, hH, hI, ...paths] = line.split(spaceRegex);
   const [indexChanges, workingChanges] = parseChanges(xy);
+  const [path] = parsePaths(paths);
+
   return {
     indicator: "1",
     indexChanges,
@@ -152,11 +161,10 @@ function parseChangedFile(line: string): ChangedFile {
 }
 
 function parseRenamedFile(line: string): RenamedFile {
-  const [, xy, sub, mH, mI, mW, hH, hI, xScore, completePath] = line.split(spaceRegex);
+  const [, xy, sub, mH, mI, mW, hH, hI, xScore, ...paths] = line.split(spaceRegex);
   const [indexChanges, workingChanges] = parseChanges(xy);
   const [rc, score] = xScore.split(/\s/) as ["R" | "C", string];
-  // pathnames are separated by a tab character
-  const [path, origPath] = completePath.split(/\t/);
+  const [path, origPath] = parsePaths(paths);
 
   return {
     indicator: "2",
@@ -176,8 +184,10 @@ function parseRenamedFile(line: string): RenamedFile {
 }
 
 function parseUnmergedFile(line: string): UnmergedFile {
-  const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, path] = line.split(spaceRegex);
+  const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, ...paths] = line.split(spaceRegex);
   const [indexChanges, workingChanges] = parseChanges(xy);
+  const [path] = parsePaths(paths);
+
   return {
     indicator: "u",
     indexChanges,
@@ -205,14 +215,18 @@ export function parsePorcelainStatus(line: string): PorcelainStatus {
     case "u":
       return parseUnmergedFile(line);
     case "?": {
-      const [, path] = line.split(" ");
+      const [, ...paths] = line.split(spaceRegex);
+      const [path] = parsePaths(paths);
+
       return {
         indicator: "?",
         path,
       };
     }
     case "!": {
-      const [, path] = line.split(" ");
+      const [, ...paths] = line.split(" ");
+      const [path] = parsePaths(paths);
+
       return {
         indicator: "!",
         path,

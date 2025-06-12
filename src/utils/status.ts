@@ -1,26 +1,6 @@
 import { BranchInfo, parseBranchHeaders } from "./branch.js";
-
-export type GitStatus =
-  | /** unmodified */
-  "."
-  /** modified */
-  | "M"
-  /** file type changed (regular file, symbolic link or submodule) */
-  | "T"
-  /** added */
-  | "A"
-  /** deleted */
-  | "D"
-  /** renamed */
-  | "R"
-  /** copied (if config option status.renames is set to "copies") */
-  | "C"
-  /** updated but unmerged */
-  | "U"
-  /** untracked */
-  | "?"
-  /** ignored */
-  | "!";
+import { parsePorcelainStatus, type XYStatus as GitStatus } from "./porcelain.js";
+export type { GitStatus };
 
 type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 
@@ -63,61 +43,30 @@ function lineFormat(format: string): GitStatusFormat {
   }
 }
 
-function parseChanges(xy: string): [GitStatus, GitStatus] {
-  return [xy.charAt(0) as GitStatus, xy.charAt(1) as GitStatus];
-}
-
-function parseUntracked(fields: string[]): StatusInfo {
-  const fileName = fields.at(-1) ?? "";
-  return {
-    format: "untracked",
-    fileName,
-    staged: ".",
-    unstaged: "?",
-  };
-}
-
-function parseRenamed(fields: string[]): StatusInfo {
-  const path = fields.at(-1) ?? "";
-  const [fileName, origPath] = path.split(/\s/);
-  const [staged, unstaged] = parseChanges(fields[1]);
-
-  return {
-    format: "renamed",
-    fileName,
-    origPath,
-    staged,
-    unstaged,
-    submodule: isSubmodule(fields[2]),
-  };
-}
-
-function isSubmodule(field: string) {
-  return !field.startsWith("N");
-}
-
 /**
  * Parse a row from git status in the Porcelain 2 format
  * @param dataRow
  * @returns
  */
 export function parseGitFileStatus(dataRow: string): StatusInfo {
-  const fields = dataRow.split(" ");
-  const format = lineFormat(fields[0]);
-  if (format === "untracked") {
-    return parseUntracked(fields);
-  } else if (format === "renamed") {
-    return parseRenamed(fields);
+  const fields = parsePorcelainStatus(dataRow);
+  if (fields.indicator === "?" || fields.indicator === "!") {
+    return {
+      format: "untracked",
+      fileName: fields.path,
+      staged: ".",
+      unstaged: fields.indicator,
+    };
   }
-  const fileName = fields.at(-1) ?? "";
-  const [staged, unstaged] = parseChanges(fields[1]);
+  const format = lineFormat(fields.indicator);
 
   return {
     format,
-    fileName,
-    staged,
-    unstaged,
-    submodule: isSubmodule(fields[2]),
+    fileName: fields.path,
+    origPath: fields.indicator === "2" ? fields.origPath : undefined,
+    staged: fields.indexChanges,
+    unstaged: fields.workingChanges,
+    submodule: fields.submodule.isSubmodule,
   };
 }
 
