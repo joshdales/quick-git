@@ -1,4 +1,4 @@
-export type GitStatus =
+type XYStatus =
   | /** unmodified */
   "."
   /** modified */
@@ -24,8 +24,8 @@ type LineIndicator = "1" | "2" | "u" | "?" | "!";
 
 interface LineFormat {
   indicator: LineIndicator;
-  stagedChanges: GitStatus;
-  unstagedChanges: GitStatus;
+  stagedChanges: XYStatus;
+  unstagedChanges: XYStatus;
   /** Submodule */
   sub: string;
   /** The octal file mode in HEAD */
@@ -102,8 +102,8 @@ interface IgnoredFile extends Pick<LineFormat, "indicator" | "path"> {
 
 export type PorcelainStatus = ChangedFile | RenamedFile | UnmergedFile | UntrackedFile | IgnoredFile;
 
-function parseChanges(xy: string): [GitStatus, GitStatus] {
-  return [xy.charAt(0) as GitStatus, xy.charAt(1) as GitStatus];
+function parseChanges(xy: string): [XYStatus, XYStatus] {
+  return [xy.charAt(0) as XYStatus, xy.charAt(1) as XYStatus];
 }
 
 function parseChangedFile(line: string): ChangedFile {
