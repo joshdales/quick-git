@@ -37,9 +37,9 @@ type LineIndicator =
 interface LineFormat {
   indicator: LineIndicator;
   /** Status of the index */
-  stagedChanges: XYStatus;
+  indexChanges: XYStatus;
   /** Status of the woking tree */
-  unstagedChanges: XYStatus;
+  workingChanges: XYStatus;
   /** Status of the git submodule */
   submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
@@ -77,7 +77,7 @@ interface LineFormat {
 interface ChangedFile
   extends Pick<
     LineFormat,
-    "indicator" | "stagedChanges" | "unstagedChanges" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
+    "indicator" | "indexChanges" | "workingChanges" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
   > {
   indicator: "1";
 }
@@ -85,8 +85,8 @@ interface RenamedFile
   extends Pick<
     LineFormat,
     | "indicator"
-    | "stagedChanges"
-    | "unstagedChanges"
+    | "indexChanges"
+    | "workingChanges"
     | "submodule"
     | "mH"
     | "mI"
@@ -104,8 +104,8 @@ interface UnmergedFile
   extends Pick<
     LineFormat,
     | "indicator"
-    | "stagedChanges"
-    | "unstagedChanges"
+    | "indexChanges"
+    | "workingChanges"
     | "submodule"
     | "m1"
     | "m2"
@@ -131,13 +131,16 @@ function parseChanges(xy: string): [XYStatus, XYStatus] {
   return [xy.charAt(0) as XYStatus, xy.charAt(1) as XYStatus];
 }
 
+/** Match unescaped space characters, in case there are spaces in a filename */
+const spaceRegex = /(?<!\\) /;
+
 function parseChangedFile(line: string): ChangedFile {
-  const [, xy, sub, mH, mI, mW, hH, hI, path] = line.split(" ");
-  const [stagedChanges, unstagedChanges] = parseChanges(xy);
+  const [, xy, sub, mH, mI, mW, hH, hI, path] = line.split(spaceRegex);
+  const [indexChanges, workingChanges] = parseChanges(xy);
   return {
     indicator: "1",
-    stagedChanges,
-    unstagedChanges,
+    indexChanges,
+    workingChanges,
     submodule: parseSubmodule(sub),
     mH,
     mI,
@@ -149,15 +152,16 @@ function parseChangedFile(line: string): ChangedFile {
 }
 
 function parseRenamedFile(line: string): RenamedFile {
-  const [, xy, sub, mH, mI, mW, hH, hI, xScore, completePath] = line.split(" ");
-  const [stagedChanges, unstagedChanges] = parseChanges(xy);
+  const [, xy, sub, mH, mI, mW, hH, hI, xScore, completePath] = line.split(spaceRegex);
+  const [indexChanges, workingChanges] = parseChanges(xy);
   const [rc, score] = xScore.split(/\s/) as ["R" | "C", string];
-  const [path, origPath] = completePath.split(/\s/);
+  // pathnames are separated by a tab character
+  const [path, origPath] = completePath.split(/\t/);
 
   return {
     indicator: "2",
-    stagedChanges,
-    unstagedChanges,
+    indexChanges,
+    workingChanges,
     submodule: parseSubmodule(sub),
     mH,
     mI,
@@ -172,12 +176,12 @@ function parseRenamedFile(line: string): RenamedFile {
 }
 
 function parseUnmergedFile(line: string): UnmergedFile {
-  const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, path] = line.split(" ");
-  const [stagedChanges, unstagedChanges] = parseChanges(xy);
+  const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, path] = line.split(spaceRegex);
+  const [indexChanges, workingChanges] = parseChanges(xy);
   return {
     indicator: "u",
-    stagedChanges,
-    unstagedChanges,
+    indexChanges,
+    workingChanges,
     submodule: parseSubmodule(sub),
     m1,
     m2,
