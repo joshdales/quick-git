@@ -14,7 +14,7 @@ export interface StatusInfo {
   staged: GitStatus;
   /** Status of the working tree */
   unstaged: GitStatus;
-  /** Is the  */
+  /** Is this a submodule */
   submodule?: boolean;
 }
 
@@ -48,7 +48,7 @@ function lineFormat(format: string): GitStatusFormat {
  * @param dataRow
  * @returns
  */
-export function parseGitFileStatus(dataRow: string): StatusInfo {
+function parseGitFileStatus(dataRow: string): StatusInfo {
   const fields = parsePorcelainStatus(dataRow);
   if (fields.indicator === "?" || fields.indicator === "!") {
     return {
