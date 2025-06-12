@@ -6,7 +6,7 @@ export interface SubmoduleStatus {
 }
 
 /**
- * Parse submodule status from poreclain version 2.
+ * Parse submodule status from porcelain version 2.
  * @param sub A 4 character field describing the submodule state
  */
 export function parseSubmodule(sub: string): SubmoduleStatus {
