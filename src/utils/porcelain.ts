@@ -1,3 +1,5 @@
+import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
+
 type XYStatus =
   | /** unmodified */
   "."
@@ -27,7 +29,7 @@ interface LineFormat {
   stagedChanges: XYStatus;
   unstagedChanges: XYStatus;
   /** Submodule */
-  sub: string;
+  submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
   mH: string;
   /** The octal file mode in the index */
@@ -63,7 +65,7 @@ interface LineFormat {
 interface ChangedFile
   extends Pick<
     LineFormat,
-    "indicator" | "stagedChanges" | "unstagedChanges" | "sub" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
+    "indicator" | "stagedChanges" | "unstagedChanges" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
   > {
   indicator: "1";
 }
@@ -73,7 +75,7 @@ interface RenamedFile
     | "indicator"
     | "stagedChanges"
     | "unstagedChanges"
-    | "sub"
+    | "submodule"
     | "mH"
     | "mI"
     | "mW"
@@ -89,7 +91,18 @@ interface RenamedFile
 interface UnmergedFile
   extends Pick<
     LineFormat,
-    "indicator" | "stagedChanges" | "unstagedChanges" | "sub" | "m1" | "m2" | "m3" | "mW" | "h1" | "h2" | "h3" | "path"
+    | "indicator"
+    | "stagedChanges"
+    | "unstagedChanges"
+    | "submodule"
+    | "m1"
+    | "m2"
+    | "m3"
+    | "mW"
+    | "h1"
+    | "h2"
+    | "h3"
+    | "path"
   > {
   indicator: "u";
 }
@@ -113,7 +126,7 @@ function parseChangedFile(line: string): ChangedFile {
     indicator: "1",
     stagedChanges,
     unstagedChanges,
-    sub,
+    submodule: parseSubmodule(sub),
     mH,
     mI,
     mW,
@@ -133,7 +146,7 @@ function parseRenamedFile(line: string): RenamedFile {
     indicator: "2",
     stagedChanges,
     unstagedChanges,
-    sub,
+    submodule: parseSubmodule(sub),
     mH,
     mI,
     mW,
@@ -153,7 +166,7 @@ function parseUnmergedFile(line: string): UnmergedFile {
     indicator: "u",
     stagedChanges,
     unstagedChanges,
-    sub,
+    submodule: parseSubmodule(sub),
     m1,
     m2,
     m3,
