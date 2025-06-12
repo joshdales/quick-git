@@ -22,7 +22,17 @@ type XYStatus =
   /** ignored */
   | "!";
 
-type LineIndicator = "1" | "2" | "u" | "?" | "!";
+type LineIndicator =
+  | /** Ordinary changed entry */
+  "1"
+  /** Renamed or copied entry */
+  | "2"
+  /** Unmerged entry */
+  | "u"
+  /** Untracked entry */
+  | "?"
+  /** Ignored entry */
+  | "!";
 
 interface LineFormat {
   indicator: LineIndicator;
@@ -178,22 +188,6 @@ function parseUnmergedFile(line: string): UnmergedFile {
   };
 }
 
-function parseUntrackedFile(line: string): UntrackedFile {
-  const [, path] = line.split(" ");
-  return {
-    indicator: "?",
-    path,
-  };
-}
-
-function parseIgnoredFile(line: string): IgnoredFile {
-  const [, path] = line.split(" ");
-  return {
-    indicator: "!",
-    path,
-  };
-}
-
 export function parsePorcelainStatus(line: string): PorcelainStatus {
   const indicator = line.charAt(0) as LineIndicator;
 
@@ -204,9 +198,19 @@ export function parsePorcelainStatus(line: string): PorcelainStatus {
       return parseRenamedFile(line);
     case "u":
       return parseUnmergedFile(line);
-    case "?":
-      return parseUntrackedFile(line);
-    case "!":
-      return parseIgnoredFile(line);
+    case "?": {
+      const [, path] = line.split(" ");
+      return {
+        indicator: "?",
+        path,
+      };
+    }
+    case "!": {
+      const [, path] = line.split(" ");
+      return {
+        indicator: "!",
+        path,
+      };
+    }
   }
 }
