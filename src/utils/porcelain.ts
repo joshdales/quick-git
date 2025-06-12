@@ -24,8 +24,8 @@ type LineIndicator = "1" | "2" | "u" | "?" | "!";
 
 interface LineFormat {
   indicator: LineIndicator;
-  /** Staged and unstaged XY values described in the short format */
-  xy: [GitStatus, GitStatus];
+  stagedChanges: GitStatus;
+  unstagedChanges: GitStatus;
   /** Submodule */
   sub: string;
   /** The octal file mode in HEAD */
@@ -52,7 +52,7 @@ interface LineFormat {
   h3: string;
   /** Rename or copy */
   rc: "R" | "C";
-  /** RC Score - denoting the percentage of similarity between the source and target of the move or copy */
+  /** Score denoting the percentage of similarity between the source and target of the move or copy */
   rcScore: number;
   /** The pathname. In a renamed/copied entry, this is the target path */
   path: string;
@@ -60,18 +60,37 @@ interface LineFormat {
   origPath: string;
 }
 
-interface ChangedFile extends Pick<LineFormat, "indicator" | "xy" | "sub" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"> {
+interface ChangedFile
+  extends Pick<
+    LineFormat,
+    "indicator" | "stagedChanges" | "unstagedChanges" | "sub" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
+  > {
   indicator: "1";
 }
 interface RenamedFile
   extends Pick<
     LineFormat,
-    "indicator" | "xy" | "sub" | "mH" | "mI" | "mW" | "hH" | "hI" | "rc" | "rcScore" | "path" | "origPath"
+    | "indicator"
+    | "stagedChanges"
+    | "unstagedChanges"
+    | "sub"
+    | "mH"
+    | "mI"
+    | "mW"
+    | "hH"
+    | "hI"
+    | "rc"
+    | "rcScore"
+    | "path"
+    | "origPath"
   > {
   indicator: "2";
 }
 interface UnmergedFile
-  extends Pick<LineFormat, "indicator" | "xy" | "sub" | "m1" | "m2" | "m3" | "mW" | "h1" | "h2" | "h3" | "path"> {
+  extends Pick<
+    LineFormat,
+    "indicator" | "stagedChanges" | "unstagedChanges" | "sub" | "m1" | "m2" | "m3" | "mW" | "h1" | "h2" | "h3" | "path"
+  > {
   indicator: "u";
 }
 interface UntrackedFile extends Pick<LineFormat, "indicator" | "path"> {
@@ -83,11 +102,17 @@ interface IgnoredFile extends Pick<LineFormat, "indicator" | "path"> {
 
 export type PorcelainStatus = ChangedFile | RenamedFile | UnmergedFile | UntrackedFile | IgnoredFile;
 
+function parseChanges(xy: string): [GitStatus, GitStatus] {
+  return [xy.charAt(0) as GitStatus, xy.charAt(1) as GitStatus];
+}
+
 function parseChangedFile(line: string): ChangedFile {
   const [, xy, sub, mH, mI, mW, hH, hI, path] = line.split(" ");
+  const [stagedChanges, unstagedChanges] = parseChanges(xy);
   return {
     indicator: "1",
-    xy: xy.split("") as [GitStatus, GitStatus],
+    stagedChanges,
+    unstagedChanges,
     sub,
     mH,
     mI,
@@ -100,19 +125,21 @@ function parseChangedFile(line: string): ChangedFile {
 
 function parseRenamedFile(line: string): RenamedFile {
   const [, xy, sub, mH, mI, mW, hH, hI, xScore, completePath] = line.split(" ");
-  const [rc, score] = xScore.split(/\s/);
+  const [stagedChanges, unstagedChanges] = parseChanges(xy);
+  const [rc, score] = xScore.split(/\s/) as ["R" | "C", string];
   const [path, origPath] = completePath.split(/\s/);
 
   return {
     indicator: "2",
-    xy: xy.split("") as [GitStatus, GitStatus],
+    stagedChanges,
+    unstagedChanges,
     sub,
     mH,
     mI,
     mW,
     hH,
     hI,
-    rc: rc as "R" | "C",
+    rc,
     rcScore: +score,
     path,
     origPath,
@@ -121,9 +148,11 @@ function parseRenamedFile(line: string): RenamedFile {
 
 function parseUnmergedFile(line: string): UnmergedFile {
   const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, path] = line.split(" ");
+  const [stagedChanges, unstagedChanges] = parseChanges(xy);
   return {
     indicator: "u",
-    xy: xy.split("") as [GitStatus, GitStatus],
+    stagedChanges,
+    unstagedChanges,
     sub,
     m1,
     m2,
