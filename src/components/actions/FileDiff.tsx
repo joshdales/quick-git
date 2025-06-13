@@ -25,7 +25,7 @@ export function FileDiff({ fileName, isShowingDiff, updateDiff }: Props) {
     },
   });
 
-  const title = useMemo(() => (isShowingDiff ? "Show Diff" : "Hide Diff"), [isShowingDiff]);
+  const title = useMemo(() => (isShowingDiff ? "Hide Diff" : "Show Diff"), [isShowingDiff]);
 
   const action = useCallback(() => {
     if (isShowingDiff) {
