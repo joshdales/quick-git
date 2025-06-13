@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { join } from "node:path";
-import { Action, getDefaultApplication, Image, Keyboard } from "@raycast/api";
+import { Action, getDefaultApplication, Icon, Image, Keyboard } from "@raycast/api";
 import { useRepo } from "../../hooks/useRepo.js";
 
 interface Props {
@@ -18,10 +18,20 @@ export function OpenFile({ fileName }: PropsWithChildren<Props>) {
       .then((app) => {
         setAppIcon({ fileIcon: app.path });
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch();
   }, [filePath, value]);
 
-  return <Action.Open title="Open File" target={filePath} icon={appIcon} shortcut={Keyboard.Shortcut.Common.Open} />;
+  return (
+    <>
+      {appIcon ? (
+        <Action.Open title="Open File" icon={appIcon} target={filePath} shortcut={Keyboard.Shortcut.Common.Open} />
+      ) : null}
+      <Action.OpenWith
+        title="Open File"
+        icon={Icon.Finder}
+        path={filePath}
+        shortcut={Keyboard.Shortcut.Common.OpenWith}
+      />
+    </>
+  );
 }
