@@ -4,6 +4,7 @@
 
 - Allow unmerged branches to be deleted
 - Show and hide diffs for changed files
+- Add `Open With…` action
 - Various under the hood changes
 
 ## [Initial Version] - 2025-06-10
