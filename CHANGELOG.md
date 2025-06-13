@@ -1,6 +1,6 @@
 # Quick Git Changelog
 
-## [Diffs and deletes] = {PR_MERGE_DATE}
+## [Diffs and deletes] - {PR_MERGE_DATE}
 
 - Allow unmerged branches to be deleted
 - Show and hide diffs for changed files
