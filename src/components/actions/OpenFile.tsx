@@ -18,14 +18,18 @@ export function OpenFile({ fileName }: PropsWithChildren<Props>) {
       .then((app) => {
         setAppIcon({ fileIcon: app.path });
       })
-      .catch();
+      .catch(() => {
+        // Quietly catch any error and fallback to the default image
+      });
   }, [filePath, value]);
+
+  if (!value) {
+    return null;
+  }
 
   return (
     <>
-      {appIcon ? (
-        <Action.Open title="Open File" icon={appIcon} target={filePath} shortcut={Keyboard.Shortcut.Common.Open} />
-      ) : null}
+      <Action.Open title="Open File" icon={appIcon} target={filePath} shortcut={Keyboard.Shortcut.Common.Open} />
       <Action.OpenWith
         title="Open File"
         icon={Icon.Finder}
