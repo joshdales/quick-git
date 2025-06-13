@@ -35,5 +35,5 @@ export function FileDiff({ fileName, isShowingDiff, updateDiff }: Props) {
     }
   }, [isShowingDiff, revalidate, updateDiff]);
 
-  return <Action icon={Icon.CodeBlock} title={title} onAction={action} shortcut={{ key: "d", modifiers: ["cmd"] }} />;
+  return <Action title={title} icon={Icon.CodeBlock} onAction={action} shortcut={{ key: "d", modifiers: ["cmd"] }} />;
 }
