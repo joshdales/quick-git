@@ -1,14 +1,15 @@
+import { useMemo } from "react";
 import { ActionPanel, List } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import type { GitStatus } from "../utils/status.js";
 import { parseGitStatus } from "../utils/status.js";
-import { useRepoStorage, RepoContext } from "../hooks/useRepo.js";
+import { useRepoStorage } from "../hooks/useRepo.js";
 import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
 import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
 import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
 import { SetRepo } from "./actions/SetRepo.js";
-import { useMemo } from "react";
+import { Providers } from "./Providers.js";
 
 export function GitStatus() {
   const repo = useRepoStorage();
@@ -31,25 +32,23 @@ export function GitStatus() {
 
     return (
       <>
-        <ChangeCurrentBranch checkStatus={revalidate} />
-        <RemoteGitActions checkStatus={revalidate} />
+        <ChangeCurrentBranch />
+        <RemoteGitActions />
         <SetRepo title="Change Current Repo" />
       </>
     );
-  }, [repo.value, revalidate]);
+  }, [repo.value]);
 
   const statusItems = useMemo(() => {
     if (!data?.files.length) {
       return <GitStatusEmpty branch={data?.branch} />;
     }
 
-    return data.files.map((item) => (
-      <GitStatusItem key={item.fileName} status={item} branch={data.branch} checkStatus={revalidate} />
-    ));
-  }, [data, revalidate]);
+    return data.files.map((item) => <GitStatusItem key={item.fileName} status={item} branch={data.branch} />);
+  }, [data]);
 
   return (
-    <RepoContext.Provider value={repo.value ?? ""}>
+    <Providers repo={repo.value} checkStatus={revalidate}>
       <List
         searchBarPlaceholder="Search modified files…"
         navigationTitle="Git Status"
@@ -59,6 +58,6 @@ export function GitStatus() {
       >
         {statusItems}
       </List>
-    </RepoContext.Provider>
+    </Providers>
   );
 }

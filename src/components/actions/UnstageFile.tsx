@@ -1,14 +1,15 @@
 import { Action, Icon, showToast } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { useRepo } from "../../hooks/useRepo.js";
+import { useCheckStatus } from "../../hooks/useCheckStatus.js";
 
 interface Props {
   fileName: string;
-  checkStatus: () => void;
 }
 
-export function UnstageFile({ fileName, checkStatus }: Props) {
+export function UnstageFile({ fileName }: Props) {
   const repo = useRepo();
+  const checkStatus = useCheckStatus();
   const { revalidate } = useExec("git", ["restore", "--staged", fileName], {
     cwd: repo,
     execute: false,
