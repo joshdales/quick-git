@@ -7,7 +7,7 @@ interface Props {
   fileName: string;
 }
 
-export function RestoreFile({ fileName }: Props) {
+export function ResetFile({ fileName }: Props) {
   const repo = useRepo();
   const checkStatus = useCheckStatus();
   const { revalidate } = useExec("git", ["restore", fileName], {
@@ -15,16 +15,16 @@ export function RestoreFile({ fileName }: Props) {
     execute: false,
     onData: () => {
       checkStatus();
-      showToast({ title: `Restored ${fileName} to its previous state` });
+      showToast({ title: `Reset ${fileName} to its previous state` });
     },
     onError: (error) => {
-      showFailureToast(error, { title: `Could not restore ${fileName}` });
+      showFailureToast(error, { title: `Could not reset ${fileName}` });
     },
   });
 
   return (
     <Action
-      title="Restore File"
+      title="Reset File"
       icon={Icon.Undo}
       onAction={revalidate}
       shortcut={Keyboard.Shortcut.Common.Remove}

@@ -4,7 +4,7 @@ import { RemoteGitActions } from "./RemoteGitActions.js";
 import { AddFile } from "../actions/AddFile.js";
 import { UnstageFile } from "../actions/UnstageFile.js";
 import { CommitMessage } from "../actions/CommitMessage.js";
-import { RestoreFile } from "../actions/RestoreFile.js";
+import { ResetFile } from "../actions/ResetFile.js";
 import { ChangeCurrentBranch } from "../actions/ChangeCurrentBranch.js";
 import { SetRepo } from "../actions/SetRepo.js";
 import { CopyFilename } from "../actions/CopyFilename.js";
@@ -36,7 +36,7 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, isShowingDi
     return (
       <>
         <FileDiff fileName={fileName} updateDiff={updateDiff} isShowingDiff={isShowingDiff} />
-        <RestoreFile fileName={fileName} />
+        <ResetFile fileName={fileName} />
       </>
     );
   }, [fileName, isCommittedFile, isNotStaged, isShowingDiff, updateDiff]);
