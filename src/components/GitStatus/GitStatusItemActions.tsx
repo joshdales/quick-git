@@ -13,6 +13,7 @@ import { AddAllFiles } from "../actions/AddAllFiles.js";
 import { UnstageAllFiles } from "../actions/UnstageAllFiles.js";
 import { StashAllFiles } from "../actions/StashAllFiles.js";
 import { FileDiff } from "../actions/FileDiff.js";
+import { ResetAllUnstagedFiles } from "../actions/ResetAllFiles.js";
 
 interface Props {
   isNotStaged: boolean;
@@ -53,6 +54,7 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, isShowingDi
       <ActionPanel.Section title="Bulk Actions">
         <AddAllFiles />
         <UnstageAllFiles />
+        <ResetAllUnstagedFiles />
         <StashAllFiles />
       </ActionPanel.Section>
 
