@@ -25,12 +25,7 @@ export function OpenFile({ fileName }: PropsWithChildren<Props>) {
   return (
     <>
       <Action.Open title="Open File" icon={appIcon} target={filePath} shortcut={Keyboard.Shortcut.Common.Open} />
-      <Action.OpenWith
-        title="Open File"
-        icon={Icon.Finder}
-        path={filePath}
-        shortcut={Keyboard.Shortcut.Common.OpenWith}
-      />
+      <Action.OpenWith icon={Icon.Finder} path={filePath} shortcut={Keyboard.Shortcut.Common.OpenWith} />
     </>
   );
 }
