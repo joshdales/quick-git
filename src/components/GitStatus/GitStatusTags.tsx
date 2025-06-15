@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Color, List } from "@raycast/api";
-import type { GitStatus } from "../../utils/status.js";
+import type { GitStatus } from "../../utils/porcelain.js";
 
 interface Props {
   stagedStatus: GitStatus;
