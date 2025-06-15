@@ -2,11 +2,12 @@
 
 ## [Diffs and deletes] - {PR_MERGE_DATE}
 
-- Show and hide diffs for changed files
+View the diff for a file that you have changed, and make it easier to delete branches. There have also been various under the hood refactors and changes.
+
+- Show and hide file diffs
 - Add `Open With…` action
-- Add option to hard delete a branch if the `Delete Branch` action fails
-- Add option for force push (with lease) if the `Push Branch` action fails
-- Various under the hood changes and refactors
+- If the `Delete Branch` action fails you can now try and hard delete it
+- If the `Push Branch` action fails you can now force push it (with lease)
 
 ## [Initial Version] - 2025-06-10
 
