@@ -2,10 +2,11 @@
 
 ## [Diffs and deletes] - {PR_MERGE_DATE}
 
-- Allow unmerged branches to be deleted
 - Show and hide diffs for changed files
 - Add `Open With…` action
-- Various under the hood changes
+- Add option to hard delete a branch if the `Delete Branch` action fails
+- Add option for force push (with lease) if the `Push Branch` action fails
+- Various under the hood changes and refactors
 
 ## [Initial Version] - 2025-06-10
 
