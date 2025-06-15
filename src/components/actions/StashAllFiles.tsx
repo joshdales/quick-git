@@ -7,9 +7,9 @@ interface Props {
 }
 
 export function StashAllFiles({ checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["stash"], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onData: () => {
       checkStatus();

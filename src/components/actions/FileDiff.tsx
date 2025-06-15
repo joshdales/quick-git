@@ -10,9 +10,9 @@ interface Props {
 }
 
 export function FileDiff({ fileName, isShowingDiff, updateDiff }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["diff", "--histogram", "head", fileName], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     keepPreviousData: false,
     onData: (data) => {

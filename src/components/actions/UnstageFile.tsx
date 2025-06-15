@@ -8,9 +8,9 @@ interface Props {
 }
 
 export function UnstageFile({ fileName, checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["restore", "--staged", fileName], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onData: () => {
       checkStatus();

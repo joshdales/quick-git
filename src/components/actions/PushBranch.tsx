@@ -7,10 +7,10 @@ interface Props {
 }
 
 export function PushBranch({ checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
 
   const { revalidate: forcePush } = useExec("git", ["push", "--force-with-lease"], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onWillExecute: () => {
       showToast({ title: "Pushing branch", style: Toast.Style.Animated });
@@ -25,7 +25,7 @@ export function PushBranch({ checkStatus }: Props) {
   });
 
   const { revalidate } = useExec("git", ["push"], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onWillExecute: () => {
       showToast({ title: "Pushing branch", style: Toast.Style.Animated });

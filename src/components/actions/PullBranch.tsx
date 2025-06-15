@@ -7,9 +7,9 @@ interface Props {
 }
 
 export function PullBranch({ checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["pull"], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onWillExecute: () => {
       showToast({ title: "Pulling branch", style: Toast.Style.Animated });

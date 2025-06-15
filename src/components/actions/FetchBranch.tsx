@@ -7,9 +7,9 @@ interface Props {
 }
 
 export function FetchBranch({ checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["fetch"], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onWillExecute: () => {
       showToast({ title: "Fetching repo data", style: Toast.Style.Animated });

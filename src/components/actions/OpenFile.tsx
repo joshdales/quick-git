@@ -9,11 +9,10 @@ interface Props {
 
 export function OpenFile({ fileName }: PropsWithChildren<Props>) {
   const [appIcon, setAppIcon] = useState<Image.ImageLike>();
-  const { value } = useRepo();
-  const filePath = useMemo(() => join(value ?? "", fileName), [fileName, value]);
+  const repo = useRepo();
+  const filePath = useMemo(() => join(repo ?? "", fileName), [fileName, repo]);
 
   useEffect(() => {
-    if (!value) return;
     getDefaultApplication(filePath)
       .then((app) => {
         setAppIcon({ fileIcon: app.path });
@@ -21,11 +20,7 @@ export function OpenFile({ fileName }: PropsWithChildren<Props>) {
       .catch(() => {
         // Quietly catch any error and fallback to the default image
       });
-  }, [filePath, value]);
-
-  if (!value) {
-    return null;
-  }
+  }, [filePath, repo]);
 
   return (
     <>

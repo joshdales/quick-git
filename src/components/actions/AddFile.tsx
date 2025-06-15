@@ -8,9 +8,9 @@ interface Props {
 }
 
 export function AddFile({ fileName, checkStatus }: Props) {
-  const { value } = useRepo();
+  const repo = useRepo();
   const { revalidate } = useExec("git", ["add", fileName], {
-    cwd: value,
+    cwd: repo,
     execute: false,
     onData: () => {
       checkStatus();
