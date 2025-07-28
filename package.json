@@ -32,6 +32,16 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "name": "repo-locations",
+      "title": "Location of Git projects",
+      "description": "A directory to search for Git projects",
+      "default": "~/",
+      "type": "directory",
+      "required": true
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.100.0",
     "@raycast/utils": "^1.19.0"
