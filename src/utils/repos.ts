@@ -1,11 +1,22 @@
-export function parseRepoDirectoryName(repoList: string): { id: string; label: string }[] {
+export interface RepoDir {
+  id: string;
+  label: string;
+}
+
+export function parseRepoDirectoryName(repoList: string, base: string): RepoDir[] {
   if (!repoList) return [];
 
-  return repoList.split("\n").reduce<{ id: string; label: string }[]>((currList, value) => {
+  return repoList.split("\n").reduce<RepoDir[]>((currList, value) => {
     if (!value || value.endsWith("Operation not permitted")) {
       return currList;
     }
-    currList.push({ id: value, label: value.replace(/(^\.\/)/, "") });
+
+    const repoDir = { id: value, label: value.replace(/(^\.\/)/, "") };
+    if (value.startsWith("./")) {
+      repoDir.id = value.replace(/(^.)/, base);
+    }
+
+    currList.push(repoDir);
     return currList;
   }, []);
 }
