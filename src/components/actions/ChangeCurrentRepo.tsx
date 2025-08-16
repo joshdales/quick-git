@@ -1,9 +1,9 @@
-import { Action } from "@raycast/api";
+import { Action, Icon } from "@raycast/api";
 
 interface Props {
   selectRepo: () => void;
 }
 
 export function SelectCurrentRepo({ selectRepo }: Props) {
-  return <Action title="Update Repo" onAction={selectRepo} />;
+  return <Action title="Update Repo" icon={Icon.Switch} onAction={selectRepo} />;
 }
