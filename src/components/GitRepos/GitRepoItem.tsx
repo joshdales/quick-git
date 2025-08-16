@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 import { RepoDir } from "../../utils/repos.js";
 import { SelectCurrentRepo } from "../actions/ChangeCurrentRepo.js";
 import { ChooseSpecificRepo } from "../actions/ChooseSpecificRepo.js";
+import { OpenDirectory } from "../actions/OpenDirectory.js";
 
 interface Props {
   repoDir: RepoDir;
@@ -24,11 +25,12 @@ export function GitRepoItem({ repoDir, isSelected, changeRepo }: Props) {
   const actions = useMemo(() => {
     return (
       <ActionPanel>
-        <SelectCurrentRepo selectRepo={selectRepo} />
+        {isSelected ? null : <SelectCurrentRepo selectRepo={selectRepo} />}
+        <OpenDirectory path={repoDir.id} />
         <ChooseSpecificRepo />
       </ActionPanel>
     );
-  }, [selectRepo]);
+  }, [isSelected, repoDir.id, selectRepo]);
 
   return <List.Item title={repoDir.label} accessories={accessories} actions={actions} />;
 }
