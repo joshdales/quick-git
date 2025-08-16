@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
-import { Action, ActionPanel, getPreferenceValues, List, showToast, Toast } from "@raycast/api";
+import { ActionPanel, getPreferenceValues, List, showToast, Toast } from "@raycast/api";
 import { showFailureToast, useExec, useFrecencySorting } from "@raycast/utils";
-import { ChooseDirectory } from "./forms/ChooseDirectory.js";
 import { parseRepoDirectoryName, RepoDir } from "../utils/repos.js";
 import { RepoContext, useRepoStorage } from "../hooks/useRepo.js";
 import { GitRepoItem } from "./GitRepos/GitRepoItem.js";
 import { launchQuickGit } from "../utils/launchCommands.js";
+import { ChooseSpecificRepo } from "./actions/ChooseSpecificRepo.js";
 
 export function GitRepos() {
   const currentRepo = useRepoStorage();
@@ -61,7 +61,7 @@ export function GitRepos() {
         isLoading={isLoading}
         actions={
           <ActionPanel>
-            <Action.Push title="Choose Specific Repo" target={<ChooseDirectory />} />
+            <ChooseSpecificRepo />
           </ActionPanel>
         }
       >

@@ -2,6 +2,7 @@ import { ActionPanel, List } from "@raycast/api";
 import { useCallback, useMemo } from "react";
 import { RepoDir } from "../../utils/repos.js";
 import { SelectCurrentRepo } from "../actions/ChangeCurrentRepo.js";
+import { ChooseSpecificRepo } from "../actions/ChooseSpecificRepo.js";
 
 interface Props {
   repoDir: RepoDir;
@@ -24,6 +25,7 @@ export function GitRepoItem({ repoDir, isSelected, changeRepo }: Props) {
     return (
       <ActionPanel>
         <SelectCurrentRepo selectRepo={selectRepo} />
+        <ChooseSpecificRepo />
       </ActionPanel>
     );
   }, [selectRepo]);
