@@ -33,7 +33,7 @@ export function ChooseDirectory() {
 
   return (
     <Form
-      navigationTitle="Select Git Repo"
+      navigationTitle="Select Specific Git Repo"
       isLoading={repo.isLoading}
       actions={
         <ActionPanel>
@@ -43,6 +43,10 @@ export function ChooseDirectory() {
         </ActionPanel>
       }
     >
+      <Form.Description
+        title="Select a specific git repo"
+        text="In case there is a repo that you want to select that is outside of the 'Location of git projects' preference."
+      />
       <Form.FilePicker
         id="newRepo"
         title="Repo Directory"

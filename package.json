@@ -35,8 +35,8 @@
   "preferences": [
     {
       "name": "repo-locations",
-      "title": "Location of Git projects",
-      "description": "A directory to search for Git projects",
+      "title": "Location of git projects",
+      "description": "A directory to search for git projects",
       "default": "~/",
       "type": "directory",
       "required": true
