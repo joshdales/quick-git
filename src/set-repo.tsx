@@ -1,5 +1,5 @@
-import { ChooseDirectoryForm } from "./components/ChooseDirectoryForm.js";
+import { ChooseDirectory } from "./components/forms/ChooseDirectory.js";
 
 export default function Command() {
-  return <ChooseDirectoryForm />;
+  return <ChooseDirectory />;
 }

@@ -1,9 +1,9 @@
 import { Action, ActionPanel, Form, Icon, launchCommand, LaunchType, showToast, Toast } from "@raycast/api";
 import { FormValidation, showFailureToast, useForm } from "@raycast/utils";
-import { useRepoStorage } from "../hooks/useRepo.js";
-import { OpenPreferences } from "./actions/OpenPreferences.js";
+import { useRepoStorage } from "../../hooks/useRepo.js";
+import { OpenPreferences } from "../actions/OpenPreferences.js";
 
-export function ChooseDirectoryForm() {
+export function ChooseDirectory() {
   const repo = useRepoStorage();
 
   const { handleSubmit, itemProps } = useForm({
