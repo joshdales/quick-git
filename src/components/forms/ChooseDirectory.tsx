@@ -1,7 +1,8 @@
-import { Action, ActionPanel, Form, Icon, launchCommand, LaunchType, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Form, Icon, showToast, Toast } from "@raycast/api";
 import { FormValidation, showFailureToast, useForm } from "@raycast/utils";
 import { useRepoStorage } from "../../hooks/useRepo.js";
 import { OpenPreferences } from "../actions/OpenPreferences.js";
+import { launchQuickGit } from "../../utils/launchCommands.js";
 
 export function ChooseDirectory() {
   const repo = useRepoStorage();
@@ -17,14 +18,7 @@ export function ChooseDirectory() {
             message: `${newRepo[0]}`,
           });
 
-          launchCommand({
-            name: "quick-git",
-            type: LaunchType.UserInitiated,
-          }).catch((error) => {
-            showFailureToast(error, {
-              title: "Could not launch the Quick Git command",
-            });
-          });
+          launchQuickGit();
         })
         .catch((error) => {
           showFailureToast(error, {
