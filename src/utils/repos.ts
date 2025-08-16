@@ -11,10 +11,7 @@ export function parseRepoDirectoryName(repoList: string, base: string): RepoDir[
       return currList;
     }
 
-    const repoDir = { id: value, label: value.replace(/(^\.\/)/, "") };
-    if (value.startsWith("./")) {
-      repoDir.id = value.replace(/(^.)/, base);
-    }
+    const repoDir = { id: value, label: value.replace(base + "/", "") };
 
     currList.push(repoDir);
     return currList;

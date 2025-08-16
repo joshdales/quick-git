@@ -9,15 +9,14 @@ import { ChooseSpecificRepo } from "./actions/ChooseSpecificRepo.js";
 
 export function GitRepos() {
   const currentRepo = useRepoStorage();
-  const prefs = getPreferenceValues<Preferences>();
+  const repoLocation = getPreferenceValues<Preferences>()["repo-locations"];
   const { data, isLoading } = useExec(
     "find",
-    [".", "-name .git", "-type d", "-prune", "-exec", "dirname", "{}", "\\;"],
+    [repoLocation, "-name .git", "-type d", "-prune", "-exec", "dirname", "{}", "\\;"],
     {
-      cwd: prefs["repo-locations"],
       shell: true,
       parseOutput: ({ stdout }) => {
-        return parseRepoDirectoryName(stdout, prefs["repo-locations"]);
+        return parseRepoDirectoryName(stdout, repoLocation);
       },
       onError: (error) => {
         showFailureToast(error, { title: "Could not get git repos" });
