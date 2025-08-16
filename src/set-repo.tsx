@@ -1,5 +1,5 @@
-import { ChooseDirectory } from "./components/forms/ChooseDirectory.js";
+import { GitRepos } from "./components/GitRepos.js";
 
 export default function Command() {
-  return <ChooseDirectory />;
+  return <GitRepos />;
 }
