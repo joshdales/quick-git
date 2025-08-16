@@ -43,10 +43,7 @@ export function ChooseDirectory() {
         </ActionPanel>
       }
     >
-      <Form.Description
-        title="Select a specific git repo"
-        text="In case there is a repo that you want to select that is outside of the 'Location of git projects' preference."
-      />
+      <Form.Description text="Manually select a repo from your computer, it can be outside of the 'Location of git projects' preference." />
       <Form.FilePicker
         id="newRepo"
         title="Repo Directory"
