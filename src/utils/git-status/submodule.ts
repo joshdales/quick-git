@@ -5,8 +5,6 @@
  * - `M` There are tracked changes within the submodule
  * - `U` There are untracked changed within the submodule
  * - `.` Empty value
- *
- * `N...` Indicates that the entry is not a submodule
  */
 export type SubmoduleString = `S${"C" | "."}${"M" | "."}${"U" | "."}`;
 
