@@ -1,4 +1,4 @@
-import { List } from "@raycast/api";
+import { Color, List } from "@raycast/api";
 import type { BranchInfo } from "../../utils/git-status/branch.js";
 import type { StatusInfo } from "../../utils/git-status/porcelain.js";
 import { GitStatusTags } from "./GitStatusTags.js";
@@ -31,17 +31,15 @@ export function GitStatusItemDetail({ branch, status, diff }: Props) {
       return null;
     }
 
-    const progressIcon = getProgressIcon(status.changes.changeScore ?? 0 / 100);
-    console.log(status.changes.changeScore);
+    const progressIcon = getProgressIcon(status.changes.changeScore ?? 0 / 100, Color.Magenta);
     return (
       <>
         <List.Item.Detail.Metadata.Label title="Original path" text={status.origPath} />
         <List.Item.Detail.Metadata.Label
-          title="File Changed"
+          title="Similarity to original file"
           text={status.changes.changeScore + "%"}
           icon={progressIcon}
         />
-        ;
       </>
     );
   }, [status.changes.changeScore, status.origPath]);
