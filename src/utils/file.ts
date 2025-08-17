@@ -214,21 +214,11 @@ export function parsePorcelainStatus(line: string): PorcelainStatus {
       return parseRenamedFile(line);
     case "u":
       return parseUnmergedFile(line);
-    case "?": {
+    default: {
       const [, ...paths] = line.split(spaceRegex);
       const [path] = parsePaths(paths);
-
       return {
-        indicator: "?",
-        path,
-      };
-    }
-    case "!": {
-      const [, ...paths] = line.split(" ");
-      const [path] = parsePaths(paths);
-
-      return {
-        indicator: "!",
+        indicator,
         path,
       };
     }
