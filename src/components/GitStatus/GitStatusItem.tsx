@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Icon, List } from "@raycast/api";
 import type { StatusInfo } from "../../utils/porcelain.js";
-import type { BranchInfo } from "../../utils/branch.js";
+import type { BranchInfo } from "../../utils/git-status/branch.js";
 import { GitStatusItemDetail } from "./GitStatusItemDetail.js";
 import { GitStatusItemActions } from "./GitStatusItemActions.js";
 

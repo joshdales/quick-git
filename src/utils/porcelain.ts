@@ -1,5 +1,5 @@
-import { BranchInfo, parseBranchHeaders } from "./branch.js";
-import { parseFileStatus, type XYStatus as GitStatus } from "./file.js";
+import { BranchInfo, parseBranchHeaders } from "./git-status/branch.js";
+import { parseFileStatus, type XYStatus as GitStatus } from "./git-status/file.js";
 
 export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 

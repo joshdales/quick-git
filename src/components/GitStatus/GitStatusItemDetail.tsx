@@ -1,5 +1,5 @@
 import { List } from "@raycast/api";
-import type { BranchInfo } from "../../utils/branch.js";
+import type { BranchInfo } from "../../utils/git-status/branch.js";
 import type { StatusInfo } from "../../utils/porcelain.js";
 import { GitStatusTags } from "./GitStatusTags.js";
 import { useMemo } from "react";
