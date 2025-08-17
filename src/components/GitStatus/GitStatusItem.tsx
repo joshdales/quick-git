@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Icon, List } from "@raycast/api";
-import type { StatusInfo } from "../../utils/porcelain.js";
+import type { StatusInfo } from "../../utils/git-status/porcelain.js";
 import type { BranchInfo } from "../../utils/git-status/branch.js";
 import { GitStatusItemDetail } from "./GitStatusItemDetail.js";
 import { GitStatusItemActions } from "./GitStatusItemActions.js";
@@ -12,13 +12,6 @@ interface Props {
 
 export function GitStatusItem({ status, branch }: Props) {
   const [diff, setDiff] = useState("");
-  const isNotStaged = useMemo(() => {
-    return status.staged === "." || status.staged === "?";
-  }, [status.staged]);
-
-  const isCommittedFile = useMemo(() => {
-    return status.format !== "untracked" && status.format !== "ignored";
-  }, [status.format]);
 
   const title = useMemo(() => {
     if (status.origPath) {
@@ -29,12 +22,12 @@ export function GitStatusItem({ status, branch }: Props) {
 
   return (
     <List.Item
-      icon={isNotStaged ? Icon.Circle : Icon.CheckCircle}
+      icon={status.changes.hasStagedChanges ? Icon.CheckCircle : Icon.Circle}
       title={title}
       actions={
         <GitStatusItemActions
-          isNotStaged={isNotStaged}
-          isCommittedFile={isCommittedFile}
+          isNotStaged={status.changes.hasUnstagedChanges}
+          isCommittedFile={status.changes.isTracked}
           isShowingDiff={!!diff}
           fileName={status.fileName}
           updateDiff={setDiff}

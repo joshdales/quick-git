@@ -1,6 +1,6 @@
 import { List } from "@raycast/api";
 import type { BranchInfo } from "../../utils/git-status/branch.js";
-import type { StatusInfo } from "../../utils/porcelain.js";
+import type { StatusInfo } from "../../utils/git-status/porcelain.js";
 import { GitStatusTags } from "./GitStatusTags.js";
 import { useMemo } from "react";
 
@@ -40,7 +40,7 @@ export function GitStatusItemDetail({ branch, status, diff }: Props) {
         <List.Item.Detail.Metadata>
           <List.Item.Detail.Metadata.Label title="File path" text={status.fileName} />
           {status.origPath ? <List.Item.Detail.Metadata.Label title="Original path" text={status.origPath} /> : null}
-          <GitStatusTags stagedStatus={status.staged} unstagedStatus={status.unstaged} />
+          <GitStatusTags changes={status.changes} />
           <List.Item.Detail.Metadata.Separator />
           <List.Item.Detail.Metadata.Label title="Branch" text={branch.name} />
           {upstreamData}

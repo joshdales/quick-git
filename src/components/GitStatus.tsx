@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ActionPanel, List } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
-import { parseGitPorcelainStatus } from "../utils/porcelain.js";
+import { parseGitStatusPorcelain } from "../utils/git-status/porcelain.js";
 import { useRepoStorage } from "../hooks/useRepo.js";
 import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
@@ -19,7 +19,7 @@ export function GitStatus() {
     onError: (error) => {
       showFailureToast(error, { title: "Could not fetch git status" });
     },
-    parseOutput: ({ stdout }) => parseGitPorcelainStatus(stdout),
+    parseOutput: ({ stdout }) => parseGitStatusPorcelain(stdout),
   });
 
   const showDetails = useMemo(() => !!repo.value && !!data?.files.length, [data?.files.length, repo.value]);

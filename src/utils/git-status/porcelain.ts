@@ -19,31 +19,35 @@ export interface StatusInfo {
  * @param porcelainStatus The complete string from the porcelain 2 status command
  * @returns An object containing the branch and information on all changed files.
  */
-export function parseGitStatusPorcelain(
-  porcelainStatus: string,
-): { branch: BranchInfo; files: StatusInfo[] } | undefined {
+export function parseGitStatusPorcelain(porcelainStatus: string): PorcelainInfo | undefined {
   if (!porcelainStatus) {
     return;
   }
-
-  const branch: BranchInfo = {
-    name: "",
-    commit: "",
+  const data: PorcelainInfo = {
+    branch: {
+      name: "",
+      commit: "",
+    },
+    files: [],
   };
-  const files: StatusInfo[] = [];
   porcelainStatus.split("\n").forEach((statusRow) => {
     if (!statusRow) {
       return;
     }
 
     if (statusRow.startsWith("#")) {
-      parseBranchHeaders(statusRow, branch);
+      parseBranchHeaders(statusRow, data.branch);
     } else {
-      files.push(parseFileData(statusRow));
+      data.files.push(parseFileData(statusRow));
     }
   });
 
-  return { branch, files };
+  return data;
+}
+
+interface PorcelainInfo {
+  branch: BranchInfo;
+  files: StatusInfo[];
 }
 
 /**

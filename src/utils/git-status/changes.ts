@@ -16,10 +16,11 @@ import { FileStatus } from "./file.js";
 export type StatusValue = "." | "M" | "T" | "A" | "D" | "R" | "C" | "U" | "?" | "!";
 
 export interface ChangeStatus {
-  unstagedChanges: boolean;
-  unstagedChangesType?: StatusValueName;
-  stagedChanges: boolean;
-  stagedChangesType?: StatusValueName;
+  isTracked: boolean;
+  hasUnstagedChanges: boolean;
+  unstagedChanges: StatusValue;
+  hasStagedChanges: boolean;
+  stagedChanges: StatusValue;
   changeScore?: number;
   unmergedChanges: boolean;
 }
@@ -27,29 +28,28 @@ export interface ChangeStatus {
 export function parseChanges(fileStatus: FileStatus): ChangeStatus {
   if (fileStatus.indicator === "!" || fileStatus.indicator === "?") {
     return {
-      stagedChanges: false,
-      unstagedChanges: true,
-      unstagedChangesType: parseStatusValue(fileStatus.indicator),
+      isTracked: false,
+      hasStagedChanges: false,
+      stagedChanges: fileStatus.indicator,
+      hasUnstagedChanges: true,
+      unstagedChanges: fileStatus.indicator,
       unmergedChanges: false,
     };
   }
 
   const [index, workingTree] = splitChanges(fileStatus.xy);
   const status: ChangeStatus = {
-    unstagedChanges: /[^.?!]/.test(workingTree),
-    stagedChanges: /[^.]/.test(index),
+    isTracked: true,
+    hasUnstagedChanges: /[^.?!]/.test(workingTree),
+    unstagedChanges: workingTree,
+    hasStagedChanges: index !== ".",
+    stagedChanges: index,
     unmergedChanges:
       index === "U" ||
       workingTree === "U" ||
       (index === "A" && workingTree === "A") ||
       (index === "D" && workingTree === "D"),
   };
-  if (status.stagedChanges) {
-    status.stagedChangesType = parseStatusValue(index);
-  }
-  if (status.unstagedChanges) {
-    status.unstagedChangesType = parseStatusValue(workingTree);
-  }
 
   if (fileStatus.indicator === "2") {
     status.changeScore = fileStatus.rcScore;
@@ -67,9 +67,13 @@ export function splitChanges(xy: string): [StatusValue, StatusValue] {
   return [xy.charAt(0) as StatusValue, xy.charAt(1) as StatusValue];
 }
 
-type StatusValueName = ReturnType<typeof parseStatusValue>;
+export type StatusValueName = ReturnType<typeof parseStatusValueName>;
 
-function parseStatusValue(status: StatusValue) {
+export function parseStatusValueName(status: StatusValue) {
+  if (status === ".") {
+    return;
+  }
+
   switch (status) {
     case "M":
       return "Modified";
