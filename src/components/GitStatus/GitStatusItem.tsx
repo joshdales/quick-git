@@ -20,9 +20,21 @@ export function GitStatusItem({ status, branch }: Props) {
     return status.fileName;
   }, [status.fileName, status.origPath]);
 
+  const icon = useMemo(() => {
+    if (status.changes.hasStagedChanges && status.changes.hasUnstagedChanges) {
+      return Icon.CircleProgress50;
+    }
+
+    if (status.changes.hasStagedChanges && !status.changes.hasUnstagedChanges) {
+      return Icon.CheckCircle;
+    }
+
+    return Icon.Circle;
+  }, [status.changes.hasStagedChanges, status.changes.hasUnstagedChanges]);
+
   return (
     <List.Item
-      icon={status.changes.hasStagedChanges ? Icon.CheckCircle : Icon.Circle}
+      icon={icon}
       title={title}
       actions={
         <GitStatusItemActions
