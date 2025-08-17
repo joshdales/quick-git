@@ -138,7 +138,8 @@ function parseChangedFile(line: string): ChangedFile {
 
 function parseRenamedFile(line: string): RenamedFile {
   const [, xy, sub, mH, mI, mW, hH, hI, xScore, ...paths] = line.split(spaceRegex);
-  const [rc, score] = xScore.split(/\s/) as ["R" | "C", string];
+  const rc = xScore.charAt(0) as "R" | "C";
+  const score = +xScore.substring(1);
   const [path, origPath] = parsePaths(paths);
 
   return {
