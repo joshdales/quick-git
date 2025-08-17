@@ -1,8 +1,7 @@
 import { BranchInfo, parseBranchHeaders } from "./branch.js";
-import { parsePorcelainStatus, type XYStatus as GitStatus } from "./file.js";
-export type { GitStatus };
+import { parseFileStatus, type XYStatus as GitStatus } from "./file.js";
 
-type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
+export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 
 export interface StatusInfo {
   format: GitStatusFormat;
@@ -49,7 +48,7 @@ function lineFormat(format: string): GitStatusFormat {
  * @returns
  */
 function parseGitFileStatus(dataRow: string): StatusInfo {
-  const fields = parsePorcelainStatus(dataRow);
+  const fields = parseFileStatus(dataRow);
   if (fields.indicator === "?" || fields.indicator === "!") {
     return {
       format: "untracked",
@@ -70,12 +69,17 @@ function parseGitFileStatus(dataRow: string): StatusInfo {
   };
 }
 
-export function parseGitPorcelainStatus(porcelainStatus: string):
-  | {
-      branch: BranchInfo;
-      files: StatusInfo[];
-    }
-  | undefined {
+interface PorcelainStatus {
+  branch: BranchInfo;
+  files: StatusInfo[];
+}
+
+/**
+ * Get the branch and file information from git status run with porcelain 2.
+ * @param porcelainStatus The complete string from the porcelain 2 status command
+ * @returns
+ */
+export function parseGitPorcelainStatus(porcelainStatus: string): PorcelainStatus | undefined {
   if (!porcelainStatus) {
     return;
   }
