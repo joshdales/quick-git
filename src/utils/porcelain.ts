@@ -1,5 +1,6 @@
 import { BranchInfo, parseBranchHeaders } from "./git-status/branch.js";
-import { parseFileStatus, type StatusValue } from "./git-status/file.js";
+import { parseFileStatus, parseChanges, type StatusValue } from "./git-status/file.js";
+import { parseSubmodule } from "./git-status/submodule.js";
 
 export type { StatusValue as GitStatus } from "./git-status/file.js";
 export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
@@ -59,14 +60,16 @@ function parseGitFileStatus(dataRow: string): StatusInfo {
     };
   }
   const format = lineFormat(fields.indicator);
+  const [staged, unstaged] = parseChanges(fields.xy);
+  const submodule = parseSubmodule(fields.submodule).isSubmodule;
 
   return {
     format,
     fileName: fields.path,
     origPath: fields.indicator === "2" ? fields.origPath : undefined,
-    staged: fields.indexChanges,
-    unstaged: fields.workingChanges,
-    submodule: fields.submodule.isSubmodule,
+    staged,
+    unstaged,
+    submodule,
   };
 }
 
@@ -85,13 +88,12 @@ export function parseGitPorcelainStatus(porcelainStatus: string): PorcelainStatu
     return;
   }
 
-  const status = porcelainStatus.split("\n");
   const branch: BranchInfo = {
     name: "",
     commit: "",
   };
   const files: StatusInfo[] = [];
-  status.forEach((statusRow) => {
+  porcelainStatus.split("\n").forEach((statusRow) => {
     if (!statusRow) {
       return;
     }

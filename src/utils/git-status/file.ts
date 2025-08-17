@@ -1,4 +1,4 @@
-import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
+import { SubmoduleString } from "./submodule.js";
 
 /**
  * Letter code that indicates the type of changes.
@@ -14,6 +14,7 @@ import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
  * - `!` Ignored
  */
 export type StatusValue = "." | "M" | "T" | "A" | "D" | "R" | "C" | "U" | "?" | "!";
+type XYString = `${StatusValue}${StatusValue}`;
 
 /**
  * The type of change that has occurred for this file and format the the line will take.
@@ -29,12 +30,10 @@ type LineIndicator = "1" | "2" | "u" | "?" | "!";
 interface LineFormat {
   /** The type of line format that the change represents */
   indicator: LineIndicator;
-  /** Status of the index */
-  indexChanges: StatusValue;
-  /** Status of the woking tree */
-  workingChanges: StatusValue;
+  /** Status of the index and working tree */
+  xy: XYString;
   /** Status of the git submodule */
-  submodule: SubmoduleStatus;
+  submodule: SubmoduleString;
   /** The octal file mode in HEAD */
   mH: string;
   /** The octal file mode in the index */
@@ -68,47 +67,18 @@ interface LineFormat {
 }
 
 interface ChangedFile
-  extends Pick<
-    LineFormat,
-    "indicator" | "indexChanges" | "workingChanges" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"
-  > {
+  extends Pick<LineFormat, "indicator" | "xy" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "path"> {
   indicator: "1";
 }
 interface RenamedFile
   extends Pick<
     LineFormat,
-    | "indicator"
-    | "indexChanges"
-    | "workingChanges"
-    | "submodule"
-    | "mH"
-    | "mI"
-    | "mW"
-    | "hH"
-    | "hI"
-    | "rc"
-    | "rcScore"
-    | "path"
-    | "origPath"
+    "indicator" | "xy" | "submodule" | "mH" | "mI" | "mW" | "hH" | "hI" | "rc" | "rcScore" | "path" | "origPath"
   > {
   indicator: "2";
 }
 interface UnmergedFile
-  extends Pick<
-    LineFormat,
-    | "indicator"
-    | "indexChanges"
-    | "workingChanges"
-    | "submodule"
-    | "m1"
-    | "m2"
-    | "m3"
-    | "mW"
-    | "h1"
-    | "h2"
-    | "h3"
-    | "path"
-  > {
+  extends Pick<LineFormat, "indicator" | "xy" | "submodule" | "m1" | "m2" | "m3" | "mW" | "h1" | "h2" | "h3" | "path"> {
   indicator: "u";
 }
 interface UntrackedFile extends Pick<LineFormat, "indicator" | "path"> {
@@ -149,7 +119,7 @@ export function parseFileStatus(line: string): FileStatus {
  * @param xy Two character field indicating staged and unstaged changes
  * @returns The changes that are staged, and the working changed
  */
-function parseChanges(xy: string): [StatusValue, StatusValue] {
+export function parseChanges(xy: XYString): [StatusValue, StatusValue] {
   return [xy.charAt(0) as StatusValue, xy.charAt(1) as StatusValue];
 }
 
@@ -169,14 +139,12 @@ function parsePaths(strings: string[]): [string, string] {
 
 function parseChangedFile(line: string): ChangedFile {
   const [, xy, sub, mH, mI, mW, hH, hI, ...paths] = line.split(spaceRegex);
-  const [indexChanges, workingChanges] = parseChanges(xy);
   const [path] = parsePaths(paths);
 
   return {
     indicator: "1",
-    indexChanges,
-    workingChanges,
-    submodule: parseSubmodule(sub),
+    xy: xy as XYString,
+    submodule: sub as SubmoduleString,
     mH,
     mI,
     mW,
@@ -188,15 +156,13 @@ function parseChangedFile(line: string): ChangedFile {
 
 function parseRenamedFile(line: string): RenamedFile {
   const [, xy, sub, mH, mI, mW, hH, hI, xScore, ...paths] = line.split(spaceRegex);
-  const [indexChanges, workingChanges] = parseChanges(xy);
   const [rc, score] = xScore.split(/\s/) as ["R" | "C", string];
   const [path, origPath] = parsePaths(paths);
 
   return {
     indicator: "2",
-    indexChanges,
-    workingChanges,
-    submodule: parseSubmodule(sub),
+    xy: xy as XYString,
+    submodule: sub as SubmoduleString,
     mH,
     mI,
     mW,
@@ -211,14 +177,12 @@ function parseRenamedFile(line: string): RenamedFile {
 
 function parseUnmergedFile(line: string): UnmergedFile {
   const [, xy, sub, m1, m2, m3, mW, h1, h2, h3, ...paths] = line.split(spaceRegex);
-  const [indexChanges, workingChanges] = parseChanges(xy);
   const [path] = parsePaths(paths);
 
   return {
     indicator: "u",
-    indexChanges,
-    workingChanges,
-    submodule: parseSubmodule(sub),
+    xy: xy as XYString,
+    submodule: sub as SubmoduleString,
     m1,
     m2,
     m3,

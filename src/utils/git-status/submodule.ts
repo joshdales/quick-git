@@ -1,4 +1,16 @@
 /**
+ * 4 character letter code indicating information about a git submodule:
+ * - `S` Indicates that this is a submodule
+ * - `C` There are changes within the submodule
+ * - `M` There are tracked changes within the submodule
+ * - `U` There are untracked changed within the submodule
+ * - `.` Empty value
+ *
+ * `N...` Indicates that the entry is not a submodule
+ */
+export type SubmoduleString = `${"S" | "N"}${"C" | "."}${"M" | "."}${"U" | "."}`;
+
+/**
  * Parse submodule status from porcelain version 2.
  * @param sub A 4 character field describing the submodule state
  * @returns An object describing the state of the submodule
@@ -12,18 +24,6 @@ export function parseSubmodule(sub: string): SubmoduleStatus {
     isSubmodule: false,
   };
 }
-
-/**
- * 4 character letter code indicating information about a git submodule:
- * - `S` Indicates that this is a submodule
- * - `C` There are changes within the submodule
- * - `M` There are tracked changes within the submodule
- * - `U` There are untracked changed within the submodule
- * - `.` Empty value
- *
- * `N...` Indicates that the entry is not a submodule
- */
-type SubmoduleString = `${"S" | "N"}${"C" | "."}${"M" | "."}${"U" | "."}`;
 
 function isSubmodule(sub: string): sub is SubmoduleString {
   return !!sub && sub.startsWith("S");
