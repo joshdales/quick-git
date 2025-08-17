@@ -1,6 +1,6 @@
 import { ActionPanel, List } from "@raycast/api";
 import { useCallback, useMemo } from "react";
-import { RepoDir } from "../../utils/repos.js";
+import { RepoDir } from "../../utils/repos.ts'";
 import { SelectCurrentRepo } from "../actions/ChangeCurrentRepo.js";
 import { ChooseSpecificRepo } from "../actions/ChooseSpecificRepo.js";
 import { OpenDirectory } from "../actions/OpenDirectory.js";

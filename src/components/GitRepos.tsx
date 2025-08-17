@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { ActionPanel, getPreferenceValues, List, showToast, Toast } from "@raycast/api";
 import { showFailureToast, useExec, useFrecencySorting } from "@raycast/utils";
-import { parseRepoDirectoryName, RepoDir } from "../utils/repos.js";
+import { parseRepoDirectoryName, RepoDir } from "../utils/repos.ts'";
 import { RepoContext, useRepoStorage } from "../hooks/useRepo.js";
 import { GitRepoItem } from "./GitRepos/GitRepoItem.js";
 import { launchQuickGit } from "../utils/launchCommands.js";
