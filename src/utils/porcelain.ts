@@ -1,23 +1,26 @@
 import { BranchInfo, parseBranchHeaders } from "./git-status/branch.js";
 import { parseFileStatus } from "./git-status/file.js";
-import { parseChanges, type StatusValue } from "./git-status/changes.js";
-import { parseSubmodule } from "./git-status/submodule.js";
+import { ChangeStatus, parseChanges, splitChanges, type StatusValue } from "./git-status/changes.js";
+import { parseSubmodule, SubmoduleStatus } from "./git-status/submodule.js";
 
 export type { StatusValue as GitStatus } from "./git-status/changes.js";
 export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 
 export interface StatusInfo {
+  /** @deprecated */
   format: GitStatusFormat;
   /** Path of the file */
   fileName: string;
   /** Original path of the file if it was renamed/copied */
   origPath?: string;
-  /** Status of the index */
+  /** @deprecated Status of the index */
   staged: StatusValue;
-  /** Status of the working tree */
+  /** @deprecated Status of the working tree */
   unstaged: StatusValue;
-  /** Is this a submodule */
-  submodule?: boolean;
+  /** Information about submodules */
+  submodule: SubmoduleStatus;
+  /** Information about the changes to this file */
+  changes: ChangeStatus;
 }
 
 /**
@@ -52,17 +55,20 @@ function lineFormat(format: string): GitStatusFormat {
  */
 function parseGitFileStatus(dataRow: string): StatusInfo {
   const fields = parseFileStatus(dataRow);
+  const changes = parseChanges(fields);
   if (fields.indicator === "?" || fields.indicator === "!") {
     return {
       format: "untracked",
       fileName: fields.path,
       staged: ".",
       unstaged: fields.indicator,
+      submodule: { isSubmodule: false },
+      changes,
     };
   }
   const format = lineFormat(fields.indicator);
-  const [staged, unstaged] = parseChanges(fields.xy);
-  const submodule = parseSubmodule(fields.submodule).isSubmodule;
+  const [staged, unstaged] = splitChanges(fields.xy);
+  const submodule = parseSubmodule(fields.submodule);
 
   return {
     format,
@@ -71,6 +77,7 @@ function parseGitFileStatus(dataRow: string): StatusInfo {
     staged,
     unstaged,
     submodule,
+    changes,
   };
 }
 
