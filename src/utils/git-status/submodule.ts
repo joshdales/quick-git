@@ -8,7 +8,7 @@
  *
  * `N...` Indicates that the entry is not a submodule
  */
-export type SubmoduleString = `${"S" | "N"}${"C" | "."}${"M" | "."}${"U" | "."}`;
+export type SubmoduleString = `S${"C" | "."}${"M" | "."}${"U" | "."}`;
 
 /**
  * Parse submodule status from porcelain version 2.

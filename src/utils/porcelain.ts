@@ -1,8 +1,9 @@
 import { BranchInfo, parseBranchHeaders } from "./git-status/branch.js";
-import { parseFileStatus, parseChanges, type StatusValue } from "./git-status/file.js";
+import { parseFileStatus } from "./git-status/file.js";
+import { parseChanges, type StatusValue } from "./git-status/changes.js";
 import { parseSubmodule } from "./git-status/submodule.js";
 
-export type { StatusValue as GitStatus } from "./git-status/file.js";
+export type { StatusValue as GitStatus } from "./git-status/changes.js";
 export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 
 export interface StatusInfo {

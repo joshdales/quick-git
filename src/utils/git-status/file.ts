@@ -1,20 +1,37 @@
-import { SubmoduleString } from "./submodule.js";
+import type { SubmoduleString } from "./submodule.js";
+import type { StatusValue } from "./changes.js";
+
+export type FileStatus = ChangedFile | RenamedFile | UnmergedFile | UntrackedFile | IgnoredFile;
 
 /**
- * Letter code that indicates the type of changes.
- * - `.` Unmodified
- * - `M` Modified
- * - `T` File type changed (regular file, symbolic link or submodule)
- * - `A` Added
- * - `D` Deleted
- * - `R` Renamed
- * - `C` Copied (if config option status.renames is set to "copies")
- * - `U` Updated but unmerged
- * - `?` Untracked
- * - `!` Ignored
+ * Parse a line from Git Status Porcelain version 2 and return an object containing that information.
  */
-export type StatusValue = "." | "M" | "T" | "A" | "D" | "R" | "C" | "U" | "?" | "!";
+export function parseFileStatus(line: string): FileStatus {
+  const indicator = line.charAt(0) as LineIndicator;
+
+  switch (indicator) {
+    case "1":
+      return parseChangedFile(line);
+    case "2":
+      return parseRenamedFile(line);
+    case "u":
+      return parseUnmergedFile(line);
+    default: {
+      const [, ...paths] = line.split(spaceRegex);
+      const [path] = parsePaths(paths);
+      return {
+        indicator,
+        path,
+      };
+    }
+  }
+}
+
+/** Two character code indicating what the status of the file is in the index and working tree */
 type XYString = `${StatusValue}${StatusValue}`;
+
+/** 4 character code indicating the status of the submodule, `N...` indicates that it is not a submodule */
+type SubmoduleStatus = SubmoduleString | "N...";
 
 /**
  * The type of change that has occurred for this file and format the the line will take.
@@ -33,7 +50,7 @@ interface LineFormat {
   /** Status of the index and working tree */
   xy: XYString;
   /** Status of the git submodule */
-  submodule: SubmoduleString;
+  submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
   mH: string;
   /** The octal file mode in the index */
@@ -88,41 +105,6 @@ interface IgnoredFile extends Pick<LineFormat, "indicator" | "path"> {
   indicator: "!";
 }
 
-export type FileStatus = ChangedFile | RenamedFile | UnmergedFile | UntrackedFile | IgnoredFile;
-
-/**
- * Parse a line from Git Status Porcelain version 2 and return an object containing that information.
- */
-export function parseFileStatus(line: string): FileStatus {
-  const indicator = line.charAt(0) as LineIndicator;
-
-  switch (indicator) {
-    case "1":
-      return parseChangedFile(line);
-    case "2":
-      return parseRenamedFile(line);
-    case "u":
-      return parseUnmergedFile(line);
-    default: {
-      const [, ...paths] = line.split(spaceRegex);
-      const [path] = parsePaths(paths);
-      return {
-        indicator,
-        path,
-      };
-    }
-  }
-}
-
-/**
- * Split the indicated changes into a tuple
- * @param xy Two character field indicating staged and unstaged changes
- * @returns The changes that are staged, and the working changed
- */
-export function parseChanges(xy: XYString): [StatusValue, StatusValue] {
-  return [xy.charAt(0) as StatusValue, xy.charAt(1) as StatusValue];
-}
-
 /** Match unescaped space characters, in case there are spaces in a filename */
 const spaceRegex = /(?<!\\) /;
 
@@ -162,7 +144,7 @@ function parseRenamedFile(line: string): RenamedFile {
   return {
     indicator: "2",
     xy: xy as XYString,
-    submodule: sub as SubmoduleString,
+    submodule: sub as SubmoduleStatus,
     mH,
     mI,
     mW,
@@ -182,7 +164,7 @@ function parseUnmergedFile(line: string): UnmergedFile {
   return {
     indicator: "u",
     xy: xy as XYString,
-    submodule: sub as SubmoduleString,
+    submodule: sub as SubmoduleStatus,
     m1,
     m2,
     m3,
