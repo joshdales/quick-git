@@ -1,7 +1,7 @@
 import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
 
 /**
- * Two letter code that indicates the type of changes.
+ * Letter code that indicates the type of changes.
  * - `.` Unmodified
  * - `M` Modified
  * - `T` File type changed (regular file, symbolic link or submodule)
@@ -13,7 +13,7 @@ import { SubmoduleStatus, parseSubmodule } from "./submodule.js";
  * - `?` Untracked
  * - `!` Ignored
  */
-export type XYStatus = "." | "M" | "T" | "A" | "D" | "R" | "C" | "U" | "?" | "!";
+export type StatusValue = "." | "M" | "T" | "A" | "D" | "R" | "C" | "U" | "?" | "!";
 
 /**
  * The type of change that has occurred for this file and format the the line will take.
@@ -30,9 +30,9 @@ interface LineFormat {
   /** The type of line format that the change represents */
   indicator: LineIndicator;
   /** Status of the index */
-  indexChanges: XYStatus;
+  indexChanges: StatusValue;
   /** Status of the woking tree */
-  workingChanges: XYStatus;
+  workingChanges: StatusValue;
   /** Status of the git submodule */
   submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
@@ -120,8 +120,37 @@ interface IgnoredFile extends Pick<LineFormat, "indicator" | "path"> {
 
 export type FileStatus = ChangedFile | RenamedFile | UnmergedFile | UntrackedFile | IgnoredFile;
 
-function parseChanges(xy: string): [XYStatus, XYStatus] {
-  return [xy.charAt(0) as XYStatus, xy.charAt(1) as XYStatus];
+/**
+ * Parse a line from Git Status Porcelain version 2 and return an object containing that information.
+ */
+export function parseFileStatus(line: string): FileStatus {
+  const indicator = line.charAt(0) as LineIndicator;
+
+  switch (indicator) {
+    case "1":
+      return parseChangedFile(line);
+    case "2":
+      return parseRenamedFile(line);
+    case "u":
+      return parseUnmergedFile(line);
+    default: {
+      const [, ...paths] = line.split(spaceRegex);
+      const [path] = parsePaths(paths);
+      return {
+        indicator,
+        path,
+      };
+    }
+  }
+}
+
+/**
+ * Split the indicated changes into a tuple
+ * @param xy Two character field indicating staged and unstaged changes
+ * @returns The changes that are staged, and the working changed
+ */
+function parseChanges(xy: string): [StatusValue, StatusValue] {
+  return [xy.charAt(0) as StatusValue, xy.charAt(1) as StatusValue];
 }
 
 /** Match unescaped space characters, in case there are spaces in a filename */
@@ -199,26 +228,4 @@ function parseUnmergedFile(line: string): UnmergedFile {
     h3,
     path,
   };
-}
-
-/** Parse status for a file in the porcelain 2 format. */
-export function parseFileStatus(line: string): FileStatus {
-  const indicator = line.charAt(0) as LineIndicator;
-
-  switch (indicator) {
-    case "1":
-      return parseChangedFile(line);
-    case "2":
-      return parseRenamedFile(line);
-    case "u":
-      return parseUnmergedFile(line);
-    default: {
-      const [, ...paths] = line.split(spaceRegex);
-      const [path] = parsePaths(paths);
-      return {
-        indicator,
-        path,
-      };
-    }
-  }
 }

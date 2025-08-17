@@ -1,6 +1,7 @@
 import { BranchInfo, parseBranchHeaders } from "./git-status/branch.js";
-import { parseFileStatus, type XYStatus as GitStatus } from "./git-status/file.js";
+import { parseFileStatus, type StatusValue } from "./git-status/file.js";
 
+export type { StatusValue as GitStatus } from "./git-status/file.js";
 export type GitStatusFormat = "changed" | "renamed" | "unmerged" | "untracked" | "ignored";
 
 export interface StatusInfo {
@@ -10,9 +11,9 @@ export interface StatusInfo {
   /** Original path of the file if it was renamed/copied */
   origPath?: string;
   /** Status of the index */
-  staged: GitStatus;
+  staged: StatusValue;
   /** Status of the working tree */
-  unstaged: GitStatus;
+  unstaged: StatusValue;
   /** Is this a submodule */
   submodule?: boolean;
 }
