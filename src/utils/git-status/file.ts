@@ -28,7 +28,7 @@ export function parseFileStatus(line: string): FileStatus {
 }
 
 /** Two character code indicating what the status of the file is in the index and working tree */
-type XYString = `${StatusValue}${StatusValue}`;
+type XYStatus = `${StatusValue}${StatusValue}`;
 
 /** 4 character code indicating the status of the submodule, `N...` indicates that it is not a submodule */
 type SubmoduleStatus = SubmoduleString | "N...";
@@ -48,7 +48,7 @@ interface LineFormat {
   /** The type of line format that the change represents */
   indicator: LineIndicator;
   /** Status of the index and working tree */
-  xy: XYString;
+  xy: XYStatus;
   /** Status of the git submodule */
   submodule: SubmoduleStatus;
   /** The octal file mode in HEAD */
@@ -125,8 +125,8 @@ function parseChangedFile(line: string): ChangedFile {
 
   return {
     indicator: "1",
-    xy: xy as XYString,
-    submodule: sub as SubmoduleString,
+    xy: xy as XYStatus,
+    submodule: sub as SubmoduleStatus,
     mH,
     mI,
     mW,
@@ -143,7 +143,7 @@ function parseRenamedFile(line: string): RenamedFile {
 
   return {
     indicator: "2",
-    xy: xy as XYString,
+    xy: xy as XYStatus,
     submodule: sub as SubmoduleStatus,
     mH,
     mI,
@@ -163,7 +163,7 @@ function parseUnmergedFile(line: string): UnmergedFile {
 
   return {
     indicator: "u",
-    xy: xy as XYString,
+    xy: xy as XYStatus,
     submodule: sub as SubmoduleStatus,
     m1,
     m2,
