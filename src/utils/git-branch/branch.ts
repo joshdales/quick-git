@@ -4,12 +4,12 @@ export interface BranchInfo {
   isCurrentBranch: boolean;
 }
 
-export function parseBranches(branchCmd: string): BranchInfo[] | undefined {
-  if (!branchCmd) {
+export function parseBranches(branches: string): BranchInfo[] | undefined {
+  if (!branches) {
     return;
   }
 
-  return branchCmd.split("\n").reduce<BranchInfo[]>((list, branch) => {
+  return branches.split("\n").reduce<BranchInfo[]>((list, branch) => {
     if (!branch) {
       return list;
     }
@@ -18,9 +18,9 @@ export function parseBranches(branchCmd: string): BranchInfo[] | undefined {
     let item: BranchInfo;
     if (parts.length > 1) {
       item = {
-        name: parts[1].trim(),
-        isCurrentBranch: parts[0].startsWith("*"),
-        isWorktree: parts[0].startsWith("+"),
+        name: parts[1],
+        isCurrentBranch: parts[0] === "*",
+        isWorktree: parts[0] === "+",
       };
     } else {
       item = {
