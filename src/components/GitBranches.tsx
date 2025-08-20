@@ -33,7 +33,7 @@ export function GitBranches({ checkStatus }: Props) {
       return <List.EmptyView title="There are no branches" />;
     }
 
-    return data.map((branch) => <GitBranchItem key={branch.name} branch={branch.name} checkBranches={revalidate} />);
+    return data.map((branch) => <GitBranchItem key={branch.name} branch={branch} checkBranches={revalidate} />);
   }, [data, revalidate]);
 
   return (
