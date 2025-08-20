@@ -7,6 +7,7 @@ import { SwitchToLastBranch } from "../actions/SwitchToLastBranch.js";
 interface Props {
   branch: string;
   isCurrentBranch: boolean;
+  isWorktree: boolean;
   checkBranches: () => void;
 }
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { List } from "@raycast/api";
+import { Color, List } from "@raycast/api";
 import { GitBranchItemActions } from "./GitBranchItemActions.js";
 import { BranchInfo } from "../../utils/git-branch/branch.js";
 
@@ -11,11 +11,11 @@ interface Props {
 export function GitBranchItem({ branch, checkBranches }: Props) {
   const accessories = useMemo(() => {
     if (branch.isCurrentBranch) {
-      return [{ text: "Current branch" }];
+      return [{ tag: { value: "Current branch", color: Color.PrimaryText } }];
     }
 
     if (branch.isWorktree) {
-      return [{ text: "Worktree" }];
+      return [{ tag: { value: "Worktree" } }];
     }
   }, [branch.isCurrentBranch, branch.isWorktree]);
 
@@ -27,6 +27,7 @@ export function GitBranchItem({ branch, checkBranches }: Props) {
         <GitBranchItemActions
           branch={branch.name}
           isCurrentBranch={branch.isCurrentBranch}
+          isWorktree={branch.isWorktree}
           checkBranches={checkBranches}
         />
       }
