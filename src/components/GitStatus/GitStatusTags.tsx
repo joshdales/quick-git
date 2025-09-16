@@ -57,13 +57,10 @@ export function GitStatusTags({ changes }: Props) {
       }
     }
 
-    return tags;
+    return tags.map((tag, index) => (
+      <List.Item.Detail.Metadata.TagList.Item key={index} text={tag[0]} color={tag[1]} />
+    ));
   }, [changes.hasStagedChanges, changes.stagedChanges, changes.hasUnstagedChanges, changes.unstagedChanges]);
 
-  const tagList = useMemo(
-    () => tags.map((tag, index) => <List.Item.Detail.Metadata.TagList.Item key={index} text={tag[0]} color={tag[1]} />),
-    [tags],
-  );
-
-  return <List.Item.Detail.Metadata.TagList title="Status">{tagList}</List.Item.Detail.Metadata.TagList>;
+  return <List.Item.Detail.Metadata.TagList title="Status">{tags}</List.Item.Detail.Metadata.TagList>;
 }
