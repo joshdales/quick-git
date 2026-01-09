@@ -1,5 +1,5 @@
 import { Action, Icon } from "@raycast/api";
-import { useRepo, useRepoStorage } from "../../hooks/useRepo.js";
+import { useRepoStorage } from "../../hooks/useRepo.js";
 import { useCallback } from "react";
 import { useCachedPromise } from "@raycast/utils";
 import { findWorktreeDir } from "../../utils/worktrees.js";
@@ -10,15 +10,16 @@ interface Props {
 }
 
 export function SwitchToWorkTree({ worktree, checkBranches }: Props) {
-  const repo = useRepo();
-  const storage = useRepoStorage();
-  const worktreeDir = useCachedPromise(() => findWorktreeDir(repo, worktree));
+  const repo = useRepoStorage();
+  const worktreeDir = useCachedPromise(findWorktreeDir, [repo.value ?? "", worktree], {
+    execute: !!repo.value,
+  });
 
   const switchToWorktree = useCallback(() => {
     if (worktreeDir.data) {
-      storage.setValue(worktreeDir.data).then(checkBranches);
+      repo.setValue(worktreeDir.data).then(checkBranches);
     }
-  }, [checkBranches, storage, worktreeDir.data]);
+  }, [checkBranches, repo, worktreeDir.data]);
 
   return (
     <Action
