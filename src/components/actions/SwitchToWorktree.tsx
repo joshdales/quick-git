@@ -6,24 +6,25 @@ import { findWorktreeDir } from "../../utils/worktrees.js";
 
 interface Props {
   worktree: string;
+  checkBranches: () => void;
 }
 
-export function SwitchToWorkTree({ worktree }: Props) {
+export function SwitchToWorkTree({ worktree, checkBranches }: Props) {
   const repo = useRepo();
   const storage = useRepoStorage();
   const worktreeDir = useCachedPromise(() => findWorktreeDir(repo, worktree));
 
-  const moveToWorktree = useCallback(() => {
+  const switchToWorktree = useCallback(() => {
     if (worktreeDir.data) {
-      storage.setValue(worktreeDir.data);
+      storage.setValue(worktreeDir.data).then(checkBranches);
     }
-  }, [storage, worktreeDir.data]);
+  }, [checkBranches, storage, worktreeDir.data]);
 
   return (
     <Action
       title="Switch to This Worktree"
       icon={Icon.Replace}
-      onAction={moveToWorktree}
+      onAction={switchToWorktree}
       shortcut={{ key: "-", modifiers: ["cmd"] }}
     />
   );
