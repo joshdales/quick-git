@@ -16,7 +16,7 @@ interface Props {
 export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, checkBranches }: Props) {
   const actions = useMemo(() => {
     if (isWorktree) {
-      return <SwitchToWorkTree worktree={branch} checkBranches={checkBranches} />;
+      return <SwitchToWorkTree worktree={branch} />;
     }
 
     if (!isCurrentBranch) {
