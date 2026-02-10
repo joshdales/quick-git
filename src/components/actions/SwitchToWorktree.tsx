@@ -1,25 +1,26 @@
 import { Action, Icon, useNavigation } from "@raycast/api";
-import { useRepoStorage } from "../../hooks/useRepo.js";
 import { useCallback } from "react";
 import { useCachedPromise } from "@raycast/utils";
 import { findWorktreeDir } from "../../utils/worktrees.js";
+import { useRepo } from "../../hooks/useRepo.js";
 
 interface Props {
   worktree: string;
+  updateRepo: (newRepo: string) => Promise<void>;
 }
 
-export function SwitchToWorkTree({ worktree }: Props) {
-  const repo = useRepoStorage();
-  const worktreeDir = useCachedPromise(findWorktreeDir, [repo.value ?? "", worktree], {
-    execute: !!repo.value,
+export function SwitchToWorkTree({ worktree, updateRepo }: Props) {
+  const repo = useRepo();
+  const worktreeDir = useCachedPromise(findWorktreeDir, [repo ?? "", worktree], {
+    execute: !!repo,
   });
   const { pop } = useNavigation();
 
   const switchToWorktree = useCallback(() => {
     if (worktreeDir.data) {
-      repo.setValue(worktreeDir.data).then(pop);
+      updateRepo(worktreeDir.data).then(pop);
     }
-  }, [pop, repo, worktreeDir.data]);
+  }, [pop, updateRepo, worktreeDir.data]);
 
   return <Action title="Switch to This Worktree" icon={Icon.Replace} onAction={switchToWorktree} />;
 }

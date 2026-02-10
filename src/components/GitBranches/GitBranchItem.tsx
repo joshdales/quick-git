@@ -6,9 +6,10 @@ import { BranchInfo } from "../../utils/git-branch/branch.js";
 interface Props {
   branch: BranchInfo;
   checkBranches: () => void;
+  updateRepo: (value: string) => Promise<void>;
 }
 
-export function GitBranchItem({ branch, checkBranches }: Props) {
+export function GitBranchItem({ branch, checkBranches, updateRepo }: Props) {
   const accessories = useMemo(() => {
     if (branch.isCurrentBranch) {
       return [{ tag: { value: "Current branch", color: Color.PrimaryText } }];
@@ -29,6 +30,7 @@ export function GitBranchItem({ branch, checkBranches }: Props) {
           isCurrentBranch={branch.isCurrentBranch}
           isWorktree={branch.isWorktree}
           checkBranches={checkBranches}
+          updateRepo={updateRepo}
         />
       }
     />

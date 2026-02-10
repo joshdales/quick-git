@@ -11,12 +11,13 @@ interface Props {
   isCurrentBranch: boolean;
   isWorktree: boolean;
   checkBranches: () => void;
+  updateRepo: (value: string) => Promise<void>;
 }
 
-export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, checkBranches }: Props) {
+export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, checkBranches, updateRepo }: Props) {
   const actions = useMemo(() => {
     if (isWorktree) {
-      return <SwitchToWorkTree worktree={branch} />;
+      return <SwitchToWorkTree worktree={branch} updateRepo={updateRepo} />;
     }
 
     if (!isCurrentBranch) {
