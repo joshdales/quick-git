@@ -40,6 +40,12 @@ export function DeleteWorktree({ worktreeName, worktreePath, checkBranches }: Pr
   });
 
   return (
-    <Action title="Delete This Worktree" icon={Icon.Trash} onAction={deleteWorktree} style={Action.Style.Destructive} />
+    <Action
+      title="Delete This Worktree"
+      icon={Icon.Trash}
+      shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+      onAction={deleteWorktree}
+      style={Action.Style.Destructive}
+    />
   );
 }
