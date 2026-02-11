@@ -1,10 +1,11 @@
+import { useMemo } from "react";
 import { ActionPanel } from "@raycast/api";
 import { SwitchToBranch } from "../actions/SwitchToBranch.js";
 import { DeleteBranch } from "../actions/DeleteBranch.js";
 import { CreateNewBranch } from "../actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "../actions/SwitchToLastBranch.js";
 import { SwitchToWorkTree } from "../actions/SwitchToWorktree.js";
-import { useMemo } from "react";
+import { CreateNewWorkTree } from "../actions/CreateNewWorktree.js";
 
 interface Props {
   branch: string;
@@ -36,6 +37,7 @@ export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, chec
     <ActionPanel>
       {actions}
       <CreateNewBranch checkBranches={checkBranches} />
+      <CreateNewWorkTree checkBranches={checkBranches} />
       <SwitchToLastBranch checkBranches={checkBranches} />
     </ActionPanel>
   );
