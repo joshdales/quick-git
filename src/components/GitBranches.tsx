@@ -36,7 +36,7 @@ export function GitBranches({ checkStatus }: Props) {
     return data.map((branch) => (
       <GitBranchItem key={branch.name} branch={branch} checkBranches={revalidate} updateRepo={repo.setValue} />
     ));
-  }, [data, revalidate]);
+  }, [data, repo.setValue, revalidate]);
 
   return (
     <Providers repo={repo.value} checkStatus={checkStatus}>

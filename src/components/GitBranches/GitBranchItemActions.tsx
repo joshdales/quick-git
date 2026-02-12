@@ -45,7 +45,7 @@ export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, chec
     }
 
     return null;
-  }, [branch, checkBranches, isCurrentBranch, isWorktree, worktreeDir.data]);
+  }, [branch, checkBranches, isCurrentBranch, isWorktree, updateRepo, worktreeDir.data]);
 
   return (
     <ActionPanel>
