@@ -42,7 +42,7 @@ export function DeleteBranch({ branch, checkBranches }: Props) {
     <Action
       title="Delete This Branch"
       icon={Icon.Trash}
-      shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+      shortcut={{ macOS: { modifiers: ["cmd"], key: "backspace" }, Windows: { key: "backspace", modifiers: ["ctrl"] } }}
       onAction={deleteBranch}
       style={Action.Style.Destructive}
     />

@@ -11,8 +11,8 @@ export function CreateNewWorkTree({ checkBranches }: Props) {
       title="Create a New WorkTree"
       icon={Icon.Tree}
       shortcut={{
-        macOS: { modifiers: ["cmd", "shift"], key: "n" },
-        Windows: { modifiers: ["ctrl", "shift"], key: "n" },
+        macOS: { key: "n", modifiers: ["cmd", "shift"] },
+        Windows: { key: "n", modifiers: ["ctrl", "shift"] },
       }}
       target={<CreateWorktree checkBranches={checkBranches} />}
     />
