@@ -1,5 +1,9 @@
 # Quick Git Changelog
 
+## [Unreleased] - {PR_MERGE_DATE}
+
+Added logic for identifying Worktrees and Submodules.
+
 ## [Smoother repo selection] - 2025-08-18
 
 Updated how repos are selected so that it is quicker to change between them.
