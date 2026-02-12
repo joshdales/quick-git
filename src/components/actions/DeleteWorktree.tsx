@@ -43,7 +43,7 @@ export function DeleteWorktree({ worktreeName, worktreePath, checkBranches }: Pr
     <Action
       title="Delete This Worktree"
       icon={Icon.Trash}
-      shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+      shortcut={{ macOS: { key: "backspace", modifiers: ["cmd"] }, Windows: { key: "backspace", modifiers: ["ctrl"] } }}
       onAction={deleteWorktree}
       style={Action.Style.Destructive}
     />
