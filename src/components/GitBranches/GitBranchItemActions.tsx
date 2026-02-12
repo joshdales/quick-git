@@ -18,14 +18,14 @@ interface Props {
 }
 
 export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, checkBranches, updateRepo }: Props) {
-  const worktreeDir = useWorktreeDir(branch);
+  const { data: worktreeDir } = useWorktreeDir(branch);
 
   const actions = useMemo(() => {
     if (isWorktree) {
       return (
         <>
           <SwitchToWorkTree worktree={branch} updateRepo={updateRepo} />
-          <DeleteWorktree worktreeName={branch} worktreePath={worktreeDir.data ?? ""} checkBranches={checkBranches} />
+          <DeleteWorktree worktreeName={branch} worktreePath={worktreeDir ?? ""} checkBranches={checkBranches} />
         </>
       );
     }
@@ -40,7 +40,7 @@ export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, chec
     }
 
     return null;
-  }, [branch, checkBranches, isCurrentBranch, isWorktree, updateRepo, worktreeDir.data]);
+  }, [branch, checkBranches, isCurrentBranch, isWorktree, updateRepo, worktreeDir]);
 
   return (
     <ActionPanel>

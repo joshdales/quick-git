@@ -8,14 +8,14 @@ interface Props {
 }
 
 export function SwitchToWorkTree({ worktree, updateRepo }: Props) {
-  const worktreeDir = useWorktreeDir(worktree);
+  const { data: worktreeDir } = useWorktreeDir(worktree);
   const { pop } = useNavigation();
 
   const switchToWorktree = useCallback(() => {
-    if (worktreeDir.data) {
-      updateRepo(worktreeDir.data).then(pop);
+    if (worktreeDir) {
+      updateRepo(worktreeDir).then(pop);
     }
-  }, [pop, updateRepo, worktreeDir.data]);
+  }, [pop, updateRepo, worktreeDir]);
 
   return <Action title="Switch to This Worktree" icon={Icon.Replace} onAction={switchToWorktree} />;
 }
