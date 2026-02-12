@@ -1,8 +1,6 @@
 import { Action, Icon, useNavigation } from "@raycast/api";
 import { useCallback } from "react";
-import { useCachedPromise } from "@raycast/utils";
-import { findWorktreeDir } from "../../utils/worktrees.js";
-import { useRepo } from "../../hooks/useRepo.js";
+import { useWorktreeDir } from "../../hooks/useWorktreeDir.js";
 
 interface Props {
   worktree: string;
@@ -10,10 +8,7 @@ interface Props {
 }
 
 export function SwitchToWorkTree({ worktree, updateRepo }: Props) {
-  const repo = useRepo();
-  const worktreeDir = useCachedPromise(findWorktreeDir, [repo ?? "", worktree], {
-    execute: !!repo,
-  });
+  const worktreeDir = useWorktreeDir(worktree);
   const { pop } = useNavigation();
 
   const switchToWorktree = useCallback(() => {

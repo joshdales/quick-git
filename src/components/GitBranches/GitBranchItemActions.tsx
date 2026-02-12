@@ -7,9 +7,7 @@ import { CreateNewBranch } from "../actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "../actions/SwitchToLastBranch.js";
 import { SwitchToWorkTree } from "../actions/SwitchToWorktree.js";
 import { CreateNewWorkTree } from "../actions/CreateNewWorktree.js";
-import { useCachedPromise } from "@raycast/utils";
-import { findWorktreeDir } from "../../utils/worktrees.js";
-import { useRepo } from "../../hooks/useRepo.js";
+import { useWorktreeDir } from "../../hooks/useWorktreeDir.js";
 
 interface Props {
   branch: string;
@@ -20,10 +18,7 @@ interface Props {
 }
 
 export function GitBranchItemActions({ branch, isCurrentBranch, isWorktree, checkBranches, updateRepo }: Props) {
-  const repo = useRepo();
-  const worktreeDir = useCachedPromise(findWorktreeDir, [repo ?? "", branch], {
-    execute: !!repo,
-  });
+  const worktreeDir = useWorktreeDir(branch);
 
   const actions = useMemo(() => {
     if (isWorktree) {
