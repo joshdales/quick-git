@@ -1,5 +1,9 @@
 # Quick Git Changelog
 
+## [Unreleased] - {PR_MERGE_DATE}
+
+- Fix a bug when there is no upstream branch
+
 ## [Working with worktrees] - 2026-02-12
 
 Added support for navigating and managing worktrees.
