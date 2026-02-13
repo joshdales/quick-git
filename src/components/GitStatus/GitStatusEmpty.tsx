@@ -37,7 +37,9 @@ export function GitStatusEmpty({ name, ahead, behind, upstream }: Props) {
       return `Behind '${upstream}' by ${behind} commits.`;
     }
 
-    return `Up to date with ${upstream}`;
+    if (upstream) {
+      return `Up to date with ${upstream}`;
+    }
 
     return "Nothing to commit, working tree clean";
   }, [ahead, behind, repo, upstream]);
