@@ -1,7 +1,8 @@
-import { Action, Icon, Keyboard, showToast, Toast } from "@raycast/api";
+import { Action, Icon, Keyboard, open, showToast, Toast } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { useRepo } from "../../hooks/useRepo.js";
 import { useCheckStatus } from "../../hooks/useCheckStatus.js";
+import { codeReviewUrl } from "../../utils/code-review.js";
 
 export function PushBranch() {
   const repo = useRepo();
@@ -28,9 +29,21 @@ export function PushBranch() {
     onWillExecute: () => {
       showToast({ title: "Pushing branch", style: Toast.Style.Animated });
     },
-    onData: () => {
+    parseOutput: ({ stdout }) => {
+      return codeReviewUrl(stdout);
+    },
+    onData: (codeReview) => {
       checkStatus();
-      showToast({ title: "Remote up to date" });
+      let primaryAction: Toast.ActionOptions | undefined;
+      if (codeReview) {
+        primaryAction = {
+          onAction: () => {
+            open(codeReview);
+          },
+          title: "Open code review",
+        };
+      }
+      showToast({ title: "Remote up to date", primaryAction });
     },
     onError: (error) => {
       showFailureToast(error, {
