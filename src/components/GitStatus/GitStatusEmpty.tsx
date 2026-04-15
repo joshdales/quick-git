@@ -10,13 +10,11 @@ interface Props {
 
 export function GitStatusEmpty({ name, ahead, behind, upstream }: Props) {
   const repo = useRepo();
+  if (!repo) {
+    return <List.EmptyView title="Please select a repo" />;
+  }
 
-  return (
-    <List.EmptyView
-      title={repo && name ? `On branch ${name}` : "Please select a repo"}
-      description={description(ahead, behind, upstream)}
-    />
-  );
+  return <List.EmptyView title={`On branch ${name}`} description={description(ahead, behind, upstream)} />;
 }
 
 function description(ahead?: number, behind?: number, upstream?: string): string {
