@@ -2,7 +2,7 @@
 
 ## [Unreleased] - {PR_MERGE_DATE}
 
-- Fix a bug when there is no upstream branch
+- Fix some bugs and cleanup some code
 
 ## [Working with worktrees] - 2026-02-12
 
