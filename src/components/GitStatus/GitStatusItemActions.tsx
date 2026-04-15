@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { ActionPanel } from "@raycast/api";
 import { RemoteGitActions } from "./RemoteGitActions.js";
 import { AddFile } from "../actions/AddFile.js";
