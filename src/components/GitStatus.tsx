@@ -10,6 +10,14 @@ import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
 import { SetRepo } from "./actions/SetRepo.js";
 import { Providers } from "./Providers.js";
 
+const statusActions = (
+  <>
+    <ChangeCurrentBranch />
+    <RemoteGitActions />
+    <SetRepo title="Change Current Repo" />
+  </>
+);
+
 export function GitStatus() {
   const repo = useRepoStorage();
   const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
@@ -22,21 +30,7 @@ export function GitStatus() {
     parseOutput: ({ stdout }) => parseGitStatusPorcelain(stdout),
   });
 
-  const showDetails = useMemo(() => !!repo.value && !!data?.files.length, [data?.files.length, repo.value]);
-
-  const actions = useMemo(() => {
-    if (!repo.value) {
-      return <SetRepo />;
-    }
-
-    return (
-      <>
-        <ChangeCurrentBranch />
-        <RemoteGitActions />
-        <SetRepo title="Change Current Repo" />
-      </>
-    );
-  }, [repo.value]);
+  const showDetails = !!repo.value && !!data?.files.length;
 
   const statusItems = useMemo(() => {
     if (!data?.files.length) {
@@ -60,7 +54,7 @@ export function GitStatus() {
         navigationTitle="Git Status"
         isShowingDetail={showDetails}
         isLoading={repo.isLoading || isLoading}
-        actions={<ActionPanel>{actions}</ActionPanel>}
+        actions={<ActionPanel>{repo.value ? <SetRepo /> : statusActions}</ActionPanel>}
       >
         {statusItems}
       </List>
