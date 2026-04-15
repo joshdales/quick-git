@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { ActionPanel } from "@raycast/api";
 import { RemoteGitActions } from "./RemoteGitActions.js";
 import { AddFile } from "../actions/AddFile.js";
@@ -23,12 +23,16 @@ interface Props {
   updateDiff: (data: string) => void;
 }
 
-export function GitStatusItemActions({ isNotStaged, isCommittedFile, isShowingDiff, fileName, updateDiff }: Props) {
-  const mainAction = useMemo(() => {
-    return isNotStaged ? <AddFile fileName={fileName} /> : <UnstageFile fileName={fileName} />;
-  }, [fileName, isNotStaged]);
+export const GitStatusItemActions = memo(function GitStatusItemActions({
+  isNotStaged,
+  isCommittedFile,
+  isShowingDiff,
+  fileName,
+  updateDiff,
+}: Props) {
+  const mainAction = isNotStaged ? <AddFile fileName={fileName} /> : <UnstageFile fileName={fileName} />;
 
-  const restoreFile = useMemo(() => {
+  const restoreFile = () => {
     if (!isNotStaged || !isCommittedFile) {
       return null;
     }
@@ -39,14 +43,14 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, isShowingDi
         <ResetFile fileName={fileName} />
       </>
     );
-  }, [fileName, isCommittedFile, isNotStaged, isShowingDiff, updateDiff]);
+  };
 
   return (
     <ActionPanel>
       <ActionPanel.Section>
         {mainAction}
         <CommitMessage />
-        {restoreFile}
+        {restoreFile()}
       </ActionPanel.Section>
 
       <ChangeCurrentBranch />
@@ -67,4 +71,4 @@ export function GitStatusItemActions({ isNotStaged, isCommittedFile, isShowingDi
       </ActionPanel.Section>
     </ActionPanel>
   );
-}
+});

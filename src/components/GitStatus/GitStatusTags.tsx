@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo } from "react";
 import { Color, List } from "@raycast/api";
 import type { StatusValue } from "../../utils/git-status/changes.js";
 import { ChangeStatus, parseStatusValueName } from "../../utils/git-status/changes.js";
@@ -34,8 +34,8 @@ function colorForStatus(stagedStatus: StatusValue) {
   }
 }
 
-export function GitStatusTags({ changes }: Props) {
-  const tags = useMemo(() => {
+export const GitStatusTags = memo(function GitStatusTags({ changes }: Props) {
+  const tags = () => {
     const tags = [];
 
     if (changes.hasStagedChanges) {
@@ -73,7 +73,7 @@ export function GitStatusTags({ changes }: Props) {
     }
 
     return tags;
-  }, [changes.hasStagedChanges, changes.stagedChanges, changes.hasUnstagedChanges, changes.unstagedChanges]);
+  };
 
-  return <List.Item.Detail.Metadata.TagList title="Status">{tags}</List.Item.Detail.Metadata.TagList>;
-}
+  return <List.Item.Detail.Metadata.TagList title="Status">{tags()}</List.Item.Detail.Metadata.TagList>;
+});
