@@ -54,7 +54,7 @@ export function GitStatus() {
         navigationTitle="Git Status"
         isShowingDetail={showDetails}
         isLoading={repo.isLoading || isLoading}
-        actions={<ActionPanel>{repo.value ? <SetRepo /> : statusActions}</ActionPanel>}
+        actions={<ActionPanel>{repo.value ? statusActions : <SetRepo />}</ActionPanel>}
       >
         {statusItems}
       </List>
