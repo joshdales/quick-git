@@ -32,13 +32,14 @@ export function PushBranch() {
       checkStatus();
       showToast({ title: "Remote up to date" });
     },
-    onError: (error) => {
-      showFailureToast(error, {
+    onError: () => {
+      showToast({
         title: "Could not push this branch",
         primaryAction: {
           onAction: forcePush,
           title: "Force Push Branch?",
         },
+        style: Toast.Style.Failure,
       });
     },
   });
