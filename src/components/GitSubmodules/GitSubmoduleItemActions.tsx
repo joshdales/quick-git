@@ -2,7 +2,7 @@ import { memo } from "react";
 import { ActionPanel, useNavigation } from "@raycast/api";
 import { ViewRemote } from "../actions/ViewRemote.js";
 import { SwitchToSubmodule } from "../actions/SwitchToSubmodule.js";
-import { useCheckStatus } from "../../hooks/useCheckStatus.js";
+import { useCheckStatus } from "../../hooks/useGitStatus.js";
 
 interface Props {
   url: string;

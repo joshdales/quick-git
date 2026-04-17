@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { parseGitStatusPorcelain } from "../utils/git-status/porcelain.js";
 
@@ -11,4 +12,12 @@ export function useGitStatus(repo?: string) {
     },
     parseOutput: ({ stdout }) => parseGitStatusPorcelain(stdout),
   });
+}
+
+export const CheckStatusContext = createContext<() => void>(() => {
+  throw Error("Cannot check status: CheckStatusContext was not initialized");
+});
+
+export function useCheckStatus() {
+  return useContext(CheckStatusContext);
 }

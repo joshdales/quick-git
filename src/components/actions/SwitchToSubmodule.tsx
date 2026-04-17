@@ -1,7 +1,7 @@
 import { Action, Icon, showToast } from "@raycast/api";
 import { useRepo } from "../../hooks/useRepo.js";
 import { join } from "node:path";
-import { useCheckStatus } from "../../hooks/useCheckStatus.js";
+import { useCheckStatus } from "../../hooks/useGitStatus.js";
 import { showFailureToast } from "@raycast/utils";
 
 interface Props {

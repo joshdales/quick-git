@@ -1,6 +1,6 @@
 import { Action, Icon } from "@raycast/api";
 import { GitSubmodules } from "../GitSubmodules.js";
-import { useCheckStatus } from "../../hooks/useCheckStatus.js";
+import { useCheckStatus } from "../../hooks/useGitStatus.js";
 
 interface Props {
   changeRepo: (repoDir: string) => Promise<void>;

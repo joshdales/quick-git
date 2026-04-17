@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { CheckStatusContext } from "../hooks/useCheckStatus.js";
+import { CheckStatusContext } from "../hooks/useGitStatus.js";
 import { RepoContext, SelectedRepo } from "../hooks/useRepo.js";
 
 interface Props {

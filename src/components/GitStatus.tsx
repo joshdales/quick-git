@@ -1,7 +1,5 @@
 import { useMemo } from "react";
 import { ActionPanel, List } from "@raycast/api";
-import { showFailureToast, useExec } from "@raycast/utils";
-import { parseGitStatusPorcelain } from "../utils/git-status/porcelain.js";
 import { useSelectedRepoStorage } from "../hooks/useRepo.js";
 import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
@@ -12,19 +10,12 @@ import { Providers } from "./Providers.js";
 import { useHasSubmodles } from "../hooks/useHasSubmodules.js";
 import { ChangeSubmodules } from "./actions/ChangeSubmodules.js";
 import { navigationTitle } from "../utils/navigationTitle.js";
+import { useGitStatus } from "../hooks/useGitStatus.js";
 
 export function GitStatus() {
   const repo = useSelectedRepoStorage();
   const { data: hasSubmodule, isLoading: checkingSubmodules } = useHasSubmodles(repo.value);
-  const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
-    cwd: repo.value,
-    execute: !!repo.value,
-    keepPreviousData: false,
-    onError: (error) => {
-      showFailureToast(error, { title: "Could not fetch git status" });
-    },
-    parseOutput: ({ stdout }) => parseGitStatusPorcelain(stdout),
-  });
+  const { data, isLoading, revalidate } = useGitStatus(repo.value);
 
   const showDetails = !!repo.value && !!data?.files.length;
 
