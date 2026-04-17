@@ -15,7 +15,7 @@ interface Props {
 
 export function GitSubmodules({ changeRepo, checkStatus }: Props) {
   const repo = useRepoStorage();
-  const submodules = useCachedPromise(submodulesConfig, [repo.value ?? ""], { execute: !!repo.value });
+  const submodules = useCachedPromise(submodulesConfig, [repo.value], { execute: !!repo.value });
 
   const submoduleList = useMemo(() => {
     if (!submodules.data) {

@@ -16,7 +16,11 @@ export async function hasSubmodules(currentDir: string): Promise<boolean> {
     .catch(() => false);
 }
 
-export async function submodulesConfig(currentDir: string): Promise<SubmoduleConfig | null> {
+export async function submodulesConfig(currentDir: string = ""): Promise<SubmoduleConfig | null> {
+  if (!currentDir) {
+    return null;
+  }
+
   const gitModules = join(currentDir, ".gitmodules");
   let submodules: SubmoduleConfig;
   try {
