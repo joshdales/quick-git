@@ -6,7 +6,7 @@ export function navigationTitle(actionName: string, repo?: string): string {
   }
   try {
     const dir = path.parse(repo);
-    return `${actionName} - ${dir.name}`;
+    return `${actionName} | ${dir.name}`;
   } catch {
     return actionName;
   }
