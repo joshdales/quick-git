@@ -1,7 +1,8 @@
-import { Action, Icon } from "@raycast/api";
+import { Action, Icon, showToast } from "@raycast/api";
 import { useRepo } from "../../hooks/useRepo.js";
 import { join } from "node:path";
 import { useCheckStatus } from "../../hooks/useCheckStatus.js";
+import { showFailureToast } from "@raycast/utils";
 
 interface Props {
   submodulePath: string;
@@ -13,7 +14,14 @@ export function SwitchToSubmodule({ submodulePath, updateRepo }: Props) {
   const checkStatus = useCheckStatus();
   const updateCurrentRepo = () => {
     const path = join(repo, submodulePath);
-    updateRepo(path).then(checkStatus);
+    updateRepo(path)
+      .then(() => {
+        checkStatus();
+        showToast({ title: `Updated repo to be ${path}` });
+      })
+      .catch((error) => {
+        showFailureToast(error, { title: "Could not update repo" });
+      });
   };
 
   return (

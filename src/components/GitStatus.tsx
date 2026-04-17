@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { ActionPanel, List } from "@raycast/api";
 import { showFailureToast, useExec } from "@raycast/utils";
 import { parseGitStatusPorcelain } from "../utils/git-status/porcelain.js";
-import { useRepoStorage } from "../hooks/useRepo.js";
+import { useSelectedRepo } from "../hooks/useRepo.js";
 import { GitStatusItem } from "./GitStatus/GitStatusItem.js";
 import { RemoteGitActions } from "./GitStatus/RemoteGitActions.js";
 import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
@@ -14,7 +14,7 @@ import { ChangeSubmodules } from "./actions/ChangeSubmodules.js";
 import { navigationTitle } from "../utils/navigationTitle.js";
 
 export function GitStatus() {
-  const repo = useRepoStorage();
+  const repo = useSelectedRepo();
   const { data: hasSubmodule, isLoading: checkingSubmodules } = useHasSubmodles(repo.value);
   const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
     cwd: repo.value,
@@ -55,7 +55,7 @@ export function GitStatus() {
   }, [data]);
 
   return (
-    <Providers repo={repo.value} checkStatus={revalidate}>
+    <Providers repo={repo} checkStatus={revalidate}>
       <List
         searchBarPlaceholder="Search modified files…"
         navigationTitle={navigationTitle("Git Status", repo.value)}
