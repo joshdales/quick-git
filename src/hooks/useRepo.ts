@@ -10,7 +10,7 @@ export const RepoContext = createContext<SelectedRepo>({
   isLoading: false,
 });
 
-export function useSelectedRepo(): SelectedRepo {
+export function useSelectedRepoStorage(): SelectedRepo {
   return useLocalStorage<string>("selectedRepo");
 }
 
@@ -18,6 +18,6 @@ export function useRepo(): string {
   return useContext(RepoContext).value ?? "";
 }
 
-export function useRepoStorage(): SelectedRepo {
+export function useSelectedRepo(): SelectedRepo {
   return useContext(RepoContext);
 }

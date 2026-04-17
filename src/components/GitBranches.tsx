@@ -5,7 +5,7 @@ import { Providers } from "./Providers.js";
 import { GitBranchItem } from "./GitBranches/GitBranchItem.js";
 import { CreateNewBranch } from "./actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "./actions/SwitchToLastBranch.js";
-import { useSelectedRepo } from "../hooks/useRepo.js";
+import { useSelectedRepoStorage } from "../hooks/useRepo.js";
 import { parseBranches } from "../utils/git-branch/branch.js";
 import { navigationTitle } from "../utils/navigationTitle.js";
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function GitBranches({ checkStatus }: Props) {
-  const repo = useSelectedRepo();
+  const repo = useSelectedRepoStorage();
   const { data, isLoading, revalidate } = useExec("git", ["branch", "--sort=-committerdate", "--no-color"], {
     cwd: repo.value,
     parseOutput: ({ stdout }) => {

@@ -6,7 +6,7 @@ import { GitSubmoduleItem } from "./GitSubmodules/GitSubmoduleItem.js";
 import { GitSubmodulesEmpty } from "./GitSubmodules/GitSubmodulesEmpty.js";
 import { Providers } from "./Providers.js";
 import { navigationTitle } from "../utils/navigationTitle.js";
-import { useSelectedRepo } from "../hooks/useRepo.js";
+import { useSelectedRepoStorage } from "../hooks/useRepo.js";
 
 interface Props {
   changeRepo: (repoDir: string) => Promise<void>;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function GitSubmodules({ changeRepo, checkStatus }: Props) {
-  const repo = useSelectedRepo();
+  const repo = useSelectedRepoStorage();
   const submodules = useCachedPromise(submodulesConfig, [repo.value], { execute: !!repo.value });
 
   const submoduleList = useMemo(() => {

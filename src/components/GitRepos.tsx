@@ -2,13 +2,13 @@ import { useCallback, useMemo } from "react";
 import { ActionPanel, getPreferenceValues, List, showToast, Toast } from "@raycast/api";
 import { showFailureToast, useExec, useFrecencySorting } from "@raycast/utils";
 import { parseRepoDirectoryName, RepoDir } from "../utils/repos.js";
-import { RepoContext, useSelectedRepo } from "../hooks/useRepo.js";
+import { RepoContext, useSelectedRepoStorage } from "../hooks/useRepo.js";
 import { GitRepoItem } from "./GitRepos/GitRepoItem.js";
 import { launchQuickGit } from "../utils/launchCommands.js";
 import { ChooseSpecificRepo } from "./actions/ChooseSpecificRepo.js";
 
 export function GitRepos() {
-  const currentRepo = useSelectedRepo();
+  const currentRepo = useSelectedRepoStorage();
   const repoLocation = getPreferenceValues<Preferences>()["repo-locations"];
   const { data, isLoading } = useExec(
     "find",
