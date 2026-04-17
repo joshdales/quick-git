@@ -16,14 +16,14 @@ export async function hasSubmodules(currentDir: string): Promise<boolean> {
     .catch(() => false);
 }
 
-export async function submodulesConfig(currentDir: string): Promise<SubmoduleConfig | undefined> {
+export async function submodulesConfig(currentDir: string): Promise<SubmoduleConfig | null> {
   const gitModules = join(currentDir, ".gitmodules");
   let submodules: SubmoduleConfig;
   try {
     const contents = await readFile(gitModules, "utf-8");
     submodules = parse(contents);
   } catch {
-    return;
+    return null;
   }
 
   return submodules;
