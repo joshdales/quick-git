@@ -14,11 +14,16 @@ import { UnstageAllFiles } from "../actions/UnstageAllFiles.js";
 import { StashAllFiles } from "../actions/StashAllFiles.js";
 import { FileDiff } from "../actions/FileDiff.js";
 import { ResetAllUnstagedFiles } from "../actions/ResetAllFiles.js";
+import { useSelectedRepo } from "../../hooks/useRepo.js";
+import { SwitchToSubmodule } from "../actions/SwitchToSubmodule.js";
+import { ChangeSubmodules } from "../actions/ChangeSubmodules.js";
+import { useHasSubmodles } from "../../hooks/useHasSubmodules.js";
 
 interface Props {
   isNotStaged: boolean;
   isCommittedFile: boolean;
   isShowingDiff: boolean;
+  isSubmodule: boolean;
   fileName: string;
   updateDiff: (data: string) => void;
 }
@@ -27,9 +32,12 @@ export const GitStatusItemActions = memo(function GitStatusItemActions({
   isNotStaged,
   isCommittedFile,
   isShowingDiff,
+  isSubmodule,
   fileName,
   updateDiff,
 }: Props) {
+  const repo = useSelectedRepo();
+  const { data: hasSubmodule } = useHasSubmodles(repo.value);
   const mainAction = isNotStaged ? <AddFile fileName={fileName} /> : <UnstageFile fileName={fileName} />;
 
   const restoreFile = () => {
@@ -45,6 +53,17 @@ export const GitStatusItemActions = memo(function GitStatusItemActions({
     );
   };
 
+  const submoduleActions = () => {
+    if (!repo.value || (!hasSubmodule && !isSubmodule)) return null;
+    if (hasSubmodule && !isSubmodule) return <ChangeSubmodules changeRepo={repo.setValue} />;
+    return (
+      <ActionPanel.Section title="Submodules">
+        <SwitchToSubmodule submodulePath={fileName} updateRepo={repo.setValue} />
+        <ChangeSubmodules changeRepo={repo.setValue} />
+      </ActionPanel.Section>
+    );
+  };
+
   return (
     <ActionPanel>
       <ActionPanel.Section>
@@ -54,6 +73,7 @@ export const GitStatusItemActions = memo(function GitStatusItemActions({
       </ActionPanel.Section>
 
       <ChangeCurrentBranch />
+      {submoduleActions()}
 
       <ActionPanel.Section title="Bulk Actions">
         <AddAllFiles />
