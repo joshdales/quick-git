@@ -9,17 +9,13 @@ import { GitStatusEmpty } from "./GitStatus/GitStatusEmpty.js";
 import { ChangeCurrentBranch } from "./actions/ChangeCurrentBranch.js";
 import { SetRepo } from "./actions/SetRepo.js";
 import { Providers } from "./Providers.js";
-
-const statusActions = (
-  <>
-    <ChangeCurrentBranch />
-    <RemoteGitActions />
-    <SetRepo title="Change Current Repo" />
-  </>
-);
+import { useHasSubmodles } from "../hooks/useHasSubmodules.js";
+import { ChangeSubmodules } from "./actions/ChangeSubmodules.js";
+import { navigationTitle } from "../utils/navigationTitle.js";
 
 export function GitStatus() {
   const repo = useRepoStorage();
+  const { data: hasSubmodule, isLoading: checkingSubmodules } = useHasSubmodles(repo.value);
   const { data, isLoading, revalidate } = useExec("git", ["status", "--porcelain=2", "--branch"], {
     cwd: repo.value,
     execute: !!repo.value,
@@ -31,6 +27,17 @@ export function GitStatus() {
   });
 
   const showDetails = !!repo.value && !!data?.files.length;
+
+  const statusActions = repo.value ? (
+    <>
+      <ChangeCurrentBranch />
+      {hasSubmodule && <ChangeSubmodules repo={repo.value} changeRepo={repo.setValue} />}
+      <RemoteGitActions />
+      <SetRepo title="Change Current Repo" />
+    </>
+  ) : (
+    <SetRepo />
+  );
 
   const statusItems = useMemo(() => {
     if (!data?.files.length) {
@@ -51,10 +58,10 @@ export function GitStatus() {
     <Providers repo={repo.value} checkStatus={revalidate}>
       <List
         searchBarPlaceholder="Search modified files…"
-        navigationTitle="Git Status"
+        navigationTitle={navigationTitle("Git Status", repo.value)}
         isShowingDetail={showDetails}
-        isLoading={repo.isLoading || isLoading}
-        actions={<ActionPanel>{repo.value ? statusActions : <SetRepo />}</ActionPanel>}
+        isLoading={repo.isLoading || isLoading || checkingSubmodules}
+        actions={<ActionPanel>{statusActions}</ActionPanel>}
       >
         {statusItems}
       </List>

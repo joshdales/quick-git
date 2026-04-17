@@ -5,6 +5,7 @@ import { List } from "@raycast/api";
 import { GitSubmoduleItem } from "./GitSubmodules/GitSubmoduleItem.js";
 import { GitSubmodulesEmpty } from "./GitSubmodules/GitSubmodulesEmpty.js";
 import { Providers } from "./Providers.js";
+import { navigationTitle } from "../utils/navigationTitle.js";
 
 interface Props {
   repo: string;
@@ -39,7 +40,9 @@ export function GitSubmodules({ changeRepo, repo, checkStatus }: Props) {
 
   return (
     <Providers repo={repo} checkStatus={checkStatus}>
-      <List isLoading={submodules.isLoading}>{submoduleList}</List>;
+      <List navigationTitle={navigationTitle("Submodules", repo)} isLoading={submodules.isLoading}>
+        {submoduleList}
+      </List>
     </Providers>
   );
 }

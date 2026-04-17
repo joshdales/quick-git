@@ -7,6 +7,7 @@ import { CreateNewBranch } from "./actions/CreateNewBranch.js";
 import { SwitchToLastBranch } from "./actions/SwitchToLastBranch.js";
 import { useRepoStorage } from "../hooks/useRepo.js";
 import { parseBranches } from "../utils/git-branch/branch.js";
+import { navigationTitle } from "../utils/navigationTitle.js";
 
 interface Props {
   checkStatus: () => void;
@@ -42,7 +43,7 @@ export function GitBranches({ checkStatus }: Props) {
     <Providers repo={repo.value} checkStatus={checkStatus}>
       <List
         searchBarPlaceholder="Search branches…"
-        navigationTitle="Change Branches"
+        navigationTitle={navigationTitle("Change Branches", repo.value)}
         isLoading={isLoading}
         actions={
           <ActionPanel>
