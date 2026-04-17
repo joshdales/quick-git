@@ -22,6 +22,7 @@ export function GitStatusItem({ status, branch }: Props) {
           isNotStaged={status.changes.hasUnstagedChanges}
           isCommittedFile={status.changes.isTracked}
           isShowingDiff={!!diff}
+          isSubmodule={status.submodule.isSubmodule}
           fileName={status.fileName}
           updateDiff={setDiff}
         />

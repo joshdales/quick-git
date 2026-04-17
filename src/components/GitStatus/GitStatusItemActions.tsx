@@ -14,7 +14,7 @@ import { UnstageAllFiles } from "../actions/UnstageAllFiles.js";
 import { StashAllFiles } from "../actions/StashAllFiles.js";
 import { FileDiff } from "../actions/FileDiff.js";
 import { ResetAllUnstagedFiles } from "../actions/ResetAllFiles.js";
-import { useRepo, useRepoStorage } from "../../hooks/useRepo.js";
+import { useRepoStorage } from "../../hooks/useRepo.js";
 import { SwitchToSubmodule } from "../actions/SwitchToSubmodule.js";
 import { ChangeSubmodules } from "../actions/ChangeSubmodules.js";
 import { useHasSubmodles } from "../../hooks/useHasSubmodules.js";
