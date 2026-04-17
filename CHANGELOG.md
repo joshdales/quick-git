@@ -1,7 +1,11 @@
 # Quick Git Changelog
 
-## [Unreleased] - {PR_MERGE_DATE}
+## [Submodule Selection] - {PR_MERGE_DATE}
 
+Added functionality to view and select submodules in a repo
+
+- View a list of submodules in a repo, and select a submodule as your working repo
+- Open submodules remote repo
 - Fix some bugs and cleanup some code
 
 ## [Working with worktrees] - 2026-02-12
