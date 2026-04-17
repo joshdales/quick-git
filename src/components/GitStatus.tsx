@@ -31,7 +31,7 @@ export function GitStatus() {
   const statusActions = repo.value ? (
     <>
       <ChangeCurrentBranch />
-      {hasSubmodule && <ChangeSubmodules repo={repo.value} changeRepo={repo.setValue} />}
+      {hasSubmodule && <ChangeSubmodules changeRepo={repo.setValue} />}
       <RemoteGitActions />
       <SetRepo title="Change Current Repo" />
     </>

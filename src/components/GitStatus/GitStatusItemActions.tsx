@@ -55,11 +55,11 @@ export const GitStatusItemActions = memo(function GitStatusItemActions({
 
   const submoduleActions = () => {
     if (!repo.value || (!hasSubmodule && !isSubmodule)) return null;
-    if (hasSubmodule && !isSubmodule) return <ChangeSubmodules repo={repo.value} changeRepo={repo.setValue} />;
+    if (hasSubmodule && !isSubmodule) return <ChangeSubmodules changeRepo={repo.setValue} />;
     return (
       <ActionPanel.Section title="Submodules">
         <SwitchToSubmodule submodulePath={fileName} updateRepo={repo.setValue} />
-        <ChangeSubmodules repo={repo.value} changeRepo={repo.setValue} />
+        <ChangeSubmodules changeRepo={repo.setValue} />
       </ActionPanel.Section>
     );
   };
