@@ -9,14 +9,18 @@ interface Submodule {
 
 export type SubmoduleConfig = Record<string, Submodule>;
 
-export async function hasSubmodules(currentDir: string): Promise<boolean> {
+export async function hasSubmodules(currentDir?: string): Promise<boolean> {
+  if (!currentDir) {
+    return false;
+  }
+
   const gitModules = join(currentDir, ".gitmodules");
   return stat(gitModules)
     .then((res) => res.isFile())
     .catch(() => false);
 }
 
-export async function submodulesConfig(currentDir: string = ""): Promise<SubmoduleConfig | null> {
+export async function submodulesConfig(currentDir?: string): Promise<SubmoduleConfig | null> {
   if (!currentDir) {
     return null;
   }
