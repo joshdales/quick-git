@@ -1,14 +1,10 @@
 import { useLocalStorage } from "@raycast/utils";
 import { createContext, useContext } from "react";
 
-type RawSelectedRepo = ReturnType<typeof useLocalStorage<string>>;
-export type SelectedRepo = Pick<RawSelectedRepo, "isLoading" | "removeValue" | "setValue"> & {
-  value: string;
-};
+export type SelectedRepo = ReturnType<typeof useLocalStorage<string>>;
 
 export const RepoContext = createContext<SelectedRepo>({
-  // null is used to indicate that context has not been initialized
-  value: null as unknown as string,
+  value: undefined,
   setValue: () => {
     throw Error("Cannot set repo value: RepoContext was not initialized");
   },
@@ -18,24 +14,14 @@ export const RepoContext = createContext<SelectedRepo>({
   isLoading: false,
 });
 
-export function useSelectedRepoStorage(): RawSelectedRepo {
+export function useSelectedRepoStorage(): SelectedRepo {
   return useLocalStorage<string>("selectedRepo");
 }
 
 export function useRepo(): string {
-  const { value } = useContext(RepoContext);
-  if (value === null) {
-    throw new Error("Cannot get repo value: RepoContext was not initialized");
-  }
-
-  return value;
+  return useContext(RepoContext).value ?? "";
 }
 
 export function useSelectedRepo(): SelectedRepo {
-  const repo = useContext(RepoContext);
-  if (repo.value === null) {
-    throw new Error("Cannot get repo data: RepoContext was not initialized");
-  }
-
-  return repo;
+  return useContext(RepoContext);
 }
