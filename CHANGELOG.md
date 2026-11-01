@@ -1,5 +1,7 @@
 # Quick Git Changelog
 
+## [Unreleased Changes] - {PR_MERGE_DATE}
+
 ## [General Maintainence] - 2026-11-01
 
 General updates.
